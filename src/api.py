@@ -182,13 +182,25 @@ def get_elasticity(
     if category is None and product_id is None:
         return _estimate_to_response(ELASTICITY_RESULTS["overall"], scope="overall", price=price)
 
+    resolved_from_product = False
     if category is None and product_id is not None:
         product = next((p for p in PRODUCTS if p["product_id"] == product_id), None)
         if product is None:
             raise HTTPException(status_code=404, detail=f"product_id '{product_id}' not found")
         category = product["category"]
+        resolved_from_product = True
 
     if category not in by_category:
+        if resolved_from_product:
+            # The product's category didn't clear the reporting bar (e.g. the
+            # "Other/Uncategorized" catch-all -- see excluded_categories).
+            # Fall back to the overall estimate instead of 404ing on a
+            # perfectly valid product just because its category isn't
+            # separately reported.
+            return _estimate_to_response(
+                ELASTICITY_RESULTS["overall"], scope="overall", price=price,
+                resolved_from_product_id=product_id,
+            )
         raise HTTPException(status_code=404, detail=f"category '{category}' not found")
 
     return _estimate_to_response(

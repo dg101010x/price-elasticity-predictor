@@ -138,8 +138,8 @@ const GLOSSARY = {
   inelastic: "Shoppers barely react: raise the price 10% and sales fall LESS than 10%. People keep buying — think everyday essentials.",
   ci: "The 95% confidence interval: the range where the true value plausibly sits. A narrow range = precise estimate; a wide range = take the headline number with a grain of salt.",
   r2: "R-squared: how much of the ups and downs in sales the model explains, from 0 to 1. Low values are normal for retail data — price is only one of many reasons people buy.",
-  n: "Sample size: how many product-month data points went into this estimate. More observations = a more trustworthy number.",
-  typical_price: "The average price this product actually sold at in the data, filled in for you automatically. Change it freely — it only anchors the chart, not the elasticity itself.",
+  n: "Sample size: how many weekly per-product data points went into this estimate. More observations = a more trustworthy number.",
+  typical_price: "The typical (median) price this product actually sold at in the data, filled in for you automatically. Change it freely — it only anchors the chart, not the elasticity itself.",
 };
 const BLUE = "#3987e5", RED = "#e66767", YELLOW = "#c98500", SURFACE = "#11151c",
       GRIDLINE = "#222835", INK_PRIMARY = "#e8eaf0", INK_SECONDARY = "#9aa3b2",
@@ -202,8 +202,9 @@ function renderLayout() {
     <div id="comparison-chart"></div>
     <div class="caption" id="comparison-caption" style="display:none;">
       Top 10 most negative and top 10 least negative/positive of the reported categories.
-      Categories with opaque source codes instead of names (e.g. scanner-data 'PBV') are
-      hidden here but still reachable through a product lookup.
+      The catch-all 'Other/Uncategorized' bucket (products whose description didn't match
+      any keyword rule) is too heterogeneous to report its own bar -- product lookups that
+      fall in it show the overall estimate instead.
     </div>
     <details>
       <summary>Plain-English glossary (everything the tooltips say, in one place)</summary>
@@ -347,7 +348,7 @@ function renderResult(result) {
       <div class="tile">
         <div class="label">${term("N", "n")}</div>
         <div class="value">${result.n_observations.toLocaleString()}</div>
-        <div class="sub">product-months</div>
+        <div class="sub">SKU-weeks</div>
       </div>
     </div>`;
 

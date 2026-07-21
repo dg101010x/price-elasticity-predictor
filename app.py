@@ -64,13 +64,13 @@ GLOSSARY = {
         "of many reasons people buy."
     ),
     "n": (
-        "Sample size: how many product-month data points went into this "
+        "Sample size: how many weekly per-product data points went into this "
         "estimate. More observations = a more trustworthy number."
     ),
     "typical_price": (
-        "The average price this product actually sold at in the data, filled "
-        "in for you automatically. Change it freely — it only anchors the "
-        "chart, not the elasticity itself."
+        "The typical (median) price this product actually sold at in the data, "
+        "filled in for you automatically. Change it freely — it only anchors "
+        "the chart, not the elasticity itself."
     ),
 }
 
@@ -410,7 +410,7 @@ with col_result:
   <div class="tile">
     <div class="label"><span class="tip" data-tip="{GLOSSARY['n']}">N</span></div>
     <div class="value">{result['n_observations']:,}</div>
-    <div class="sub">product-months</div>
+    <div class="sub">SKU-weeks</div>
   </div>
 </div>"""
         st.markdown(tiles, unsafe_allow_html=True)
@@ -477,8 +477,9 @@ if category_estimates:
     )
     st.caption(
         "Top 10 most negative and top 10 least negative/positive of the reported categories. "
-        "Categories with opaque source codes instead of names (e.g. scanner-data 'PBV') are "
-        "hidden here but still reachable through a product lookup."
+        "The catch-all 'Other/Uncategorized' bucket (products whose description didn't match "
+        "any keyword rule) is too heterogeneous to report its own bar -- product lookups that "
+        "fall in it show the overall estimate instead."
     )
 
 # ---- methodology + glossary ------------------------------------------------
