@@ -8,7 +8,10 @@ Run: uvicorn src.api:app --reload
 from typing import Optional
 
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
+
+from .dashboard import DASHBOARD_HTML
 
 # Stub data for demo (normally loaded from files)
 STUB_ELASTICITY_RESULTS = {
@@ -102,8 +105,13 @@ def _estimate_to_response(estimate: dict, scope: str, price: Optional[float],
     )
 
 
-@app.get("/")
-def root() -> dict:
+@app.get("/", response_class=HTMLResponse)
+def dashboard() -> str:
+    return DASHBOARD_HTML
+
+
+@app.get("/api")
+def api_info() -> dict:
     return {
         "name": "Price Elasticity Predictor API",
         "endpoints": ["/elasticity", "/categories", "/methodology", "/health", "/products"],
