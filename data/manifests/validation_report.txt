@@ -1,0 +1,59 @@
+DATA VALIDATION REPORT
+============================================================
+
+Downloaded and profiled: 2
+Requires manual action: 9
+
+--- scanner_data.csv ---
+source: https://archive.ics.uci.edu/dataset/502/online+retail+ii
+rows: 1,067,371   columns: 8
+date_range: 2009-12-01 to 2011-12-09
+data_type: transaction
+key_elasticity_columns: InvoiceDate,Quantity,Price,StockCode,Customer ID
+notes: 5305 unique SKUs, 5942 unique customers, 43 countries. 6207 rows with Price<=0 and 22950 rows with negative Quantity (returns) -- filter both before fitting elasticity.
+
+--- monash_dominicks.csv ---
+source: https://zenodo.org/records/4654802
+rows: 19,092,987   columns: 3
+date_range: relative week 0-392 per series, no calendar dates
+data_type: weekly
+key_elasticity_columns: SKU_ID,Week_Index,Weekly_Profit
+notes: 115704 unique series. 9366843 of 19092987 rows are zero-profit weeks (no sale that week, not missing data).
+
+REQUIRES MANUAL ACTION
+------------------------------------------------------------
+--- scanner_data_kaggle.csv ---
+source: https://www.kaggle.com/datasets/marian447/retail-scanner-data
+why blocked: Kaggle API returned 403 (unauthenticated). Configure ~/.kaggle/kaggle.json, then run `python -m src.data_loader`.
+
+--- retail_transactions.csv ---
+source: https://www.kaggle.com/datasets/prasad22/retail-transactions-dataset
+why blocked: Kaggle API returned 403 (unauthenticated). Configure ~/.kaggle/kaggle.json, then run `python -m src.data_loader`.
+
+--- retail_price_dataset.csv ---
+source: https://www.kaggle.com/datasets/saibattula/retail-price-dataset-sales-data
+why blocked: Kaggle API returned 403 (unauthenticated). Configure ~/.kaggle/kaggle.json, then run `python -m src.data_loader`.
+
+--- retail_store_transactions.csv ---
+source: https://www.kaggle.com/datasets/marian447/retail-store-sales-transactions
+why blocked: Kaggle API returned 403 (unauthenticated). Configure ~/.kaggle/kaggle.json, then run `python -m src.data_loader`.
+
+--- dominicks_combined.csv ---
+source: https://www.chicagobooth.edu/research/kilts/datasets/dominicks
+why blocked: Register at the Kilts Center URL above, download SAS/CSV extracts, place in data/csv/.
+
+--- walmart_sales_weekly.csv ---
+source: https://www.kaggle.com/c/competitive-data-science-predict-future-sales
+why blocked: Kaggle competition dataset -- requires competition-join + Kaggle auth (see download_kaggle_dataset).
+
+--- efood_elasticities.csv ---
+source: https://doi.org/10.7910/DVN/OXZ0H6
+why blocked: dataverse.harvard.edu is behind a WAF bot-challenge that blocks non-browser requests (confirmed: direct HTTPS GET returns a challenge page, not data). Download manually via the DOI link in a browser.
+
+--- cheese.csv ---
+source: (no verifiable public source found)
+why blocked: Extract the cheese category from a registered Kilts Center Dominick's download, if/when available.
+
+--- competition_data.csv ---
+source: (no concrete source given in task spec)
+why blocked: No resolvable URL was provided for this dataset; needs a specific source before it can be fetched.

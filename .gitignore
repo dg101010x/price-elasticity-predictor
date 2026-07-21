@@ -7,3 +7,13 @@ venv/
 .DS_Store
 .vercel
 .env*
+
+# Raw/converted datasets are large (100s of MB) and regenerable via
+# src/data_loader.py -- keep them out of git so they don't bloat the repo
+# or blow Vercel's deployment size limit.
+data/csv/*.csv
+data/raw_downloads/
+data/processed/*.csv
+!data/csv/.gitkeep
+# Manifests are small and worth tracking.
+!data/manifests/
