@@ -6,6 +6,7 @@ Run (with the API already running on API_BASE_URL, default localhost:8000):
 """
 
 import os
+from typing import Optional
 
 import numpy as np
 import pandas as pd
@@ -186,7 +187,7 @@ def fetch_categories() -> dict:
 
 
 @st.cache_data(ttl=300)
-def fetch_products(category: str | None) -> list[dict]:
+def fetch_products(category: Optional[str]) -> list:
     params = {"category": category} if category else {}
     r = requests.get(f"{API_BASE_URL}/products", params=params, timeout=15)
     r.raise_for_status()
@@ -200,7 +201,7 @@ def fetch_methodology() -> dict:
     return r.json()
 
 
-def fetch_elasticity(category: str | None, product_id: str | None, price: float | None) -> dict:
+def fetch_elasticity(category: Optional[str], product_id: Optional[str], price: Optional[float]) -> dict:
     params = {}
     if category:
         params["category"] = category
@@ -228,7 +229,7 @@ def _dark_layout(fig: go.Figure, height: int) -> go.Figure:
     return fig
 
 
-def demand_curve_figure(elasticity: float, price: float | None, symbol: str) -> go.Figure:
+def demand_curve_figure(elasticity: float, price: Optional[float], symbol: str) -> go.Figure:
     multipliers = np.linspace(0.5, 1.5, 100)
     quantity_index = multipliers ** elasticity
 
@@ -256,7 +257,7 @@ def demand_curve_figure(elasticity: float, price: float | None, symbol: str) -> 
     return _dark_layout(fig, 340)
 
 
-def category_comparison_figure(categories: list[dict], highlight: str | None) -> go.Figure:
+def category_comparison_figure(categories: list, highlight: Optional[str]) -> go.Figure:
     df = pd.DataFrame(categories).sort_values("elasticity")
     top = pd.concat([df.head(10), df.tail(10)]).drop_duplicates(subset="category")
     colors = [RED if v > 0 else BLUE for v in top["elasticity"]]
@@ -454,7 +455,7 @@ st.markdown(
 
 
 @st.cache_data(ttl=60)
-def fetch_all_category_estimates(names: tuple) -> list[dict]:
+def fetch_all_category_estimates(names: tuple) -> list:
     out = []
     for name in names:
         try:

@@ -5,11 +5,8 @@ once at startup (a precomputed artifact).
 Run: uvicorn src.api:app --reload
 """
 
-import json
-from pathlib import Path
 from typing import Optional
 
-import pandas as pd
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
