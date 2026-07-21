@@ -1,0 +1,161 @@
+{
+  "overall": {
+    "elasticity": -1.902,
+    "std_error": 0.007,
+    "ci_low": -1.916,
+    "ci_high": -1.887,
+    "r_squared": 0.253,
+    "n_observations": 194489,
+    "n_skus": 4334,
+    "interpretation": "elastic (quantity responds more than proportionally to price)",
+    "pct_quantity_change_for_10pct_price_increase": -16.6
+  },
+  "by_category": [
+    {
+      "elasticity": -2.467,
+      "std_error": 0.098,
+      "ci_low": -2.66,
+      "ci_high": -2.275,
+      "r_squared": 0.294,
+      "n_observations": 1546,
+      "n_skus": 28,
+      "interpretation": "elastic (quantity responds more than proportionally to price)",
+      "pct_quantity_change_for_10pct_price_increase": -21.0,
+      "category": "Bath & Body"
+    },
+    {
+      "elasticity": -2.416,
+      "std_error": 0.08,
+      "ci_low": -2.572,
+      "ci_high": -2.259,
+      "r_squared": 0.212,
+      "n_observations": 3455,
+      "n_skus": 64,
+      "interpretation": "elastic (quantity responds more than proportionally to price)",
+      "pct_quantity_change_for_10pct_price_increase": -20.6,
+      "category": "Toys & Games"
+    },
+    {
+      "elasticity": -2.248,
+      "std_error": 0.025,
+      "ci_low": -2.298,
+      "ci_high": -2.199,
+      "r_squared": 0.3,
+      "n_observations": 18986,
+      "n_skus": 342,
+      "interpretation": "elastic (quantity responds more than proportionally to price)",
+      "pct_quantity_change_for_10pct_price_increase": -19.3,
+      "category": "Stationery & Cards"
+    },
+    {
+      "elasticity": -2.212,
+      "std_error": 0.068,
+      "ci_low": -2.345,
+      "ci_high": -2.08,
+      "r_squared": 0.238,
+      "n_observations": 3509,
+      "n_skus": 71,
+      "interpretation": "elastic (quantity responds more than proportionally to price)",
+      "pct_quantity_change_for_10pct_price_increase": -19.0,
+      "category": "Garden & Outdoor"
+    },
+    {
+      "elasticity": -2.202,
+      "std_error": 0.048,
+      "ci_low": -2.296,
+      "ci_high": -2.107,
+      "r_squared": 0.24,
+      "n_observations": 6815,
+      "n_skus": 219,
+      "interpretation": "elastic (quantity responds more than proportionally to price)",
+      "pct_quantity_change_for_10pct_price_increase": -18.9,
+      "category": "Christmas & Seasonal"
+    },
+    {
+      "elasticity": -2.042,
+      "std_error": 0.05,
+      "ci_low": -2.14,
+      "ci_high": -1.944,
+      "r_squared": 0.269,
+      "n_observations": 4609,
+      "n_skus": 84,
+      "interpretation": "elastic (quantity responds more than proportionally to price)",
+      "pct_quantity_change_for_10pct_price_increase": -17.7,
+      "category": "Signs & Wall Art"
+    },
+    {
+      "elasticity": -1.894,
+      "std_error": 0.029,
+      "ci_low": -1.95,
+      "ci_high": -1.837,
+      "r_squared": 0.232,
+      "n_observations": 14518,
+      "n_skus": 269,
+      "interpretation": "elastic (quantity responds more than proportionally to price)",
+      "pct_quantity_change_for_10pct_price_increase": -16.5,
+      "category": "Bags & Storage"
+    },
+    {
+      "elasticity": -1.889,
+      "std_error": 0.018,
+      "ci_low": -1.923,
+      "ci_high": -1.855,
+      "r_squared": 0.285,
+      "n_observations": 29845,
+      "n_skus": 730,
+      "interpretation": "elastic (quantity responds more than proportionally to price)",
+      "pct_quantity_change_for_10pct_price_increase": -16.5,
+      "category": "Home Decor & Lighting"
+    },
+    {
+      "elasticity": -1.865,
+      "std_error": 0.02,
+      "ci_low": -1.905,
+      "ci_high": -1.826,
+      "r_squared": 0.268,
+      "n_observations": 23605,
+      "n_skus": 430,
+      "interpretation": "elastic (quantity responds more than proportionally to price)",
+      "pct_quantity_change_for_10pct_price_increase": -16.3,
+      "category": "Kitchen & Dining"
+    },
+    {
+      "elasticity": -1.75,
+      "std_error": 0.047,
+      "ci_low": -1.843,
+      "ci_high": -1.658,
+      "r_squared": 0.257,
+      "n_observations": 4087,
+      "n_skus": 107,
+      "interpretation": "elastic (quantity responds more than proportionally to price)",
+      "pct_quantity_change_for_10pct_price_increase": -15.4,
+      "category": "Textiles & Bedding"
+    },
+    {
+      "elasticity": -1.107,
+      "std_error": 0.043,
+      "ci_low": -1.191,
+      "ci_high": -1.022,
+      "r_squared": 0.093,
+      "n_observations": 6735,
+      "n_skus": 303,
+      "interpretation": "elastic (quantity responds more than proportionally to price)",
+      "pct_quantity_change_for_10pct_price_increase": -10.0,
+      "category": "Jewelry & Accessories"
+    }
+  ],
+  "excluded_categories": [
+    {
+      "category": "Other/Uncategorized",
+      "reason": "catch-all bucket for descriptions that matched none of the keyword rules -- too heterogeneous to report as a single category"
+    }
+  ],
+  "methodology": {
+    "method": "within-SKU (fixed-effects) log-log panel regression, weekly aggregation",
+    "source_dataset": "UCI Online Retail II (archive.ics.uci.edu/dataset/502)",
+    "category_assignment": "keyword rules on free-text Description (dataset has no official category field) -- see CATEGORY_RULES in src/build_elasticity_model.py",
+    "cleaning": "dropped cancelled invoices (Invoice starting 'C'), non-product StockCodes (postage/fees/adjustments/gift vouchers), Quantity<=0, Price outside (0.01, 500), and junk/damage-note Descriptions",
+    "exclusion_thresholds": ">= 500 SKU-week observations and >= 15 distinct SKUs required to report a category",
+    "note": "Descriptive association from observational data, not a causal effect -- price is not randomly assigned in the underlying dataset."
+  }
+}

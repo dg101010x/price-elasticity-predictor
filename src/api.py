@@ -1,10 +1,15 @@
 """
 FastAPI layer serving the elasticity estimates. Loads elasticity_results.json
-once at startup (a precomputed artifact).
+and products.json once at startup -- precomputed artifacts built by
+src/build_elasticity_model.py from data/csv/scanner_data.csv (see that file
+for methodology). Falls back to the stub figures below only if those
+artifacts are missing.
 
 Run: uvicorn src.api:app --reload
 """
 
+import json
+from pathlib import Path
 from typing import Optional
 
 from fastapi import FastAPI, HTTPException
@@ -13,7 +18,17 @@ from pydantic import BaseModel
 
 from .dashboard import DASHBOARD_HTML
 
-# Stub data for demo (normally loaded from files)
+_DATA_DIR = Path(__file__).resolve().parent.parent / "data" / "processed"
+
+
+def _load_json(filename: str):
+    path = _DATA_DIR / filename
+    if path.exists():
+        return json.loads(path.read_text())
+    return None
+
+
+# Stub data for demo (used only if the precomputed artifacts aren't present)
 STUB_ELASTICITY_RESULTS = {
     "overall": {
         "elasticity": -0.743,
@@ -59,6 +74,11 @@ STUB_PRODUCTS = [
     {"product_id": "21212", "product_name": "PACK OF 72 RETROSPOT CAKE CASES", "category": "Kitchen & Dining", "currency": "GBP", "typical_price": 0.71},
     {"product_id": "20725", "product_name": "LUNCH BAG RED RETROSPOT", "category": "Kitchen & Dining", "currency": "GBP", "typical_price": 2.05},
 ]
+
+_loaded_elasticity = _load_json("elasticity_results.json")
+ELASTICITY_RESULTS = _loaded_elasticity or STUB_ELASTICITY_RESULTS
+PRODUCTS = _load_json("products.json") or STUB_PRODUCTS
+USING_STUB_DATA = _loaded_elasticity is None
 
 app = FastAPI(
     title="Price Elasticity Predictor API",
@@ -121,27 +141,27 @@ def api_info() -> dict:
 
 @app.get("/health")
 def health() -> dict:
-    return {"status": "ok"}
+    return {"status": "ok", "using_stub_data": USING_STUB_DATA}
 
 
 @app.get("/methodology")
 def methodology() -> dict:
-    return STUB_ELASTICITY_RESULTS["methodology"]
+    return ELASTICITY_RESULTS["methodology"]
 
 
 @app.get("/categories")
 def list_categories() -> dict:
-    by_cat = {r["category"]: r for r in STUB_ELASTICITY_RESULTS["by_category"]}
+    by_cat = {r["category"]: r for r in ELASTICITY_RESULTS["by_category"]}
     return {
         "reported": sorted(by_cat.keys()),
-        "excluded": STUB_ELASTICITY_RESULTS["excluded_categories"],
+        "excluded": ELASTICITY_RESULTS["excluded_categories"],
     }
 
 
 @app.get("/products")
 def list_products(category: Optional[str] = None, limit: int = 500) -> dict:
     """Browsable product directory with typical prices for auto-fill."""
-    products = STUB_PRODUCTS
+    products = PRODUCTS
     if category is not None:
         products = [p for p in products if p["category"] == category]
     return {"count": len(products), "products": products[:limit]}
@@ -157,13 +177,13 @@ def get_elasticity(
     if price is not None and price <= 0:
         raise HTTPException(status_code=422, detail="price must be positive")
 
-    by_category = {r["category"]: r for r in STUB_ELASTICITY_RESULTS["by_category"]}
+    by_category = {r["category"]: r for r in ELASTICITY_RESULTS["by_category"]}
 
     if category is None and product_id is None:
-        return _estimate_to_response(STUB_ELASTICITY_RESULTS["overall"], scope="overall", price=price)
+        return _estimate_to_response(ELASTICITY_RESULTS["overall"], scope="overall", price=price)
 
     if category is None and product_id is not None:
-        product = next((p for p in STUB_PRODUCTS if p["product_id"] == product_id), None)
+        product = next((p for p in PRODUCTS if p["product_id"] == product_id), None)
         if product is None:
             raise HTTPException(status_code=404, detail=f"product_id '{product_id}' not found")
         category = product["category"]
