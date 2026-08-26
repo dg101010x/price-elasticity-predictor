@@ -1,8 +1,10 @@
 DATA VALIDATION REPORT
 ============================================================
 
-Downloaded and profiled: 2
-Requires manual action: 9
+Downloaded and profiled: 26
+Requires manual action: 11
+Unreachable from this machine: 0
+Total rows across profiled files: 42,886,562
 
 --- scanner_data.csv ---
 source: https://archive.ics.uci.edu/dataset/502/online+retail+ii
@@ -10,7 +12,7 @@ rows: 1,067,371   columns: 8
 date_range: 2009-12-01 to 2011-12-09
 data_type: transaction
 key_elasticity_columns: InvoiceDate,Quantity,Price,StockCode,Customer ID
-notes: 5305 unique SKUs, 5942 unique customers, 43 countries. 6207 rows with Price<=0 and 22950 rows with negative Quantity (returns) -- filter both before fitting elasticity.
+notes: 5305 unique SKUs, 5942 unique customers, 43 countries. 6207 rows with Price<=0 and 22950 rows with negative Quantity (returns) -- filter both before fitting elasticity. | carried over from an earlier run: the file is not in data/csv on this machine, so these numbers were not re-measured.
 
 --- monash_dominicks.csv ---
 source: https://zenodo.org/records/4654802
@@ -18,7 +20,199 @@ rows: 19,092,987   columns: 3
 date_range: relative week 0-392 per series, no calendar dates
 data_type: weekly
 key_elasticity_columns: SKU_ID,Week_Index,Weekly_Profit
-notes: 115704 unique series. 9366843 of 19092987 rows are zero-profit weeks (no sale that week, not missing data).
+notes: 115704 unique series. 9366843 of 19092987 rows are zero-profit weeks (no sale that week, not missing data). | carried over from an earlier run: the file is not in data/csv on this machine, so these numbers were not re-measured.
+
+--- completejourney_transactions.csv ---
+source: https://raw.githubusercontent.com/bradleyboehmke/completejourney/master/data/transactions.rds
+rows: 1,469,307   columns: 11
+date_range: 2017-01-01 to 2018-01-01
+data_type: transaction
+key_elasticity_columns: transaction_timestamp,week,household_id,store_id,product_id,quantity,sales_value,retail_disc,coupon_disc,coupon_match_disc
+notes: Source: 84.51 degrees 'The Complete Journey', redistributed as R data files by the completejourney package (transactions.rds). 2469 households, 68509 products, 457 stores. 736369 of 1469307 rows carry a retail discount -- that is the within-product price variation elasticity is identified from. 8869 rows have quantity<=0 and 8869 give no usable unit price; filter both. Shelf price = (sales_value + retail_disc + coupon_disc + coupon_match_disc) / quantity.
+
+--- completejourney_products.csv ---
+source: https://raw.githubusercontent.com/bradleyboehmke/completejourney/master/data/products.rda
+rows: 92,331   columns: 7
+date_range: 
+data_type: dimension
+key_elasticity_columns: product_id,department,product_category,product_type,brand
+notes: Source: 84.51 degrees 'The Complete Journey', redistributed as R data files by the completejourney package (products.rda).
+
+--- completejourney_promotions.csv ---
+source: https://raw.githubusercontent.com/bradleyboehmke/completejourney/master/data/promotions.rds
+rows: 20,940,529   columns: 5
+date_range: week 1 to 53
+data_type: weekly
+key_elasticity_columns: product_id,store_id,week,display_location,mailer_location
+notes: Source: 84.51 degrees 'The Complete Journey', redistributed as R data files by the completejourney package (promotions.rds).
+
+--- dominicks_oj.csv ---
+source: https://raw.githubusercontent.com/gchoi/Dataset/master/oj.csv
+rows: 28,947   columns: 17
+date_range: week 40 to 160
+data_type: weekly
+key_elasticity_columns: store,brand,week,logmove,price,feat
+notes: 83 stores x 3 brands x 121 weeks. Units sold = exp(logmove). 6868 of 28947 store-weeks were featured.
+
+--- olist_order_items.csv ---
+source: https://github.com/olist/work-at-olist-data
+rows: 112,650   columns: 9
+date_range: 2016-09-04 to 2018-09-03
+data_type: transaction
+key_elasticity_columns: order_purchase_timestamp,product_id,product_category,price,freight_value,order_status
+notes: 32951 products across 73 categories; 1603 rows have no category. One row per unit sold (order_item_id enumerates units), so group by (product_id, week) for units. Prices are BRL and exclude freight.
+
+--- cigarettes_state_panel.csv ---
+source: https://vincentarelbundock.github.io/Rdatasets/doc/Ecdat/Cigar.html
+rows: 1,380   columns: 9
+date_range: year 63 to 92
+data_type: weekly
+key_elasticity_columns: state,year,price,sales,ndi,cpi,pop,pimin
+notes: Rdatasets CSV mirror of R package `Ecdat`, dataset `Cigar`; the archive's row-index column is dropped.
+
+--- cigarettes_sw_panel.csv ---
+source: https://vincentarelbundock.github.io/Rdatasets/doc/AER/CigarettesSW.html
+rows: 96   columns: 9
+date_range: year 1985 to 1995
+data_type: weekly
+key_elasticity_columns: state,year,packs,price,income,tax,taxs,cpi
+notes: Rdatasets CSV mirror of R package `AER`, dataset `CigarettesSW`; the archive's row-index column is dropped.
+
+--- journals_subscriptions.csv ---
+source: https://vincentarelbundock.github.io/Rdatasets/doc/AER/Journals.html
+rows: 180   columns: 10
+date_range: 
+data_type: aggregated
+key_elasticity_columns: subs,price,citations,pages,foundingyear
+notes: Rdatasets CSV mirror of R package `AER`, dataset `Journals`; the archive's row-index column is dropped.
+
+--- fulton_fish_market.csv ---
+source: https://vincentarelbundock.github.io/Rdatasets/doc/wooldridge/fish.html
+rows: 97   columns: 20
+date_range: 
+data_type: transaction
+key_elasticity_columns: avgprc,totqty,lavgprc,ltotqty,wave2,speed2,mon,tues,wed,thurs
+notes: Rdatasets CSV mirror of R package `wooldridge`, dataset `fish`; the archive's row-index column is dropped.
+
+--- avocado_weekly.csv ---
+source: https://vincentarelbundock.github.io/Rdatasets/doc/causaldata/avocado.html
+rows: 169   columns: 3
+date_range: 2015-01-04 to 2018-03-25
+data_type: weekly
+key_elasticity_columns: Date,AveragePrice,TotalVolume
+notes: Rdatasets CSV mirror of R package `causaldata`, dataset `avocado`; the archive's row-index column is dropped.
+
+--- icecream_demand.csv ---
+source: https://vincentarelbundock.github.io/Rdatasets/doc/Ecdat/Icecream.html
+rows: 30   columns: 4
+date_range: 
+data_type: weekly
+key_elasticity_columns: cons,price,income,temp
+notes: Rdatasets CSV mirror of R package `Ecdat`, dataset `Icecream`; the archive's row-index column is dropped.
+
+--- gasoline_oecd_panel.csv ---
+source: https://vincentarelbundock.github.io/Rdatasets/doc/AER/OECDGas.html
+rows: 342   columns: 6
+date_range: year 1960 to 1978
+data_type: weekly
+key_elasticity_columns: country,year,gas,price,income,cars
+notes: Rdatasets CSV mirror of R package `AER`, dataset `OECDGas`; the archive's row-index column is dropped.
+
+--- gasoline_us_substitutes.csv ---
+source: https://vincentarelbundock.github.io/Rdatasets/doc/AER/USGasG.html
+rows: 36   columns: 10
+date_range: 
+data_type: weekly
+key_elasticity_columns: gas,price,income,newcar,usedcar,transport,population
+notes: Rdatasets CSV mirror of R package `AER`, dataset `USGasG`; the archive's row-index column is dropped.
+
+--- natural_gas_us_panel.csv ---
+source: https://vincentarelbundock.github.io/Rdatasets/doc/AER/NaturalGas.html
+rows: 138   columns: 10
+date_range: year 1967 to 1989
+data_type: weekly
+key_elasticity_columns: state,year,consumption,price,eprice,oprice,lprice,heating,income
+notes: Rdatasets CSV mirror of R package `AER`, dataset `NaturalGas`; the archive's row-index column is dropped.
+
+--- budget_shares_italy.csv ---
+source: https://vincentarelbundock.github.io/Rdatasets/doc/Ecdat/BudgetItaly.html
+rows: 1,729   columns: 11
+date_range: year 73 to 92
+data_type: aggregated
+key_elasticity_columns: wfood,whouse,wmisc,pfood,phouse,pmisc,totexp,income,size,year
+notes: Rdatasets CSV mirror of R package `Ecdat`, dataset `BudgetItaly`; the archive's row-index column is dropped.
+
+--- carseats_competitor_price.csv ---
+source: https://vincentarelbundock.github.io/Rdatasets/doc/ISLR/Carseats.html
+rows: 400   columns: 11
+date_range: 
+data_type: aggregated
+key_elasticity_columns: Sales,Price,CompPrice,Advertising,Income,ShelveLoc,Urban,US
+notes: Rdatasets CSV mirror of R package `ISLR`, dataset `Carseats`; the archive's row-index column is dropped.
+
+--- grocery_promo_experiment.csv ---
+source: https://vincentarelbundock.github.io/Rdatasets/doc/Stat2Data/Grocery.html
+rows: 36   columns: 5
+date_range: 
+data_type: weekly
+key_elasticity_columns: Sales,Price,Discount,Display,Store
+notes: Rdatasets CSV mirror of R package `Stat2Data`, dataset `Grocery`; the archive's row-index column is dropped.
+
+--- pizza_pos_sales.csv ---
+source: https://vincentarelbundock.github.io/Rdatasets/doc/gt/pizzaplace.html
+rows: 49,574   columns: 7
+date_range: 2015-01-01 to 2015-12-31
+data_type: transaction
+key_elasticity_columns: date,time,name,size,type,price
+notes: Rdatasets CSV mirror of R package `gt`, dataset `pizzaplace`; the archive's row-index column is dropped.
+
+--- brandchoice_crackers.csv ---
+source: https://vincentarelbundock.github.io/Rdatasets/doc/Ecdat/Cracker.html
+rows: 3,292   columns: 14
+date_range: 
+data_type: transaction
+key_elasticity_columns: id,choice,price.sunshine,price.kleebler,price.nabisco,price.private,disp.*,feat.*
+notes: Rdatasets CSV mirror of R package `Ecdat`, dataset `Cracker`; the archive's row-index column is dropped.
+
+--- brandchoice_yogurt.csv ---
+source: https://vincentarelbundock.github.io/Rdatasets/doc/Ecdat/Yogurt.html
+rows: 2,412   columns: 10
+date_range: 
+data_type: transaction
+key_elasticity_columns: id,choice,price.yoplait,price.dannon,price.hiland,price.weight,feat.*
+notes: Rdatasets CSV mirror of R package `Ecdat`, dataset `Yogurt`; the archive's row-index column is dropped.
+
+--- brandchoice_catsup.csv ---
+source: https://vincentarelbundock.github.io/Rdatasets/doc/Ecdat/Catsup.html
+rows: 2,798   columns: 14
+date_range: 
+data_type: transaction
+key_elasticity_columns: id,choice,price.heinz41,price.heinz32,price.heinz28,price.hunts32,disp.*,feat.*
+notes: Rdatasets CSV mirror of R package `Ecdat`, dataset `Catsup`; the archive's row-index column is dropped.
+
+--- brandchoice_ketchup.csv ---
+source: https://vincentarelbundock.github.io/Rdatasets/doc/Ecdat/Ketchup.html
+rows: 4,956   columns: 7
+date_range: 
+data_type: transaction
+key_elasticity_columns: Ketchup.hid,Ketchup.choice,price.heinz,price.hunts,price.delmonte,price.stb
+notes: Rdatasets CSV mirror of R package `Ecdat`, dataset `Ketchup`; the archive's row-index column is dropped.
+
+--- brandchoice_tuna.csv ---
+source: https://vincentarelbundock.github.io/Rdatasets/doc/Ecdat/Tuna.html
+rows: 13,705   columns: 8
+date_range: 
+data_type: transaction
+key_elasticity_columns: Tuna.hid,Tuna.choice,price.skw,price.cosw,price.sko,price.coso,price.pw
+notes: Rdatasets CSV mirror of R package `Ecdat`, dataset `Tuna`; the archive's row-index column is dropped.
+
+--- oj_brand_choice.csv ---
+source: https://vincentarelbundock.github.io/Rdatasets/doc/ISLR/OJ.html
+rows: 1,070   columns: 18
+date_range: WeekofPurchase 227 to 278
+data_type: transaction
+key_elasticity_columns: Purchase,WeekofPurchase,StoreID,PriceCH,PriceMM,DiscCH,DiscMM,SalePriceCH,SalePriceMM,PriceDiff,LoyalCH
+notes: Rdatasets CSV mirror of R package `ISLR`, dataset `OJ`; the archive's row-index column is dropped.
 
 REQUIRES MANUAL ACTION
 ------------------------------------------------------------
@@ -53,6 +247,14 @@ why blocked: dataverse.harvard.edu is behind a WAF bot-challenge that blocks non
 --- cheese.csv ---
 source: (no verifiable public source found)
 why blocked: Extract the cheese category from a registered Kilts Center Dominick's download, if/when available.
+
+--- tafeng_transactions.csv ---
+source: https://www.kaggle.com/datasets/chiranjivdas09/ta-feng-grocery-dataset
+why blocked: Searched for a redistributable copy: the original NTU/ACM host is gone and the surviving copies are on Kaggle or behind RecSysWiki links, so it needs Kaggle auth (see download_kaggle_dataset) or a manual download.
+
+--- m5_sell_prices.csv ---
+source: https://www.kaggle.com/competitions/m5-forecasting-accuracy/data
+why blocked: Kaggle competition data: requires accepting the competition rules plus Kaggle auth. sell_prices.csv is ~200 MB, over GitHub's 100 MB file limit, so no raw-file mirror exists to fall back on.
 
 --- competition_data.csv ---
 source: (no concrete source given in task spec)
