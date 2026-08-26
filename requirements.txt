@@ -1,9 +1,17 @@
+# Serving the app (also pinned in pyproject.toml, which is what Vercel builds).
 fastapi==0.115.5
-streamlit==1.40.1
-plotly==5.24.1
+pydantic==2.7.0
+uvicorn==0.30.1
+
+# Rebuilding the data artifacts: src/data_loader.py, src/build_manifest.py,
+# src/build_elasticity_model.py. Not needed to run the site.
 pandas==2.2.0
 numpy==1.26.4
 requests==2.32.3
-uvicorn==0.30.1
-pydantic==2.7.0
 openpyxl==3.1.5
+
+# Tests. tests/test_frontend.py drives a real browser and skips itself when
+# no Chromium is available.
+pytest==8.3.3
+httpx==0.27.2
+playwright==1.49.0
