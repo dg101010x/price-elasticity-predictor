@@ -2,16 +2,11 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "api",
+      "name": "app",
       "runtimeExecutable": "uvicorn",
-      "runtimeArgs": ["src.api:app", "--port", "8000"],
-      "port": 8000
-    },
-    {
-      "name": "dashboard",
-      "runtimeExecutable": "streamlit",
-      "runtimeArgs": ["run", "app.py", "--server.port", "8501"],
-      "port": 8501
+      "runtimeArgs": ["src.api:app", "--port", "8000", "--reload"],
+      "port": 8000,
+      "env": { "PEP_DEV_RELOAD": "1" }
     }
   ]
 }
