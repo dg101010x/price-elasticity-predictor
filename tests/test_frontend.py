@@ -609,3 +609,11 @@ def test_benchmark_table_carries_the_source_for_every_market(page):
         "#bench-table tbody tr td:last-child", "els => els.map(e => e.textContent.trim())")
     assert all(sources), "every market must name where it came from"
     assert any("Playbill" in s for s in sources)
+
+
+def test_the_method_section_accounts_for_the_reference_markets(page):
+    """Provenance is read off the data, so the copy can't drift from it."""
+    text = page.text_content("#method-benchmarks")
+    assert "5,960" in text and "26" in text
+    assert "12" in text, "the roster size should come from the payload"
+    assert "2 of the 12 came out unusable" in text

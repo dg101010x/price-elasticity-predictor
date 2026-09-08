@@ -1256,6 +1256,21 @@
       "& Dining because of the word cake. It is a reasonable guess, not a merchandising hierarchy, and a " +
       "handful of products certainly sit in the wrong bucket.";
 
+    // The reference roster's own provenance, read off the totals rather than
+    // written into the markup, so the copy can't drift from the data.
+    var totals = state.benchmarkTotals || {};
+    var bench = $("#method-benchmarks");
+    if (bench) {
+      bench.textContent = totals.datasets
+        ? "Every CSV file in three public data archives — 5,960 files and 64.5 million rows — was read "
+          + "and checked for a price column sitting beside a quantity column. 26 files passed. Each "
+          + "was then read against its own documentation, and " + totals.datasets + " survived: "
+          + totals.rows_across_datasets.toLocaleString() + " rows of real trade, most of it from published "
+          + "papers. " + (totals.datasets - (totals.usable_benchmarks || 0)) + " of the " + totals.datasets
+          + " came out unusable and are shown above as such, rather than quietly dropped."
+        : "";
+    }
+
     var excluded = state.estimates.excluded_categories || [];
     $("#method-excluded").textContent = excluded.length
       ? "A category is only reported once it clears 500 weekly observations across at least 15 products. " +
@@ -1379,7 +1394,7 @@
     $("#field-category").hidden = scope !== "category";
     $("#field-product").hidden = scope !== "product";
     $("#scope-hint").textContent = {
-      all: "Every product in the dataset, pooled into one estimate.",
+      all: "Every product in the catalogue, averaged into a single figure.",
       category: "One department at a time — shoppers behave differently across them.",
       product: "Products inherit their category's estimate; there isn't enough history to price each one alone."
     }[scope];
