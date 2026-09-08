@@ -353,6 +353,184 @@ def test_api_index_lists_benchmarks():
     assert "/benchmarks" in client.get("/api").json()["endpoints"]
 
 
+# ------------------------------------------------- the second catalogue (2.2) --
+# The M5 Walmart release: 59,181,090 daily store-item records, 2011 to 2016,
+# with the retailer's own category hierarchy rather than a keyword guess.
+
+def test_two_catalogues_are_served():
+    body = client.get("/markets").json()
+    keys = {m["key"] for m in body["markets"]}
+    assert keys == {"uk", "walmart"}
+    assert body["default"] == "uk", "the original catalogue stays the default"
+
+
+def test_the_walmart_catalogue_is_the_bigger_and_more_recent_one():
+    walmart = next(m for m in client.get("/markets").json()["markets"] if m["key"] == "walmart")
+    uk = next(m for m in client.get("/markets").json()["markets"] if m["key"] == "uk")
+
+    assert walmart["scale"]["daily_records"] == 59_181_090
+    assert walmart["scale"]["price_observations"] == 6_841_121
+    assert walmart["observations"] > uk["observations"] * 20
+    assert walmart["currency"] == "USD"
+    assert "2016" in walmart["period"]
+
+
+def test_omitting_the_market_keeps_the_original_behaviour():
+    """Every pre-existing caller passes no market and must see no change."""
+    default = client.get("/estimates").json()
+    explicit = client.get("/estimates?market=uk").json()
+    assert default["overall"] == explicit["overall"]
+    assert [r["category"] for r in default["by_category"]] == \
+           [r["category"] for r in explicit["by_category"]]
+
+
+def test_each_catalogue_has_its_own_categories_and_money():
+    uk = client.get("/catalog?market=uk").json()
+    walmart = client.get("/catalog?market=walmart").json()
+    assert uk["currency"] == "GBP" and walmart["currency"] == "USD"
+    assert set(uk["categories"]) & set(walmart["categories"]) == set(), \
+        "the two catalogues should not share category names"
+    assert set(walmart["categories"]) == {"Foods", "Hobbies", "Household"}
+
+
+def test_walmart_carries_a_second_and_third_hierarchy():
+    body = client.get("/estimates?market=walmart").json()
+    assert len(body["by_department"]) == 7
+    assert len(body["by_state"]) == 3
+    assert {r["category"] for r in body["by_state"]} == {"California", "Texas", "Wisconsin"}
+    # the UK catalogue has no such cuts and must not invent them
+    assert client.get("/estimates").json()["by_department"] == []
+
+
+def test_walmart_departments_are_the_retailers_own_not_inferred():
+    method = client.get("/methodology?market=walmart").json()
+    assert "Not inferred" in method["category_assignment"]
+    uk_method = client.get("/methodology").json()
+    assert "keyword rules" in uk_method["category_assignment"]
+
+
+def test_grocery_is_less_price_sensitive_than_giftware():
+    """A sanity check on the fit, not a coincidence worth ignoring.
+
+    Food and household staples are famously inelastic; discretionary gift and
+    homeware is not. If this ever flips, something upstream has broken.
+    """
+    uk = client.get("/estimates").json()["overall"]["elasticity"]
+    walmart = client.get("/estimates?market=walmart").json()["overall"]["elasticity"]
+    assert walmart > uk, (walmart, uk)
+    assert -1.5 < walmart < 0
+
+
+@pytest.mark.parametrize("path", ["/estimates", "/catalog", "/categories", "/products", "/methodology"])
+def test_an_unknown_market_is_a_404_that_names_the_real_ones(path):
+    r = client.get(f"{path}?market=atlantis")
+    assert r.status_code == 404
+    assert "walmart" in r.json()["detail"]
+
+
+def test_scenario_and_elasticity_resolve_inside_the_chosen_market():
+    body = client.get("/elasticity?market=walmart&category=Foods").json()
+    assert body["scope"] == "Foods"
+    # the same category name does not exist in the UK catalogue
+    assert client.get("/elasticity?category=Foods").status_code == 404
+
+    scenario = client.get(
+        "/scenario?market=walmart&category=Foods&pct_price_change=10&price=4"
+    ).json()
+    assert scenario["scope"] == "Foods"
+    assert scenario["elasticity"] == body["elasticity"]
+
+
+def test_api_index_lists_markets():
+    assert "/markets" in client.get("/api").json()["endpoints"]
+
+
+# ------------------------------------------------------- blending the two --
+# The two catalogues share no match key, so the operation is a UNION ALL, not
+# a join. See src/build_blended_catalogue.py for why, and why the pooled
+# figure is random-effects rather than fixed.
+
+def test_the_blend_is_a_union_not_a_join():
+    body = client.get("/blended").json()
+    assert body["operation"] == "concatenation (UNION ALL)"
+    assert "share no match key" in body["why_not_a_join"]
+
+    uk = {r["group"] for r in body["rows"] if r["market"] == "uk"}
+    walmart = {r["group"] for r in body["rows"] if r["market"] == "walmart"}
+    assert uk and walmart
+    assert uk & walmart == set(), (
+        "if the two catalogues shared a group name, a join would have been possible")
+
+
+def test_the_union_keeps_every_row_from_both_sides():
+    body = client.get("/blended").json()
+    uk_reported = len(client.get("/estimates").json()["by_category"])
+    wm = client.get("/estimates?market=walmart").json()
+    wm_reported = (len(wm["by_category"]) + len(wm["by_department"]) + len(wm["by_state"]))
+    assert body["totals"]["rows"] == uk_reported + wm_reported
+
+
+def test_only_comparable_levels_are_pooled():
+    """Walmart aisles nest inside its categories and states cut across both.
+
+    Pooling all three levels together would count the same weeks up to three
+    times, so the pooled figure uses one level per market.
+    """
+    body = client.get("/blended").json()
+    assert body["totals"]["comparable_groups"] < body["totals"]["rows"]
+    assert body["pooled"]["groups_pooled"] == body["totals"]["comparable_groups"]
+
+
+def test_random_effects_is_the_headline_and_differs_from_fixed():
+    """Fixed-effect weighting hands the answer to whichever side is bigger.
+
+    Walmart brings twenty times the observations, so its inverse variances
+    dominate and the fixed-effect figure lands on top of it. Random effects
+    adds the between-market variance and gives the smaller catalogue a voice.
+    """
+    pooled = client.get("/blended").json()["pooled"]
+    assert pooled["headline"] == "random_effects"
+
+    fixed = pooled["fixed_effect"]["elasticity"]
+    random = pooled["random_effects"]["elasticity"]
+    walmart = client.get("/estimates?market=walmart").json()["overall"]["elasticity"]
+    uk = client.get("/estimates").json()["overall"]["elasticity"]
+
+    assert abs(fixed - walmart) < abs(random - walmart), \
+        "the fixed-effect figure should sit closer to the larger catalogue"
+    assert uk < random < walmart, "the pooled figure should sit between the two markets"
+
+
+def test_the_two_catalogues_are_reported_as_disagreeing():
+    """I squared this high means a single pooled number is a midpoint.
+
+    Saying so is the point of the blend, not a footnote to it.
+    """
+    h = client.get("/blended").json()["pooled"]["heterogeneity"]
+    assert h["i_squared_pct"] > 75
+    assert h["tau_squared"] > 0
+    assert h["degrees_of_freedom"] == client.get("/blended").json()["pooled"]["groups_pooled"] - 1
+    assert "midpoint" in h["reading"]
+
+
+def test_every_union_row_says_which_side_it_came_from():
+    for row in client.get("/blended").json()["rows"]:
+        assert row["market"] in {"uk", "walmart"}
+        assert row["currency"] in {"GBP", "USD"}
+        assert row["level"] in {"department", "category", "aisle", "state"}
+        assert row["ci_low"] <= row["elasticity"] <= row["ci_high"]
+
+
+def test_the_blend_rides_along_on_estimates():
+    blend = client.get("/estimates").json()["blended"]
+    assert len(blend["rows"]) == client.get("/blended").json()["totals"]["comparable_groups"]
+    assert blend["pooled"]["random_effects"]["elasticity"]
+
+
+def test_api_index_lists_blended():
+    assert "/blended" in client.get("/api").json()["endpoints"]
+
+
 # ------------------------------------------------------------ house style --
 
 EM_DASH = "—"

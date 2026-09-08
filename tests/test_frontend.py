@@ -383,11 +383,21 @@ def test_combobox_exposes_the_full_aria_contract(page):
     assert page.get_attribute("#product-listbox", "role") == "listbox"
 
 
-def test_scope_control_is_a_real_radiogroup(page):
+def test_every_radiogroup_has_exactly_one_selection(page):
+    """The page carries several: scope, catalogue, and the comparison span."""
     assert page.get_attribute(".segmented", "role") == "radiogroup"
-    checked = page.eval_on_selector_all(
-        ".segmented button", "els => els.map(e => e.getAttribute('aria-checked'))")
-    assert checked.count("true") == 1
+
+    groups = page.eval_on_selector_all(
+        "[role='radiogroup']",
+        "els => els.map(e => ({"
+        "  label: e.getAttribute('aria-label') || e.id,"
+        "  checked: [...e.querySelectorAll('[role=radio]')]"
+        "    .map(r => r.getAttribute('aria-checked'))"
+        "}))"
+    )
+    assert len(groups) >= 3, groups
+    for group in groups:
+        assert group["checked"].count("true") == 1, group
 
 
 def test_every_form_control_has_a_label(page):
@@ -617,3 +627,71 @@ def test_the_method_section_accounts_for_the_reference_markets(page):
     assert "5,960" in text and "26" in text
     assert "12" in text, "the roster size should come from the payload"
     assert "2 more" in text and "labelled" in text
+
+
+# ---------------------------------------------- two catalogues, and the blend --
+
+def test_the_catalogue_picker_offers_both_shops(page):
+    names = page.eval_on_selector_all(
+        ".market-option .market-name", "els => els.map(e => e.textContent)")
+    assert len(names) == 2
+    assert any("Walmart" in n for n in names)
+    checked = page.eval_on_selector_all(
+        ".market-option", "els => els.map(e => e.getAttribute('aria-checked'))")
+    assert checked.count("true") == 1
+
+
+def test_switching_catalogue_changes_the_money_and_the_departments(page):
+    assert page.text_content("#price-symbol") == "£"
+    page.click('.market-option[data-market="walmart"]')
+    page.wait_for_function(
+        "() => document.querySelector('#price-symbol').textContent === '$'", timeout=8000)
+
+    options = page.eval_on_selector_all(
+        "#category-select option", "els => els.map(e => e.textContent)")
+    assert set(options) == {"Foods", "Hobbies", "Household"}
+    assert "market=walmart" in page.url
+
+
+def test_switching_catalogue_flips_the_verdict(page):
+    """Giftware is elastic, grocery is not. The headline should follow."""
+    assert "Cutting the price" in page.text_content("#verdict-text")
+    page.click('.market-option[data-market="walmart"]')
+    page.wait_for_function(
+        "() => document.querySelector('#verdict-text').textContent.includes('Raising')",
+        timeout=8000)
+
+
+def test_the_comparison_can_stack_both_catalogues(page):
+    one = page.eval_on_selector_all(
+        "#compare-chart .chart-hit", "els => els.length")
+    page.click('#compare-span [data-span="both"]')
+    page.wait_for_timeout(400)
+    both = page.eval_on_selector_all("#compare-chart .chart-hit", "els => els.length")
+    assert both > one, (one, both)
+
+    labels = page.eval_on_selector_all(
+        "#compare-chart text", "els => els.map(e => e.textContent)")
+    assert "Foods" in labels, "Walmart groups should appear once stacked"
+    assert "Kitchen & Dining" in labels, "UK groups should stay"
+    assert "Both, pooled" in labels
+
+
+def test_the_stacked_view_says_it_is_a_union_and_not_a_join(page):
+    page.click('#compare-span [data-span="both"]')
+    page.wait_for_timeout(400)
+    text = page.text_content("#blend-note")
+    assert "stacked, not joined" in text
+    assert "share no product, no shop and no currency" in text
+    assert "midpoint" in text, "the heterogeneity caveat must sit with the pooled figure"
+
+
+def test_the_pooled_row_has_no_observation_count_of_its_own(page):
+    page.click('#compare-span [data-span="both"]')
+    page.click('[data-table-toggle="compare-table"]')
+    row = page.eval_on_selector_all(
+        "#compare-table tbody tr",
+        "els => els.filter(e => e.children[0].textContent === 'Both, pooled')"
+        ".map(e => e.children[3].textContent)[0]"
+    )
+    assert row == "n/a", "the pooled row summarises the others, so it has no count"

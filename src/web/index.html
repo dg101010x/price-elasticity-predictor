@@ -62,6 +62,15 @@
 
   <!-- ────────────────  CONTROL RAIL  ──────────────── -->
   <form class="rail" id="controls" novalidate>
+    <h2 class="rail-title">Which shop are you like?</h2>
+
+    <div class="field">
+      <div class="market-picker" id="market-picker" role="radiogroup" aria-label="Which catalogue to price against"></div>
+      <p class="hint" id="market-hint"></p>
+    </div>
+
+    <hr class="rail-rule" />
+
     <h2 class="rail-title">What are you pricing?</h2>
 
     <fieldset class="field">
@@ -240,6 +249,11 @@
       <figure class="chart-figure">
         <figcaption class="figure-head figure-head-end">
           <div class="figure-actions">
+            <div class="segmented segmented-sm" id="compare-span" role="radiogroup"
+                 aria-label="Which catalogues to compare">
+              <button type="button" role="radio" aria-checked="true" data-span="one">This shop</button>
+              <button type="button" role="radio" aria-checked="false" data-span="both">Both stacked</button>
+            </div>
             <button type="button" class="btn btn-quiet btn-table" data-table-toggle="compare-table"
                     aria-expanded="false" aria-controls="compare-table">Table</button>
           </div>
@@ -248,6 +262,7 @@
         <div class="table-view" id="compare-table" hidden></div>
       </figure>
       <p class="hint" id="compare-note"></p>
+      <div class="blend-note" id="blend-note" hidden></div>
     </section>
 
     <!-- OTHER TRADES --------------------------------------------- -->

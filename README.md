@@ -25,9 +25,12 @@ src/
     app.css                    design system + both themes
     app.js                     state, interactions, and the four SVG charts
     fonts/                     self-hosted Archivo + IBM Plex Mono (OFL)
-  build_elasticity_model.py    fits the catalogue's categories from the raw CSV
+  build_elasticity_model.py    fits the UK catalogue's departments
+  build_walmart_catalogue.py   fits the Walmart catalogue
   build_reference_benchmarks.py fits the twelve outside markets
+  build_blended_catalogue.py   stacks the two catalogues and pools them
   data_loader.py               downloads the originally-scoped datasets
+  walmart_data.py              downloads and verifies the M5 release
   reference_data.py            downloads the twelve reference markets
   screen_archives.py           the search that produced that roster
   build_manifest.py            profiles data/csv/*.csv into the manifest
@@ -64,6 +67,11 @@ Decision-level endpoints, added for the current UI:
 | `GET /scenario` | units, revenue and gross profit at a given `pct_price_change` |
 | `GET /catalog` | the whole product directory in the shape the search box wants |
 | `GET /benchmarks` | twelve outside markets on the same scale, with provenance |
+| `GET /markets` | the catalogues you can price against, and how big each is |
+| `GET /blended` | both catalogues stacked into one table, and pooled |
+
+Every endpoint above takes `?market=uk` or `?market=walmart`. Omitting it
+gives you `uk`, so nothing that already called this API sees a change.
 
 `/estimates` exists because the dashboard used to issue one `/elasticity` request
 per category on every interaction. That was eleven identical round-trips per
@@ -94,15 +102,22 @@ are documented in `data/manifests/data_manifest.csv`.
 
 ```
 python -m src.data_loader                 # the originally-scoped datasets
+python -m src.walmart_data                # the M5 Walmart release
 python -m src.reference_data              # the twelve reference markets
 python -m src.build_manifest              # profiles them, writes the manifest
-python -m src.build_elasticity_model      # fits the catalogue's categories
+python -m src.build_elasticity_model      # fits the UK catalogue
+python -m src.build_walmart_catalogue     # fits the Walmart catalogue
 python -m src.build_reference_benchmarks  # fits the outside markets
+python -m src.build_blended_catalogue     # stacks the two and pools them
 ```
 
-Fourteen datasets are profiled in `data/manifests/`, **20,238,226 rows** in
-total; nine more are documented and blocked. Twelve of the fourteen can be
-fetched right now with no account.
+Seventeen datasets are profiled in `data/manifests/`, **27,111,806 CSV rows**;
+nine more are documented and blocked. Fifteen of the seventeen can be fetched
+right now with no account.
+
+That row count understates the largest one. The M5 sales file ships wide, one
+row per store-item and one column per day, so its 30,490 rows carry
+**59,181,090 daily unit-sales records**.
 
 ### What's actually downloaded vs. what needs manual setup
 
@@ -126,6 +141,76 @@ The rest are genuinely blocked from this environment and are left
 
 Full detail, row counts, and column notes are in
 `data/manifests/data_manifest.csv` and `data/manifests/validation_report.txt`.
+
+### The second catalogue: Walmart, 2011 to 2016
+
+The original catalogue is one UK wholesaler over two years, and its
+departments are guessed from words in the product name. The M5 release fixes
+both problems:
+
+| | UK catalogue | Walmart catalogue |
+|---|---|---|
+| what | gift and homeware wholesale | food, household, hobbies |
+| when | Dec 2009 to Dec 2011 | Jan 2011 to Jun 2016 |
+| where | one online shop | 10 stores, CA / TX / WI |
+| money | GBP | USD |
+| departments | guessed from product names | the retailer's own |
+| scale | 194,489 SKU-weeks | 3,999,586 store-item-weeks |
+| behind it | 1.07M transactions | 59,181,090 daily records |
+
+The source is the [M5 Forecasting Accuracy](https://github.com/Mcompetitions/M5-methods)
+dataset from the M Open Forecasting Center. That repository holds the
+competition's code but not its data, so `src/walmart_data.py` pulls the CSVs
+from a public mirror and checks them against the published M5 shape before
+writing anything: 1,969 calendar days ending 2016-06-19, 6,841,121 weekly
+prices, 10 stores, 3,049 items, 30,490 series of 1,941 days. A mirror that
+does not match fails loudly.
+
+Daily units are rolled up to the Walmart week that shelf prices are quoted
+in, then **inner joined** to `sell_prices` on `store_id + item_id +
+wm_yr_wk`. Inner is deliberate: a missing price row means the store was not
+carrying that item yet, so those weeks have to disappear rather than be
+filled. That drops 8,476,220 store-item-weeks to 6,719,161, of which
+5,110,257 had at least one sale.
+
+Grocery comes out where the literature says it should. Overall **-0.65**
+against the UK catalogue's -1.90, with Foods at -0.72, Hobbies at -0.62 and
+Household at -0.47. California is the least price-sensitive state at -0.21,
+Wisconsin the most at -1.04.
+
+### Blending the two
+
+**A union, not a join.** The two catalogues share no match key at all: no
+product ids, no stores, no category names, not even a currency. An inner join
+returns zero rows; an outer join returns a table of nulls. So
+`src/build_blended_catalogue.py` does a vertical `UNION ALL` onto one
+harmonised schema.
+
+Stacking works across currencies because of what the estimator does. Every
+figure is a within-entity log-log slope, and demeaning log price inside an
+entity removes any constant multiplicative factor. An exchange rate is
+exactly that. The slopes are already the same dimensionless unit, so no
+conversion is needed or wanted.
+
+The stacked rows are pooled with **random effects**, not fixed. Walmart
+brings twenty times the observations, so anything weighted by sample size or
+by inverse variance alone is not a blend, it is the Walmart number wearing a
+blend's clothes:
+
+| | pooled elasticity |
+|---|---|
+| fixed effect | **-0.94** (sits on top of Walmart) |
+| random effects | **-1.71** (the headline) |
+| UK alone | -2.00 across 11 departments |
+| Walmart alone | -0.64 across 13 groups |
+
+And the number worth reading first is the disagreement: Cochran's Q is
+**14,890** on 13 degrees of freedom, giving **I squared of 99.9%**. Almost
+none of the spread between these groups is sampling noise. On the stacked
+chart you can see it: every UK department sits left of break-even, every
+Walmart category sits right of it, and the pooled figure lands in the empty
+gap between the two clusters. It is a midpoint between two different trades,
+not one answer covering both.
 
 ### The twelve reference markets
 

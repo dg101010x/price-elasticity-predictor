@@ -26,6 +26,7 @@ import pandas as pd
 
 from .data_loader import CSV_DIR, MANIFEST_DIR, KAGGLE_DATASETS, MANUAL_ONLY_DATASETS, DatasetSpec
 from .reference_data import REFERENCE_DATASETS, REFERENCE_DIR
+from .walmart_data import CANONICAL_SOURCE, MIRROR_REPO, WALMART_DIR
 
 MANIFEST_PATH = MANIFEST_DIR / "data_manifest.csv"
 REPORT_PATH = MANIFEST_DIR / "validation_report.txt"
@@ -184,6 +185,53 @@ def profile_reference_datasets() -> list[DatasetSpec]:
     return specs
 
 
+WALMART_FILES = [
+    ("sales_train_evaluation.csv", "panel",
+     "30,490 store-item series across 1,941 days: 59,181,090 daily unit-sales records.",
+     "id,item_id,dept_id,cat_id,store_id,state_id,d_1..d_1941"),
+    ("sell_prices.csv", "weekly",
+     "6,841,121 weekly shelf prices, one per store, item and Walmart week.",
+     "store_id,item_id,wm_yr_wk,sell_price"),
+    ("calendar.csv", "reference",
+     "1,969 days, 2011-01-29 to 2016-06-19, mapping each day to its Walmart week.",
+     "date,wm_yr_wk,d,snap_CA,snap_TX,snap_WI"),
+]
+
+
+def profile_walmart() -> list[DatasetSpec]:
+    """The M5 release: the second catalogue, five years more recent than the first."""
+    specs = []
+    for filename, data_type, description, columns in WALMART_FILES:
+        path = WALMART_DIR / filename
+        spec = DatasetSpec(
+            filename=f"walmart/{filename}",
+            source_url=CANONICAL_SOURCE,
+            description=(
+                f"M5 Forecasting Accuracy, M Open Forecasting Center. {description} "
+                f"Real Walmart point-of-sale across 10 stores in CA, TX and WI, with the "
+                f"retailer's own category hierarchy. Fetched from the public mirror "
+                f"{MIRROR_REPO} and checked against the published M5 specification."
+            ),
+            data_type=data_type,
+            key_elasticity_columns=columns,
+        )
+        if not path.exists():
+            spec.status = "not_downloaded"
+            spec.note = "Re-fetch with `python -m src.walmart_data`."
+            specs.append(spec)
+            continue
+        with open(path) as f:
+            rows = sum(1 for _ in f) - 1
+        header = open(path).readline().rstrip("\n").split(",")
+        spec.status = "downloaded"
+        spec.row_count = rows
+        spec.columns = len(header)
+        spec.date_range = "2011-01-29 to 2016-06-19"
+        spec.note = "Verified against the published M5 shape by src/walmart_data.py."
+        specs.append(spec)
+    return specs
+
+
 def build() -> list[DatasetSpec]:
     specs = [profile_scanner_data(), profile_monash_dominicks()]
 
@@ -199,6 +247,7 @@ def build() -> list[DatasetSpec]:
         ))
 
     specs.extend(MANUAL_ONLY_DATASETS)
+    specs.extend(profile_walmart())
     specs.extend(profile_reference_datasets())
 
     with open(MANIFEST_PATH, "w", newline="") as f:

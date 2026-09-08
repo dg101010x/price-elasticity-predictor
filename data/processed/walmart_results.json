@@ -1,0 +1,202 @@
+{
+  "market": {
+    "key": "walmart",
+    "label": "US Walmart, food and household",
+    "short_label": "Walmart",
+    "currency": "USD",
+    "period": "January 2011 to June 2016",
+    "where": "10 Walmart stores across California, Texas and Wisconsin"
+  },
+  "overall": {
+    "elasticity": -0.645,
+    "std_error": 0.005,
+    "ci_low": -0.655,
+    "ci_high": -0.634,
+    "r_squared": 0.004,
+    "n_observations": 3999586,
+    "interpretation": "inelastic (quantity responds less than proportionally to price)",
+    "pct_quantity_change_for_10pct_price_increase": -6.0,
+    "category": "Whole range",
+    "n_skus": 22160
+  },
+  "by_category": [
+    {
+      "elasticity": -0.724,
+      "std_error": 0.007,
+      "ci_low": -0.738,
+      "ci_high": -0.71,
+      "r_squared": 0.005,
+      "n_observations": 2110808,
+      "interpretation": "inelastic (quantity responds less than proportionally to price)",
+      "pct_quantity_change_for_10pct_price_increase": -6.7,
+      "category": "Foods",
+      "n_skus": 11446
+    },
+    {
+      "elasticity": -0.62,
+      "std_error": 0.014,
+      "ci_low": -0.647,
+      "ci_high": -0.592,
+      "r_squared": 0.003,
+      "n_observations": 661878,
+      "interpretation": "inelastic (quantity responds less than proportionally to price)",
+      "pct_quantity_change_for_10pct_price_increase": -5.7,
+      "category": "Hobbies",
+      "n_skus": 3770
+    },
+    {
+      "elasticity": -0.465,
+      "std_error": 0.01,
+      "ci_low": -0.485,
+      "ci_high": -0.445,
+      "r_squared": 0.002,
+      "n_observations": 1226900,
+      "interpretation": "inelastic (quantity responds less than proportionally to price)",
+      "pct_quantity_change_for_10pct_price_increase": -4.3,
+      "category": "Household",
+      "n_skus": 6944
+    }
+  ],
+  "by_department": [
+    {
+      "elasticity": -1.029,
+      "std_error": 0.019,
+      "ci_low": -1.066,
+      "ci_high": -0.992,
+      "r_squared": 0.008,
+      "n_observations": 353472,
+      "interpretation": "elastic (quantity responds more than proportionally to price)",
+      "pct_quantity_change_for_10pct_price_increase": -9.3,
+      "category": "Foods, aisle 1",
+      "n_skus": 1838
+    },
+    {
+      "elasticity": -0.804,
+      "std_error": 0.018,
+      "ci_low": -0.839,
+      "ci_high": -0.768,
+      "r_squared": 0.004,
+      "n_observations": 552389,
+      "interpretation": "inelastic (quantity responds less than proportionally to price)",
+      "pct_quantity_change_for_10pct_price_increase": -7.4,
+      "category": "Hobbies, aisle 1",
+      "n_skus": 2947
+    },
+    {
+      "elasticity": -0.693,
+      "std_error": 0.009,
+      "ci_low": -0.712,
+      "ci_high": -0.675,
+      "r_squared": 0.005,
+      "n_observations": 1176784,
+      "interpretation": "inelastic (quantity responds less than proportionally to price)",
+      "pct_quantity_change_for_10pct_price_increase": -6.4,
+      "category": "Foods, aisle 3",
+      "n_skus": 6140
+    },
+    {
+      "elasticity": -0.63,
+      "std_error": 0.015,
+      "ci_low": -0.659,
+      "ci_high": -0.601,
+      "r_squared": 0.003,
+      "n_observations": 522073,
+      "interpretation": "inelastic (quantity responds less than proportionally to price)",
+      "pct_quantity_change_for_10pct_price_increase": -5.8,
+      "category": "Household, aisle 2",
+      "n_skus": 3203
+    },
+    {
+      "elasticity": -0.611,
+      "std_error": 0.014,
+      "ci_low": -0.638,
+      "ci_high": -0.583,
+      "r_squared": 0.003,
+      "n_observations": 580552,
+      "interpretation": "inelastic (quantity responds less than proportionally to price)",
+      "pct_quantity_change_for_10pct_price_increase": -5.7,
+      "category": "Foods, aisle 2",
+      "n_skus": 3468
+    },
+    {
+      "elasticity": -0.359,
+      "std_error": 0.023,
+      "ci_low": -0.404,
+      "ci_high": -0.315,
+      "r_squared": 0.002,
+      "n_observations": 109489,
+      "interpretation": "inelastic (quantity responds less than proportionally to price)",
+      "pct_quantity_change_for_10pct_price_increase": -3.4,
+      "category": "Hobbies, aisle 2",
+      "n_skus": 823
+    },
+    {
+      "elasticity": -0.337,
+      "std_error": 0.014,
+      "ci_low": -0.364,
+      "ci_high": -0.31,
+      "r_squared": 0.001,
+      "n_observations": 704827,
+      "interpretation": "inelastic (quantity responds less than proportionally to price)",
+      "pct_quantity_change_for_10pct_price_increase": -3.2,
+      "category": "Household, aisle 1",
+      "n_skus": 3741
+    }
+  ],
+  "by_state": [
+    {
+      "elasticity": -1.042,
+      "std_error": 0.011,
+      "ci_low": -1.063,
+      "ci_high": -1.021,
+      "r_squared": 0.008,
+      "n_observations": 1153397,
+      "interpretation": "elastic (quantity responds more than proportionally to price)",
+      "pct_quantity_change_for_10pct_price_increase": -9.5,
+      "category": "Wisconsin",
+      "n_skus": 6628
+    },
+    {
+      "elasticity": -0.734,
+      "std_error": 0.008,
+      "ci_low": -0.75,
+      "ci_high": -0.718,
+      "r_squared": 0.007,
+      "n_observations": 1251888,
+      "interpretation": "inelastic (quantity responds less than proportionally to price)",
+      "pct_quantity_change_for_10pct_price_increase": -6.8,
+      "category": "Texas",
+      "n_skus": 6969
+    },
+    {
+      "elasticity": -0.208,
+      "std_error": 0.01,
+      "ci_low": -0.227,
+      "ci_high": -0.189,
+      "r_squared": 0.0,
+      "n_observations": 1594301,
+      "interpretation": "inelastic (quantity responds less than proportionally to price)",
+      "pct_quantity_change_for_10pct_price_increase": -2.0,
+      "category": "California",
+      "n_skus": 8563
+    }
+  ],
+  "excluded_categories": [],
+  "scale": {
+    "daily_records": 59181090,
+    "store_item_weeks": 6719161,
+    "weeks_with_a_sale": 5110257,
+    "price_observations": 6841121,
+    "items": 3049,
+    "stores": 10,
+    "series": 30490
+  },
+  "methodology": {
+    "method": "within-line (fixed-effects) log-log panel regression, weekly",
+    "source_dataset": "M5 Forecasting Accuracy, M Open Forecasting Center (https://github.com/Mcompetitions/M5-methods)",
+    "category_assignment": "the retailer's own hierarchy: 3 categories, 7 departments. Not inferred.",
+    "cleaning": "Units are rolled up from daily to the Walmart week that shelf prices are quoted in. Weeks before a store carried an item have no price row and are dropped by the join. Weeks where a stocked item sold nothing are real zeros and cannot go through a log, so they are dropped too, which means these estimates describe weeks the item was actually moving.",
+    "exclusion_thresholds": ">= 500 weeks and >= 15 store-item lines",
+    "note": "Descriptive association from observational data, not a causal effect. Walmart set these prices for its own reasons, and those reasons moved sales as well."
+  }
+}

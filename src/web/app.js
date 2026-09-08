@@ -100,6 +100,9 @@
     cost: null,
     change: 10,
     currencySymbol: "£",
+    market: "uk",              // which catalogue we are pricing against
+    compareSpan: "one",        // "one" = this catalogue, "both" = the UNION
+    markets: [],               // every catalogue the API offers
     estimates: null,
     benchmarks: [],            // twelve outside markets, from /estimates
     benchmarkTotals: {},
@@ -204,6 +207,7 @@
   /* ----------------------------------------------------------- url state -- */
   function writeURL() {
     var p = new URLSearchParams();
+    if (state.market !== "uk") p.set("market", state.market);
     if (state.scope !== "all") p.set("scope", state.scope);
     if (state.scope === "category" && state.category) p.set("category", state.category);
     if (state.scope === "product" && state.product) p.set("product", state.product.id);
@@ -221,7 +225,7 @@
     if (!isNaN(change)) state.change = clamp(Math.round(change), -40, 40);
     var cost = parseFloat(p.get("cost"));
     if (!isNaN(cost) && cost >= 0) state.cost = cost;
-    return { category: p.get("category"), product: p.get("product") };
+    return { category: p.get("category"), product: p.get("product"), market: p.get("market") };
   }
 
   /* ======================================================================
@@ -578,6 +582,7 @@
 
   /* ---- 3. category comparison ------------------------------------------- */
   function comparisonRows() {
+    if (state.compareSpan === "both") return blendedRows();
     var rows = state.estimates.by_category.map(function (r) {
       return { name: r.category, value: r.elasticity, ci: [r.ci_low, r.ci_high], n: r.n_observations };
     });
@@ -586,6 +591,30 @@
       ci: [state.estimates.overall.ci_low, state.estimates.overall.ci_high],
       n: state.estimates.overall.n_observations, isOverall: true
     });
+    rows.sort(function (a, b) { return a.value - b.value; });
+    return rows;
+  }
+
+  // Both catalogues stacked. The operation is a UNION, not a join: the two
+  // share no key at all. It works across currencies because a within-entity
+  // log-log slope has the exchange rate demeaned out of it already.
+  function blendedRows() {
+    var blend = state.estimates.blended;
+    if (!blend || !blend.rows.length) return [];
+    var rows = blend.rows.map(function (r) {
+      return {
+        name: r.group, value: r.elasticity, ci: [r.ci_low, r.ci_high],
+        n: r.n_observations, market: r.market,
+        foreign: r.market !== state.market
+      };
+    });
+    var pooled = blend.pooled && blend.pooled.random_effects;
+    if (pooled) {
+      rows.push({
+        name: "Both, pooled", value: pooled.elasticity,
+        ci: [pooled.ci_low, pooled.ci_high], n: null, isOverall: true
+      });
+    }
     rows.sort(function (a, b) { return a.value - b.value; });
     return rows;
   }
@@ -676,7 +705,11 @@
         " H" + (x1 + r) + " a" + r + " " + r + " 0 0 0 " + (-r) + " " + r +
         " V" + (barY + barH - r) + " a" + r + " " + r + " 0 0 0 " + r + " " + r +
         " H" + x0 + " Z";
-      root.appendChild(svg("path", { d: d, fill: isOn ? accent : quiet, opacity: isOn ? 1 : 0.85 }));
+      // In the stacked view, rows from the catalogue you are not pricing
+      // against are drawn lighter. Position still carries the value, so the
+      // tone is a second signal rather than the only one.
+      var fill = isOn ? accent : (row.foreign ? token("--mark-quieter") : quiet);
+      root.appendChild(svg("path", { d: d, fill: fill, opacity: isOn ? 1 : 0.85 }));
 
       // Value rides the data end of the bar, but never off the left edge:
       // on the stacked layout it sits with the name instead.
@@ -894,6 +927,113 @@
       " other trades, from supermarket shelves to Broadway box office, measured the " +
       "same way, so you can see whether your category is unusual or whether everything " +
       "works like this.";
+  }
+
+  // ---- catalogue picker ---------------------------------------------------
+  // Two catalogues ship, in two currencies and two decades, so switching is a
+  // full reload of estimates and products rather than a filter over one set.
+
+  function renderMarketPicker() {
+    var host = $("#market-picker");
+    if (!host || state.markets.length < 2) { if (host) host.hidden = true; return; }
+    clear(host);
+
+    state.markets.forEach(function (m) {
+      var btn = el("button", "market-option");
+      btn.type = "button";
+      btn.setAttribute("role", "radio");
+      btn.setAttribute("aria-checked", String(m.key === state.market));
+      btn.dataset.market = m.key;
+      btn.appendChild(el("span", "market-name", m.label));
+      btn.appendChild(el("span", "market-meta",
+        m.period + " \u00b7 " + nfInt.format(m.products) + " products"));
+      btn.addEventListener("click", function () { switchMarket(m.key); });
+      host.appendChild(btn);
+    });
+
+    var current = state.markets.filter(function (m) { return m.key === state.market; })[0];
+    if (current) {
+      $("#market-hint").textContent =
+        current.where + ". Prices in " + current.currency + ", from " +
+        nfInt.format(current.observations) + " weeks of history.";
+    }
+  }
+
+  function switchMarket(key) {
+    if (key === state.market) return;
+    state.market = key;
+    state.category = null;
+    state.product = null;
+    state.cost = null;
+    $("#cost-input").value = "";
+    $("#layout").setAttribute("aria-busy", "true");
+
+    loadMarket().then(function () {
+      $("#layout").removeAttribute("aria-busy");
+      setScope(state.scope === "product" ? "category" : state.scope);
+      announce("Now pricing against " + marketLabel() + ".");
+    }).catch(function (err) {
+      $("#layout").removeAttribute("aria-busy");
+      showBootError(err.message);
+    });
+  }
+
+  function marketLabel() {
+    var m = state.markets.filter(function (x) { return x.key === state.market; })[0];
+    return m ? m.label : state.market;
+  }
+
+  function loadMarket() {
+    var q = "?market=" + encodeURIComponent(state.market);
+    return Promise.all([fetchJSON("/estimates" + q), fetchJSON("/catalog" + q)])
+      .then(function (res) {
+        state.estimates = res[0];
+        state.markets = res[0].markets || state.markets;
+        state.benchmarks = res[0].benchmarks || [];
+        state.benchmarkTotals = res[0].benchmark_totals || {};
+        state.currencySymbol = CURRENCY_SYMBOLS[res[1].currency] || "";
+        $("#price-symbol").textContent = state.currencySymbol;
+        $("#cost-symbol").textContent = state.currencySymbol;
+
+        var cats = res[1].categories;
+        state.products = res[1].products.map(function (row) {
+          return { id: row[0], name: row[1], category: cats[row[2]], price: row[3] };
+        });
+
+        var lows = state.estimates.by_category.map(function (r) { return r.ci_low; })
+          .concat([state.estimates.overall.ci_low]);
+        state.domain = [Math.floor(Math.min.apply(null, lows) * 2 - 0.5) / 2, 0];
+
+        renderMarketPicker();
+        rebuildCategorySelect();
+        rebuildCombo();
+        renderMethod();
+        renderBenchSub();
+        renderBenchFlagged();
+      });
+  }
+
+  // Both of these are built once at boot and again on every catalogue switch,
+  // because the departments and the product list are market-specific.
+  function rebuildCategorySelect() {
+    var catSelect = $("#category-select");
+    if (!catSelect || !state.estimates) return;
+    clear(catSelect);
+    state.estimates.by_category.forEach(function (r) {
+      var opt = el("option", null, r.category);
+      opt.value = r.category;
+      catSelect.appendChild(opt);
+    });
+    if (state.category) catSelect.value = state.category;
+  }
+
+  function rebuildCombo() {
+    var input = $("#product-input");
+    if (!input) return;
+    input.value = "";
+    input.placeholder = "Search " + nfInt.format(state.products.length) + " products\u2026";
+    var clearBtn = $("#product-clear");
+    if (clearBtn) clearBtn.hidden = true;
   }
 
   function renderCharts() {
@@ -1164,6 +1304,7 @@
   }
 
   function renderCompareTable() {
+    // shares comparisonRows(), so it follows the span toggle automatically
     var host = $("#compare-table");
     clear(host);
     var rows = comparisonRows();
@@ -1189,7 +1330,8 @@
       tr.appendChild(el("td", null, r.name));
       tr.appendChild(el("td", null, nf3.format(r.value)));
       tr.appendChild(el("td", null, nf2.format(r.ci[0]) + " to " + nf2.format(r.ci[1])));
-      tr.appendChild(el("td", null, nfInt.format(r.n)));
+      // the pooled row summarises the others, so it has no count of its own
+      tr.appendChild(el("td", null, r.n == null ? "n/a" : nfInt.format(r.n)));
       tbody.appendChild(tr);
     });
     table.appendChild(tbody);
@@ -1244,11 +1386,67 @@
   }
 
   function renderCompareNote() {
+    var note = $("#compare-note");
+    var blendNote = $("#blend-note");
+
+    if (state.compareSpan === "both") {
+      note.textContent = "";
+      renderBlendNote(blendNote);
+      return;
+    }
+    if (blendNote) blendNote.hidden = true;
+
     var excluded = state.estimates.excluded_categories || [];
-    if (!excluded.length) { $("#compare-note").textContent = ""; return; }
-    $("#compare-note").textContent =
+    if (!excluded.length) { note.textContent = ""; return; }
+    note.textContent =
       "Not shown: " + excluded.map(function (e) { return e.category; }).join(", ") +
       ". Those products don't share enough in common to price as one group, so they fall back to the whole-range figure.";
+  }
+
+  // The pooled figure needs its caveat next to it, not in a footnote. When
+  // I-squared is this high the two catalogues are not really telling one story.
+  function renderBlendNote(host) {
+    if (!host) return;
+    var blend = state.estimates.blended;
+    if (!blend || !blend.pooled || !blend.pooled.random_effects) { host.hidden = true; return; }
+    clear(host);
+    host.hidden = false;
+
+    var p = blend.pooled;
+    var h = p.heterogeneity || {};
+    var markets = blend.by_market || {};
+
+    host.appendChild(el("h4", "blend-title", "Both catalogues, stacked"));
+
+    var list = el("dl", "blend-figures");
+    function figure(term, value, note) {
+      var wrap = el("div");
+      wrap.appendChild(el("dt", null, term));
+      var dd = el("dd");
+      dd.appendChild(el("b", null, value));
+      if (note) dd.appendChild(el("span", "blend-sub", note));
+      wrap.appendChild(dd);
+      list.appendChild(wrap);
+    }
+    Object.keys(markets).forEach(function (k) {
+      var m = markets[k];
+      figure(m.label, nf2.format(m.pooled.random_effects.elasticity),
+             m.groups + " groups, " + m.period);
+    });
+    figure("Pooled across both", nf2.format(p.random_effects.elasticity),
+           "range " + nf2.format(p.random_effects.ci_low) + " to " + nf2.format(p.random_effects.ci_high));
+    host.appendChild(list);
+
+    var caveat = el("p", "blend-caveat");
+    caveat.appendChild(document.createTextNode(
+      "These are stacked, not joined: the two catalogues share no product, no shop and no " +
+      "currency, so there is nothing to join them on. Stacking still works because each " +
+      "number is a percentage answering a percentage, which has no currency in it. " +
+      "But " + nf1.format(h.i_squared_pct) + "% of the gap between these groups is real " +
+      "rather than noise, so read the pooled figure as a midpoint between two different " +
+      "trades, not as one answer covering both."
+    ));
+    host.appendChild(caveat);
   }
 
   function renderMethod() {
@@ -1602,12 +1800,30 @@
       });
     });
 
-    var catSelect = $("#category-select");
-    state.estimates.by_category.forEach(function (r) {
-      var opt = el("option", null, r.category);
-      opt.value = r.category;
-      catSelect.appendChild(opt);
+    $$("#compare-span [data-span]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        state.compareSpan = b.dataset.span;
+        $$("#compare-span [data-span]").forEach(function (x) {
+          x.setAttribute("aria-checked", String(x.dataset.span === state.compareSpan));
+        });
+        renderCompareTable();
+        renderCompareNote();
+        redrawChart("#compare-chart", drawCompareChart);
+        announce(state.compareSpan === "both"
+          ? "Comparing both catalogues, stacked."
+          : "Comparing this catalogue only.");
+      });
+      b.addEventListener("keydown", function (ev) {
+        if (ev.key !== "ArrowLeft" && ev.key !== "ArrowRight") return;
+        ev.preventDefault();
+        var all = $$("#compare-span [data-span]");
+        var next = all[(all.indexOf(b) + 1) % all.length];
+        next.focus(); next.click();
+      });
     });
+
+    var catSelect = $("#category-select");
+    rebuildCategorySelect();
     catSelect.addEventListener("change", function () {
       state.category = catSelect.value;
       renderAll();
@@ -1687,26 +1903,17 @@
     });
 
     var wanted = readURL();
+    if (wanted.market) state.market = wanted.market;
 
-    Promise.all([fetchJSON("/estimates"), fetchJSON("/catalog")])
-      .then(function (res) {
-        state.estimates = res[0];
-        state.benchmarks = res[0].benchmarks || [];
-        state.benchmarkTotals = res[0].benchmark_totals || {};
-        state.currencySymbol = CURRENCY_SYMBOLS[res[1].currency] || "";
-        $("#price-symbol").textContent = state.currencySymbol;
-        $("#cost-symbol").textContent = state.currencySymbol;
-
-        var cats = res[1].categories;
-        state.products = res[1].products.map(function (row) {
-          return { id: row[0], name: row[1], category: cats[row[2]], price: row[3] };
-        });
-
-        // Domain covers every estimate, padded, and always reaches 0.
-        var lows = state.estimates.by_category.map(function (r) { return r.ci_low; })
-          .concat([state.estimates.overall.ci_low]);
-        state.domain = [Math.floor(Math.min.apply(null, lows) * 2 - 0.5) / 2, 0];
-
+    // A shared link can name a catalogue this build doesn't have. Fall back to
+    // the default once rather than showing an error page for a stale URL.
+    loadMarket()
+      .catch(function (err) {
+        if (state.market === "uk") throw err;
+        state.market = "uk";
+        return loadMarket();
+      })
+      .then(function () {
         $("#layout").hidden = false;
 
         if (wanted.category &&
@@ -1722,9 +1929,6 @@
         initControls();
         initResize();
         renderGlossary();
-        renderMethod();
-        renderBenchSub();
-        renderBenchFlagged();
 
         if (state.cost != null) {
           $("#cost-input").value = String(state.cost);

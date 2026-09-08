@@ -1,10 +1,10 @@
 DATA VALIDATION REPORT
 ============================================================
 
-Present and profiled:    12  (77,868 rows on disk)
+Present and profiled:    15  (6,951,448 rows on disk)
 Profiled previously:     2  (figures carried forward)
 Requires manual action:  9
-Rows across every profiled dataset: 20,238,226
+Rows across every profiled dataset: 27,111,806
 
 --- scanner_data.csv ---
 source: https://archive.ics.uci.edu/dataset/502/online+retail+ii
@@ -21,6 +21,30 @@ date_range: relative week 0-392 per series, no calendar dates
 data_type: weekly
 key_elasticity_columns: SKU_ID,Week_Index,Weekly_Profit
 notes: 115704 unique series. 9366843 of 19092987 rows are zero-profit weeks (no sale that week, not missing data). Figures carried forward from an earlier run; the file is not in data/csv/ right now. Re-fetch with `python -m src.data_loader` from a network that can reach zenodo.org.
+
+--- walmart/sales_train_evaluation.csv ---
+source: https://github.com/Mcompetitions/M5-methods
+rows: 30,490   columns: 1947
+date_range: 2011-01-29 to 2016-06-19
+data_type: panel
+key_elasticity_columns: id,item_id,dept_id,cat_id,store_id,state_id,d_1..d_1941
+notes: Verified against the published M5 shape by src/walmart_data.py.
+
+--- walmart/sell_prices.csv ---
+source: https://github.com/Mcompetitions/M5-methods
+rows: 6,841,121   columns: 4
+date_range: 2011-01-29 to 2016-06-19
+data_type: weekly
+key_elasticity_columns: store_id,item_id,wm_yr_wk,sell_price
+notes: Verified against the published M5 shape by src/walmart_data.py.
+
+--- walmart/calendar.csv ---
+source: https://github.com/Mcompetitions/M5-methods
+rows: 1,969   columns: 14
+date_range: 2011-01-29 to 2016-06-19
+data_type: reference
+key_elasticity_columns: date,wm_yr_wk,d,snap_CA,snap_TX,snap_WI
+notes: Verified against the published M5 shape by src/walmart_data.py.
 
 --- reference/broadway_grosses.csv ---
 source: https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-04-28/grosses.csv
