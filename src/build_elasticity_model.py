@@ -34,6 +34,8 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from .panel_regression import within_entity_loglog
+
 ROOT = Path(__file__).resolve().parent.parent
 CSV_PATH = ROOT / "data" / "csv" / "scanner_data.csv"
 OUT_DIR = ROOT / "data" / "processed"
@@ -107,67 +109,19 @@ def weekly_sku_panel(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def within_sku_regression(panel: pd.DataFrame) -> dict | None:
-    """Log-log fixed-effects (within-SKU demeaned) OLS, single regressor,
-    no intercept needed post-demeaning. Requires >=2 distinct weeks and
-    price variation within at least some SKUs to identify beta."""
-    p = panel.copy()
-    p["log_q"] = np.log(p["qty"])
-    p["log_p"] = np.log(p["price"])
+    """Within-SKU log-log fit, via the shared estimator.
 
-    sku_counts = p.groupby("StockCode")["log_p"].transform("count")
-    p = p[sku_counts >= 2]
-    if p.empty:
+    The arithmetic lives in src/panel_regression.py so that a category here
+    and a benchmark market in src/build_reference_benchmarks.py are the same
+    measurement and can share an axis. The only thing this wrapper does is
+    keep the published field name: entities are SKUs here, and the API has
+    served `n_skus` since 1.0.
+    """
+    result = within_entity_loglog(panel, entity="StockCode", price="price", quantity="qty")
+    if result is None:
         return None
-
-    p["log_q_dm"] = p["log_q"] - p.groupby("StockCode")["log_q"].transform("mean")
-    p["log_p_dm"] = p["log_p"] - p.groupby("StockCode")["log_p"].transform("mean")
-
-    # Drop SKUs with zero within-SKU price variance -- they can't identify beta.
-    price_var = p.groupby("StockCode")["log_p_dm"].transform(lambda s: s.abs().sum())
-    p = p[price_var > 1e-9]
-    if len(p) < 30:
-        return None
-
-    x = p["log_p_dm"].to_numpy()
-    y = p["log_q_dm"].to_numpy()
-    n = len(x)
-    n_skus = p["StockCode"].nunique()
-
-    sxx = float(np.dot(x, x))
-    if sxx < 1e-12:
-        return None
-    beta = float(np.dot(x, y) / sxx)
-    resid = y - beta * x
-    # k=1 slope param; SKU fixed effects already removed by demeaning, so
-    # dof correction uses n - n_skus - 1 (SKU means + the slope).
-    dof = max(n - n_skus - 1, 1)
-    sigma2 = float(np.dot(resid, resid) / dof)
-    se = float(np.sqrt(sigma2 / sxx))
-    ci_low, ci_high = beta - 1.96 * se, beta + 1.96 * se
-
-    ss_tot = float(np.dot(y, y))
-    r_squared = 1 - float(np.dot(resid, resid)) / ss_tot if ss_tot > 1e-12 else 0.0
-
-    pct_change = round(((1.10 ** beta) - 1) * 100, 1)
-    interpretation = (
-        "elastic (quantity responds more than proportionally to price)"
-        if beta <= -1 else
-        "inelastic (quantity responds less than proportionally to price)"
-        if beta < 0 else
-        "positive association (likely confounded -- not a real demand response)"
-    )
-
-    return dict(
-        elasticity=round(beta, 3),
-        std_error=round(se, 3),
-        ci_low=round(ci_low, 3),
-        ci_high=round(ci_high, 3),
-        r_squared=round(r_squared, 3),
-        n_observations=n,
-        n_skus=n_skus,
-        interpretation=interpretation,
-        pct_quantity_change_for_10pct_price_increase=pct_change,
-    )
+    result["n_skus"] = result.pop("n_entities")
+    return result
 
 
 def build_products_directory(df: pd.DataFrame) -> list[dict]:
