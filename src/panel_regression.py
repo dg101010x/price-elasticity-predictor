@@ -41,7 +41,7 @@ def interpret(beta: float) -> str:
         return "elastic (quantity responds more than proportionally to price)"
     if beta < 0:
         return "inelastic (quantity responds less than proportionally to price)"
-    return "positive association (likely confounded -- not a real demand response)"
+    return "positive association (likely confounded — not a real demand response)"
 
 
 def within_entity_loglog(

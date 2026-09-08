@@ -524,6 +524,86 @@ details[open] > summary .summary-chevron { rotate: 180deg; }
 .tile[data-tone="accent"]   { background: var(--accent-wash);   border-color: var(--accent-edge); }
 .tile[data-tone="accent"]   .tile-value { color: var(--accent-text); }
 
+/* ----------------------------------------------------------- till roll --
+   Percentages are the honest unit; money is the one a price-setter thinks
+   in. This restates the same scenario over a £100 week, set like the roll of
+   paper it imitates: mono tabular figures, right-aligned, a hairline under
+   the rule and a heavier one under the line that decides it.
+   -------------------------------------------------------------------------- */
+.till {
+  border: 1px solid var(--line-strong); border-radius: var(--r3);
+  background: var(--surface-sunk); overflow: hidden;
+}
+.till-head { padding: var(--s4) var(--s4) var(--s3); border-bottom: 1px solid var(--line); }
+.till-title {
+  font-size: var(--step-0); font-weight: 650; color: var(--ink); line-height: 1.35;
+}
+.till-anchor {
+  font-family: var(--mono); font-weight: 600; font-variant-numeric: tabular-nums;
+  color: var(--accent-text);
+}
+.till-note { margin-top: var(--s1); font-size: var(--step--1); color: var(--ink-3); line-height: 1.45; }
+
+.till-roll { overflow-x: auto; }
+.till-table { width: 100%; border-collapse: collapse; }
+.till-table th, .till-table td { padding: var(--s3) var(--s4); white-space: nowrap; }
+.till-table thead th { text-align: right; vertical-align: bottom; }
+.till-table thead th:first-child { text-align: left; }
+.till-col { display: table-cell; }
+.till-col-name {
+  display: block; font-size: 11px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: .08em; color: var(--ink-3);
+}
+.till-col-note {
+  display: block; margin-top: 2px; font-family: var(--mono); font-size: 11px;
+  font-weight: 400; color: var(--ink-3); font-variant-numeric: tabular-nums;
+}
+.till-table tbody th {
+  text-align: left; font-weight: 500; color: var(--ink-2); font-size: var(--step--1);
+}
+.till-num {
+  text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums;
+  color: var(--ink-2); font-size: var(--step-0);
+}
+.till-after { color: var(--ink); font-weight: 600; }
+.till-delta { color: var(--ink-3); font-size: var(--step--1); }
+.till-delta[data-tone="good"]     { color: var(--good); font-weight: 600; }
+.till-delta[data-tone="critical"] { color: var(--critical); font-weight: 600; }
+.till-table tbody tr + tr th,
+.till-table tbody tr + tr td { border-top: 1px solid var(--line); }
+/* the line that decides it -- takings, and money kept when a cost is given */
+.till-table tbody tr[data-lead="true"] th { color: var(--ink); font-weight: 650; }
+.till-table tbody tr[data-lead="true"] .till-after { font-size: var(--step-1); }
+
+/* ---------------------------------------------------------- other trades --
+   A ladder, not a second bar chart: the question is ordinal -- who is
+   steeper than whom, and where do you sit -- so each market gets a stem from
+   the break-even line and a dot, and the current selection gets a rule
+   straight through the stack.
+   -------------------------------------------------------------------------- */
+.chart-you { fill: var(--accent-text); }
+
+.bench-flagged { margin-top: var(--s4); padding-top: var(--s4); border-top: 1px solid var(--line); }
+.bench-flagged-title {
+  font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em;
+  color: var(--ink-3); margin-bottom: var(--s3);
+}
+.bench-flagged-list { display: grid; gap: var(--s3); list-style: none; }
+.bench-flagged-list li {
+  padding: var(--s3) var(--s4); border: 1px solid var(--warn-edge);
+  border-radius: var(--r2); background: var(--warn-wash);
+}
+.bench-flagged-list strong { font-size: var(--step--1); color: var(--ink); }
+.bench-flagged-list p {
+  margin-top: var(--s1); font-size: var(--step--1); color: var(--ink-2); line-height: 1.5;
+}
+.bench-flag-tag {
+  display: inline-block; margin-left: var(--s2); padding: 1px 7px; border-radius: 999px;
+  font-family: var(--mono); font-size: 10px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: .06em;
+  background: var(--surface); border: 1px solid var(--warn-edge); color: var(--warn);
+}
+
 /* -------------------------------------------------------------- notices -- */
 .notice {
   display: flex; gap: var(--s3); align-items: flex-start;

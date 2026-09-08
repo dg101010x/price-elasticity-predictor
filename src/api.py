@@ -10,6 +10,7 @@ Endpoint groups
 Record-level (unchanged contract):  /elasticity  /categories  /products
                                     /methodology /health      /api
 Decision-level (added for the UI):  /estimates   /catalog     /scenario
+Context (twelve outside markets):   /benchmarks
 
 The dashboard reads /estimates and /catalog exactly once at load. It used to
 issue one /elasticity request per category on every interaction, which meant
@@ -96,6 +97,13 @@ _loaded_elasticity = _load_json("elasticity_results.json")
 ELASTICITY_RESULTS = _loaded_elasticity or STUB_ELASTICITY_RESULTS
 PRODUCTS = _load_json("products.json") or STUB_PRODUCTS
 USING_STUB_DATA = _loaded_elasticity is None
+
+# Twelve outside markets, built by src/build_reference_benchmarks.py. Optional:
+# the page degrades to the catalogue-only view if the artifact is absent, which
+# is what happens on a checkout that hasn't run the builder yet.
+REFERENCE_BENCHMARKS = _load_json("reference_benchmarks.json") or {
+    "benchmarks": [], "skipped": [], "totals": {}, "methodology": {},
+}
 
 _BY_CATEGORY = {r["category"]: r for r in ELASTICITY_RESULTS["by_category"]}
 _EXCLUDED_NAMES = {e["category"] for e in ELASTICITY_RESULTS.get("excluded_categories", [])}
@@ -192,7 +200,7 @@ def api_info() -> dict:
         "name": "Price Elasticity Predictor API",
         "endpoints": [
             "/elasticity", "/scenario", "/estimates", "/categories",
-            "/products", "/catalog", "/methodology", "/health",
+            "/products", "/catalog", "/benchmarks", "/methodology", "/health",
         ],
         "docs": "/docs",
     }
@@ -241,7 +249,31 @@ def all_estimates() -> dict:
         "methodology": ELASTICITY_RESULTS["methodology"],
         "revenue_breakeven_elasticity": REVENUE_BREAKEVEN_ELASTICITY,
         "using_stub_data": USING_STUB_DATA,
+        # Carried here as well as on /benchmarks so the page loads everything
+        # it renders in a single request, which is the whole reason /estimates
+        # exists.
+        "benchmarks": REFERENCE_BENCHMARKS.get("benchmarks", []),
+        "benchmark_totals": REFERENCE_BENCHMARKS.get("totals", {}),
     }
+
+
+@app.get("/benchmarks")
+def benchmarks() -> dict:
+    """Twelve outside markets, on the same scale as the catalogue's categories.
+
+    The catalogue is one market -- UK wholesale gift and homeware -- and a
+    price-setter in any other trade has no way to tell from it whether their
+    own category is unusual or whether everything behaves like that. These
+    are the comparison: published cigarette and natural-gas panels, thirty-five
+    years of Broadway box office, California avocados, 1880s rail freight, and
+    six supermarket scanner panels, each fitted with the same estimator.
+
+    Two carry a `flag`. `inconclusive` means the interval spans zero, so the
+    data can't tell you the sign. `confounded` means the slope came out
+    positive -- a demand shock showing through, not a demand curve. Both are
+    reported rather than dropped; the page shows them apart from the rest.
+    """
+    return REFERENCE_BENCHMARKS
 
 
 @app.get("/products")

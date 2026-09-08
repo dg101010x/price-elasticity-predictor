@@ -101,6 +101,8 @@
     change: 10,
     currencySymbol: "£",
     estimates: null,
+    benchmarks: [],            // twelve outside markets, from /estimates
+    benchmarkTotals: {},
     products: [],              // [{id, name, category, price}]
     domain: [-3, 0]
   };
@@ -726,11 +728,180 @@
     host.appendChild(root);
   }
 
+  // ---- other trades -------------------------------------------------------
+  // Twelve outside markets fitted with the same estimator (see /benchmarks).
+  // Shown as a plain ladder rather than a second bar chart: the question here
+  // is ordinal -- who is steeper than whom, and where do you sit among them --
+  // not "by how much", which the comparison chart above already answers.
+
+  function usableBenchmarks() {
+    return (state.benchmarks || []).filter(function (b) { return !b.flag; });
+  }
+
+  function drawBenchChart() {
+    var host = $("#bench-chart");
+    var rows = usableBenchmarks();
+    if (!rows.length) { clear(host); return; }
+
+    var est = currentEstimate();
+    var mine = est ? est.elasticity : null;
+
+    var W = chartWidth(host);
+    var rowH = 26, padT = 30, padB = 54, padL = 8, padR = 8;
+    var H = padT + rows.length * rowH + padB;
+
+    var all = rows.map(function (r) { return r.elasticity; });
+    if (mine != null) all.push(mine);
+    var lo = Math.min.apply(null, all.concat([-3.4]));
+    var hi = Math.max.apply(null, all.concat([0]));
+    lo = Math.floor(lo * 2) / 2; hi = Math.ceil(hi * 2) / 2;
+
+    var labelW = Math.min(190, Math.max(120, Math.round(W * 0.38)));
+    var x0 = padL + labelW, x1 = W - padR;
+    function X(v) { return x0 + ((v - lo) / (hi - lo)) * (x1 - x0); }
+
+    var root = chartRoot(W, H,
+      "Price sensitivity in twelve other markets, on the same scale as this catalogue. " +
+      rows.map(function (r) { return r.label + " " + r.elasticity.toFixed(2); }).join("; ") + ".");
+
+    // break-even line: the only reference that matters
+    var be = X(-1);
+    root.appendChild(svg("line", {
+      x1: be, x2: be, y1: padT - 12, y2: H - padB + 2,
+      stroke: token("--line-strong"), "stroke-width": 1, "stroke-dasharray": "3 3"
+    }));
+    var beLabel = svg("text", { x: be, y: padT - 18, "text-anchor": "middle", class: "chart-tick" });
+    beLabel.textContent = "break-even";
+    root.appendChild(beLabel);
+
+    rows.forEach(function (r, i) {
+      var y = padT + i * rowH + rowH / 2;
+      var steeper = mine != null && r.elasticity < mine;
+
+      var name = svg("text", { x: padL, y: y + 4, class: "chart-label" });
+      name.textContent = r.label;
+      root.appendChild(name);
+
+      // a stem from break-even to the value reads as "how far past the line"
+      root.appendChild(svg("line", {
+        x1: be, x2: X(r.elasticity), y1: y, y2: y,
+        stroke: token(steeper ? "--mark-quiet" : "--mark-quieter"), "stroke-width": 2
+      }));
+      var dot = svg("circle", {
+        cx: X(r.elasticity), cy: y, r: 4.5,
+        fill: token("--accent"), tabindex: "0", role: "img",
+        "aria-label": r.label + ": " + r.elasticity.toFixed(2) +
+          ", " + (r.elasticity <= -1 ? "past break-even" : "short of break-even") +
+          ". " + r.market + "."
+      });
+      root.appendChild(dot);
+    });
+
+    // scale along the bottom, so "how much steeper" is readable and not just
+    // "steeper than"
+    var axisY = H - padB + 2;
+    root.appendChild(svg("line", {
+      x1: x0, x2: x1, y1: axisY, y2: axisY, class: "chart-axis"
+    }));
+    for (var t = Math.ceil(lo); t <= hi; t += 1) {
+      var tx = X(t);
+      root.appendChild(svg("line", { x1: tx, x2: tx, y1: axisY, y2: axisY + 4, class: "chart-axis" }));
+      var tk = svg("text", { x: tx, y: axisY + 16, "text-anchor": "middle", class: "chart-tick" });
+      tk.textContent = String(t);
+      root.appendChild(tk);
+    }
+
+    // where the current selection sits
+    if (mine != null) {
+      var mx = X(clamp(mine, lo, hi));
+      root.appendChild(svg("line", {
+        x1: mx, x2: mx, y1: padT - 4, y2: axisY,
+        stroke: token("--accent"), "stroke-width": 2
+      }));
+      var you = svg("text", {
+        x: clamp(mx, x0 + 30, x1 - 30), y: axisY + 34,
+        "text-anchor": "middle", class: "chart-strong chart-you"
+      });
+      you.textContent = scopeLabel() + " (" + mine.toFixed(2) + ")";
+      root.appendChild(you);
+    }
+
+    clear(host);
+    host.appendChild(root);
+  }
+
+  function renderBenchTable() {
+    var host = $("#bench-table");
+    clear(host);
+    var rows = state.benchmarks || [];
+    if (!rows.length) return;
+
+    var table = el("table");
+    table.appendChild(el("caption", null,
+      "Twelve markets outside this catalogue, each fitted with the same estimator."));
+    var thead = el("thead");
+    var hr = el("tr");
+    ["Market", "Sensitivity", "Likely range", "Measured from", "Source"].forEach(function (h) {
+      var th = el("th", null, h);
+      th.setAttribute("scope", "col");
+      hr.appendChild(th);
+    });
+    thead.appendChild(hr);
+    table.appendChild(thead);
+
+    var tbody = el("tbody");
+    rows.forEach(function (r) {
+      var tr = el("tr");
+      var th = el("th", null, r.label);
+      th.setAttribute("scope", "row");
+      tr.appendChild(th);
+      tr.appendChild(el("td", "num", r.flag ? "not usable" : r.elasticity.toFixed(2)));
+      tr.appendChild(el("td", "num", r.ci_low.toFixed(2) + " to " + r.ci_high.toFixed(2)));
+      tr.appendChild(el("td", null, r.market));
+      tr.appendChild(el("td", null, r.source));
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    host.appendChild(table);
+  }
+
+  // The two results that must not be read as a price response. Naming them is
+  // the point: they are the clearest evidence for the caveat the whole page
+  // rests on.
+  function renderBenchFlagged() {
+    var host = $("#bench-flagged");
+    clear(host);
+    var flagged = (state.benchmarks || []).filter(function (b) { return b.flag; });
+    if (!flagged.length) return;
+
+    host.appendChild(el("h3", "bench-flagged-title", "Two that came out unusable"));
+    var list = el("ul", "bench-flagged-list");
+    flagged.forEach(function (b) {
+      var li = el("li");
+      li.appendChild(el("strong", null, b.label));
+      li.appendChild(el("span", "bench-flag-tag", b.flag === "confounded" ? "wrong sign" : "can't tell"));
+      li.appendChild(el("p", null, b.flag_reason));
+      list.appendChild(li);
+    });
+    host.appendChild(list);
+  }
+
+  function renderBenchSub() {
+    var totals = state.benchmarkTotals || {};
+    if (!totals.datasets) return;
+    $("#bench-sub").textContent =
+      "This catalogue is one shop in one country. These are " + totals.datasets +
+      " other markets — from supermarket shelves to Broadway box office — measured the " +
+      "same way, so you can see whether your category is unusual or whether everything " +
+      "works like this.";
+  }
+
   function renderCharts() {
     if (!state.estimates) return;
     redrawChart("#scale-chart", drawScaleChart);
     redrawChart("#scenario-chart", drawScenarioChart);
     redrawChart("#compare-chart", drawCompareChart);
+    if (usableBenchmarks().length) redrawChart("#bench-chart", drawBenchChart);
   }
 
   /* ======================================================================
@@ -851,8 +1022,98 @@
     if (text) { $("#profit-note-text").textContent = text; note.hidden = false; }
     else { note.hidden = true; }
 
+    renderTill(sc);
     renderScenarioLegend();
     renderScenarioTable(est);
+  }
+
+  // Percentages are the honest unit, but nobody prices a shelf in percentages.
+  // This restates the same scenario in money. The anchor is a hundred units a
+  // week rather than a round sum of money, so the units row stays whole and
+  // visibly agrees with its own percentage -- at a £10 price, 100 units and
+  // £1,000 rather than £100 and a fractional 10. The arithmetic is linear, so
+  // a shop selling 2,400 multiplies every figure by 24 and the shape holds.
+  var TILL_UNITS = 100;
+
+  function renderTill(sc) {
+    var host = $("#till-roll");
+    clear(host);
+
+    var ratio = quantityRatio(currentEstimate().elasticity, 1 + state.change / 100);
+    var unitsAfter = TILL_UNITS * ratio;
+    var takingsNow = TILL_UNITS * state.price;
+    var takingsAfter = unitsAfter * sc.newPrice;
+
+    var rows = [
+      {
+        label: "Takings",
+        now: money(takingsNow),
+        after: money(takingsAfter),
+        delta: sc.pctRevenueChange,
+        tone: sc.direction === "up" ? "good" : sc.direction === "down" ? "critical" : null,
+        lead: true
+      },
+      {
+        label: "Units sold",
+        now: nfInt.format(TILL_UNITS),
+        after: nfInt.format(Math.round(unitsAfter)),
+        delta: sc.pctQuantityChange,
+        tone: null
+      }
+    ];
+
+    if (sc.pctProfitChange != null) {
+      rows.push({
+        label: "Money you keep",
+        now: money(TILL_UNITS * (state.price - state.cost)),
+        after: money(unitsAfter * (sc.newPrice - state.cost)),
+        delta: sc.pctProfitChange,
+        tone: sc.pctProfitChange > 0.5 ? "good" : sc.pctProfitChange < -0.5 ? "critical" : null,
+        lead: true
+      });
+    }
+
+    var table = el("table", "till-table");
+    table.appendChild(el("caption", "sr-only",
+      "The same change stated as money, over a week selling " + nfInt.format(TILL_UNITS) +
+      " units at today's price of " + money(state.price) + "."));
+
+    var thead = el("thead");
+    var hr = el("tr");
+    hr.appendChild(el("th", null, ""));
+    [
+      ["Now", "at " + money(state.price)],
+      ["After", "at " + money(sc.newPrice)],
+      ["Change", ""]
+    ].forEach(function (h) {
+      var th = el("th", "till-col");
+      th.setAttribute("scope", "col");
+      th.appendChild(el("span", "till-col-name", h[0]));
+      if (h[1]) th.appendChild(el("span", "till-col-note", h[1]));
+      hr.appendChild(th);
+    });
+    thead.appendChild(hr);
+    table.appendChild(thead);
+
+    var tbody = el("tbody");
+    rows.forEach(function (r) {
+      var tr = el("tr");
+      if (r.lead) tr.setAttribute("data-lead", "true");
+      var th = el("th", null, r.label);
+      th.setAttribute("scope", "row");
+      tr.appendChild(th);
+      tr.appendChild(el("td", "till-num", r.now));
+      var after = el("td", "till-num till-after", r.after);
+      tr.appendChild(after);
+      var d = el("td", "till-num till-delta", signedPct(r.delta));
+      if (r.tone) d.setAttribute("data-tone", r.tone);
+      tr.appendChild(d);
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    host.appendChild(table);
+
+    $("#till-anchor").textContent = nfInt.format(TILL_UNITS);
   }
 
   function renderScenarioLegend() {
@@ -1034,6 +1295,7 @@
     renderEvidence();
     renderCompareTable();
     renderCompareNote();
+    renderBenchTable();
     renderCharts();
     writeURL();
   }
@@ -1407,6 +1669,8 @@
     Promise.all([fetchJSON("/estimates"), fetchJSON("/catalog")])
       .then(function (res) {
         state.estimates = res[0];
+        state.benchmarks = res[0].benchmarks || [];
+        state.benchmarkTotals = res[0].benchmark_totals || {};
         state.currencySymbol = CURRENCY_SYMBOLS[res[1].currency] || "";
         $("#price-symbol").textContent = state.currencySymbol;
         $("#cost-symbol").textContent = state.currencySymbol;
@@ -1437,6 +1701,8 @@
         initResize();
         renderGlossary();
         renderMethod();
+        renderBenchSub();
+        renderBenchFlagged();
 
         if (state.cost != null) {
           $("#cost-input").value = String(state.cost);

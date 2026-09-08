@@ -196,6 +196,17 @@
         <p class="card-sub" id="scenario-sub"></p>
       </div>
 
+      <!-- the money answer, before the percentages -->
+      <div class="till" id="till">
+        <div class="till-head">
+          <h3 class="till-title" id="till-title">If you sell
+            <span class="till-anchor" id="till-anchor">100</span> a week at today&rsquo;s price</h3>
+          <p class="till-note">Your own numbers will be a different size, not a different shape &mdash;
+            scale them and the percentages hold.</p>
+        </div>
+        <div class="till-roll" id="till-roll"></div>
+      </div>
+
       <div class="tiles" id="scenario-tiles"></div>
 
       <p class="notice notice-info" id="profit-note" hidden>
@@ -237,6 +248,29 @@
         <div class="table-view" id="compare-table" hidden></div>
       </figure>
       <p class="hint" id="compare-note"></p>
+    </section>
+
+    <!-- OTHER TRADES --------------------------------------------- -->
+    <section class="card" aria-labelledby="bench-heading">
+      <div class="card-head">
+        <h2 class="card-title" id="bench-heading">How other trades behave</h2>
+        <p class="card-sub" id="bench-sub">
+          This catalogue is one shop in one country. These are twelve other markets,
+          measured the same way, so you can see whether your category is unusual
+          or whether everything works like this.
+        </p>
+      </div>
+      <figure class="chart-figure">
+        <figcaption class="figure-head figure-head-end">
+          <div class="figure-actions">
+            <button type="button" class="btn btn-quiet btn-table" data-table-toggle="bench-table"
+                    aria-expanded="false" aria-controls="bench-table">Table</button>
+          </div>
+        </figcaption>
+        <div class="chart-host" id="bench-chart"></div>
+        <div class="table-view" id="bench-table" hidden></div>
+      </figure>
+      <div class="bench-flagged" id="bench-flagged"></div>
     </section>
 
     <!-- EVIDENCE ------------------------------------------------ -->

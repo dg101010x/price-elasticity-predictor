@@ -264,3 +264,90 @@ def test_clients_without_gzip_still_get_a_readable_response():
     r = client.get("/estimates", headers={"Accept-Encoding": "identity"})
     assert r.status_code == 200
     assert r.json()["revenue_breakeven_elasticity"] == -1.0
+
+
+# ------------------------------------------------ reference benchmarks (2.1) --
+# Twelve outside markets, screened out of three public archives and fitted with
+# the same estimator as the catalogue. See src/reference_data.py for how the
+# roster was chosen, and why three otherwise-perfect candidates were rejected
+# for being simulated.
+
+def test_benchmarks_cover_every_reference_market():
+    body = client.get("/benchmarks").json()
+    assert body["totals"]["datasets"] == 12
+    assert len(body["benchmarks"]) == 12
+    labels = {b["label"] for b in body["benchmarks"]}
+    # one from each estimator family
+    assert "Ketchup" in labels                       # choice-share scanner panel
+    assert "Avocados (California)" in labels         # single series
+    assert any("Cigarettes" in name for name in labels)  # within-state panel
+
+
+def test_every_benchmark_carries_its_provenance():
+    for row in client.get("/benchmarks").json()["benchmarks"]:
+        for key in ("key", "label", "market", "source", "estimator", "estimator_note",
+                    "elasticity", "ci_low", "ci_high", "std_error", "r_squared",
+                    "n_observations", "rows_in_dataset"):
+            assert key in row, f"{row.get('label')} is missing {key}"
+        assert row["source"].strip(), f"{row['label']} has no named source"
+        assert row["estimator"] in ("panel", "series", "choice")
+
+
+def test_benchmark_intervals_bracket_their_estimate():
+    for row in client.get("/benchmarks").json()["benchmarks"]:
+        assert row["ci_low"] <= row["elasticity"] <= row["ci_high"], row["label"]
+
+
+def test_the_two_unusable_results_are_flagged_not_dropped():
+    """Natural gas can't tell the sign; Broadway comes out the wrong way round.
+
+    Both are kept and labelled rather than quietly binned -- they are the
+    page's own evidence for 'pattern, not promise'.
+    """
+    rows = client.get("/benchmarks").json()["benchmarks"]
+    flagged = {r["label"]: r for r in rows if r.get("flag")}
+    assert set(flagged) == {"Household natural gas", "Theatre tickets (Broadway)"}
+
+    gas = flagged["Household natural gas"]
+    assert gas["flag"] == "inconclusive"
+    assert gas["ci_low"] <= 0 <= gas["ci_high"]
+
+    broadway = flagged["Theatre tickets (Broadway)"]
+    assert broadway["flag"] == "confounded"
+    assert broadway["elasticity"] > 0
+    for row in flagged.values():
+        assert row["flag_reason"].strip()
+
+
+def test_unflagged_benchmarks_all_slope_downwards():
+    usable = [r for r in client.get("/benchmarks").json()["benchmarks"] if not r.get("flag")]
+    assert len(usable) == 10
+    for row in usable:
+        assert row["elasticity"] < 0, f"{row['label']} is not a demand curve"
+        assert row["ci_high"] < 0, f"{row['label']} should have been flagged inconclusive"
+
+
+def test_published_estimates_land_where_the_literature_says():
+    """A guard against a silently broken estimator.
+
+    Stock & Watson put US cigarette demand near -1 (their IV estimates run
+    roughly -0.94 to -1.28); brand-level scanner elasticities are steeper than
+    category-level ones because a shopper leaving one brand usually arrives at
+    another on the same shelf.
+    """
+    rows = {r["label"]: r for r in client.get("/benchmarks").json()["benchmarks"]}
+    sw = rows["Cigarettes (US states, 1985 and 1995)"]["elasticity"] \
+        if "Cigarettes (US states, 1985 and 1995)" in rows \
+        else rows["Cigarettes (US states, 1985 & 1995)"]["elasticity"]
+    assert -1.6 < sw < -0.7, sw
+    assert rows["Ketchup"]["elasticity"] < rows["Cigarettes (US states, 1963–1992)"]["elasticity"]
+
+
+def test_estimates_carries_the_benchmarks_so_the_page_loads_once():
+    body = client.get("/estimates").json()
+    assert len(body["benchmarks"]) == 12
+    assert body["benchmark_totals"]["usable_benchmarks"] == 10
+
+
+def test_api_index_lists_benchmarks():
+    assert "/benchmarks" in client.get("/api").json()["endpoints"]

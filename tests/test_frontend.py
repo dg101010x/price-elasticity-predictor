@@ -297,6 +297,7 @@ def test_selection_is_shareable_through_the_url(page, base_url):
 @pytest.mark.parametrize("button,table", [
     ('[data-table-toggle="scenario-table"]', "#scenario-table"),
     ('[data-table-toggle="compare-table"]', "#compare-table"),
+    ('[data-table-toggle="bench-table"]', "#bench-table"),
 ])
 def test_every_chart_has_a_table_twin(page, button, table):
     """Values must never be gated behind a hover."""
@@ -488,3 +489,123 @@ def test_dark_mode_is_honoured_from_the_system_setting(browser, base_url):
     context.close()
     r, g, b = [int(x) for x in bg.replace("rgb(", "").replace(")", "").split(",")[:3]]
     assert r + g + b < 200, f"body stayed light under prefers-color-scheme: dark ({bg})"
+
+
+# ------------------------------------------------------ the money answer --
+# Percentages are the honest unit; money is the one a price-setter thinks in.
+# The till restates the same scenario over a hundred-unit week.
+
+def test_the_till_states_the_answer_in_money(page):
+    page.fill("#price-input", "10.00")
+    page.dispatch_event("#price-input", "blur")
+    page.click('.quick-changes button[data-change="10"]')
+
+    rows = page.eval_on_selector_all(
+        "#till-roll tbody tr",
+        "els => Object.fromEntries(els.map(e => ["
+        "e.querySelector('th').textContent,"
+        "[...e.querySelectorAll('td')].map(t => t.textContent)]))"
+    )
+    # 100 units at £10 = £1,000 now; at -16.6% units and +10% price = £917.62
+    assert rows["Takings"][0] == "£1,000.00"
+    assert rows["Takings"][1] == "£917.62"
+    assert rows["Takings"][2] == "−8.2%"
+
+
+def test_till_units_agree_with_their_own_percentage(page):
+    """Regression: an earlier anchor of £100 gave '10 → 8' beside '−16.6%'.
+
+    Rounding a ten-unit base made the arithmetic visibly disagree with itself.
+    Anchoring on a hundred units keeps the row whole and self-consistent.
+    """
+    page.fill("#price-input", "10.00")
+    page.dispatch_event("#price-input", "blur")
+    page.click('.quick-changes button[data-change="10"]')
+
+    units = page.eval_on_selector_all(
+        "#till-roll tbody tr",
+        "els => els.filter(e => e.querySelector('th').textContent === 'Units sold')"
+        ".map(e => [...e.querySelectorAll('td')].map(t => t.textContent))[0]"
+    )
+    now, after, change = int(units[0]), int(units[1]), units[2]
+    assert now == 100
+    assert change == "−16.6%"
+    assert after == round(now * (1 - 0.166)), (units, "units row contradicts its own percentage")
+
+
+def test_till_shows_money_kept_only_once_a_cost_is_given(page):
+    labels = page.eval_on_selector_all(
+        "#till-roll tbody tr th", "els => els.map(e => e.textContent)")
+    assert "Money you keep" not in labels
+
+    page.click("#cost-block summary")
+    page.fill("#cost-input", "6.00")
+    page.dispatch_event("#cost-input", "blur")
+
+    labels = page.eval_on_selector_all(
+        "#till-roll tbody tr th", "els => els.map(e => e.textContent)")
+    assert "Money you keep" in labels
+
+
+def test_till_can_show_takings_falling_while_money_kept_rises(page):
+    """The whole reason the profit row exists, in money rather than percent."""
+    page.fill("#price-input", "10.00")
+    page.dispatch_event("#price-input", "blur")
+    page.click("#cost-block summary")
+    page.fill("#cost-input", "6.00")
+    page.dispatch_event("#cost-input", "blur")
+    page.click('.quick-changes button[data-change="10"]')
+
+    tones = page.eval_on_selector_all(
+        "#till-roll tbody tr",
+        "els => Object.fromEntries(els.map(e => ["
+        "e.querySelector('th').textContent,"
+        "e.querySelector('.till-delta').dataset.tone || '']))"
+    )
+    assert tones["Takings"] == "critical"
+    assert tones["Money you keep"] == "good"
+
+
+# ---------------------------------------------------------- other trades --
+
+def test_other_trades_ladder_renders_as_inline_svg(page):
+    svg = page.query_selector("#bench-chart svg")
+    assert svg is not None
+    assert svg.get_attribute("role") == "img"
+    assert "Ketchup" in (svg.get_attribute("aria-label") or "")
+
+
+def test_every_benchmark_dot_is_focusable_and_described(page):
+    dots = page.eval_on_selector_all(
+        "#bench-chart circle[tabindex='0']", "els => els.map(e => e.getAttribute('aria-label'))")
+    assert len(dots) == 10, "ten usable benchmarks should each be reachable"
+    for label in dots:
+        assert label and "break-even" in label
+
+
+def test_the_two_unusable_benchmarks_are_named_on_the_page(page):
+    text = page.text_content("#bench-flagged")
+    assert "Household natural gas" in text
+    assert "Theatre tickets (Broadway)" in text
+    tags = page.eval_on_selector_all(
+        "#bench-flagged .bench-flag-tag", "els => els.map(e => e.textContent)")
+    assert sorted(tags) == ["can't tell", "wrong sign"]
+
+
+def test_flagged_markets_are_kept_out_of_the_ladder(page):
+    """They would read as 'theatre tickets are barely price-sensitive', which
+    is exactly the wrong lesson to draw from a confounded slope."""
+    label = page.get_attribute("#bench-chart svg", "aria-label")
+    assert "Theatre tickets" not in label
+    assert "natural gas" not in label
+
+
+def test_benchmark_table_carries_the_source_for_every_market(page):
+    page.click('[data-table-toggle="bench-table"]')
+    rows = page.eval_on_selector_all(
+        "#bench-table tbody tr", "els => els.map(e => e.children.length)")
+    assert len(rows) == 12
+    sources = page.eval_on_selector_all(
+        "#bench-table tbody tr td:last-child", "els => els.map(e => e.textContent.trim())")
+    assert all(sources), "every market must name where it came from"
+    assert any("Playbill" in s for s in sources)
