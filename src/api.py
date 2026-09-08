@@ -140,8 +140,8 @@ class ElasticityResponse(BaseModel):
     advice: Optional[dict] = None
     evidence: Optional[dict] = None
     caveat: str = (
-        "Descriptive association from observational data, not a causal effect — "
-        "price is not randomly assigned in the underlying datasets. See /methodology."
+        "Descriptive association from observational data, not a causal effect. "
+        "Price is not randomly assigned in the underlying datasets. See /methodology."
     )
 
 

@@ -160,7 +160,7 @@ def profile_reference_datasets() -> list[DatasetSpec]:
         spec = DatasetSpec(
             filename=f"reference/{ref.filename}",
             source_url=ref.url,
-            description=f"{ref.label} — {ref.market}. Source: {ref.source}.",
+            description=f"{ref.label}. {ref.market}. Source: {ref.source}.",
             data_type={"panel": "panel", "series": "weekly", "choice": "scanner-choice"}[ref.estimator],
             key_elasticity_columns=(
                 ",".join(filter(None, [ref.entity, ref.price, ref.quantity, ref.deflator]))

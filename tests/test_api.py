@@ -340,7 +340,7 @@ def test_published_estimates_land_where_the_literature_says():
         if "Cigarettes (US states, 1985 and 1995)" in rows \
         else rows["Cigarettes (US states, 1985 & 1995)"]["elasticity"]
     assert -1.6 < sw < -0.7, sw
-    assert rows["Ketchup"]["elasticity"] < rows["Cigarettes (US states, 1963–1992)"]["elasticity"]
+    assert rows["Ketchup"]["elasticity"] < rows["Cigarettes (US states, 1963 to 1992)"]["elasticity"]
 
 
 def test_estimates_carries_the_benchmarks_so_the_page_loads_once():
@@ -351,3 +351,34 @@ def test_estimates_carries_the_benchmarks_so_the_page_loads_once():
 
 def test_api_index_lists_benchmarks():
     assert "/benchmarks" in client.get("/api").json()["endpoints"]
+
+
+# ------------------------------------------------------------ house style --
+
+EM_DASH = "—"
+EN_DASH = "–"
+
+
+def _dash_hits(text: str) -> list[str]:
+    """Every line carrying a dash we don't use, with a little context."""
+    return [
+        line.strip()[:110]
+        for line in text.splitlines()
+        if EM_DASH in line or EN_DASH in line or "&mdash;" in line or "&ndash;" in line
+    ]
+
+
+def test_the_page_uses_no_em_or_en_dashes():
+    """House style: commas, colons and full stops instead.
+
+    The minus sign in a figure like −8.2% is U+2212 and is left alone; it is a
+    mathematical operator, not punctuation.
+    """
+    hits = _dash_hits(client.get("/").text)
+    assert hits == [], f"dashes in the served page: {hits}"
+
+
+@pytest.mark.parametrize("path", ["/estimates", "/benchmarks", "/methodology", "/elasticity"])
+def test_api_copy_uses_no_em_or_en_dashes(path):
+    hits = _dash_hits(client.get(path).text)
+    assert hits == [], f"dashes in {path}: {hits}"

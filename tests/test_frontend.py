@@ -106,14 +106,14 @@ def test_browser_math_matches_the_python_module(page):
     )
     assert tiles["New price"].endswith("11.00")
     assert tiles["Units sold"] == "−16.6%"       # python: -16.58
-    assert tiles["Revenue"] == "−8.2%"           # python: -8.24
+    assert tiles["Takings"] == "−8.2%"           # python: -8.24
 
 
 def test_a_price_cut_flips_the_revenue_tile(page):
     page.click('.quick-changes button[data-change="-10"]')
     value = page.text_content(".tile[data-tone] .tile-value")
     revenue = page.eval_on_selector_all(
-        ".tile", "els => els.filter(e => e.querySelector('.tile-label').textContent === 'Revenue')"
+        ".tile", "els => els.filter(e => e.querySelector('.tile-label').textContent === 'Takings')"
                  ".map(e => ({v: e.querySelector('.tile-value').textContent, tone: e.dataset.tone}))[0]"
     )
     assert revenue["v"].startswith("+"), revenue
@@ -138,14 +138,14 @@ def test_unit_cost_adds_a_profit_tile_and_can_disagree_with_revenue(page):
 
     labels = page.eval_on_selector_all(
         ".tile .tile-label", "els => els.map(e => e.textContent)")
-    assert "Gross profit" in labels
+    assert "Money you keep" in labels
 
     values = page.eval_on_selector_all(
         ".tile", "els => Object.fromEntries(els.map(e => ["
                  "e.querySelector('.tile-label').textContent,"
                  "e.querySelector('.tile-value').textContent]))")
-    assert values["Revenue"].startswith("+")
-    assert values["Gross profit"].startswith("−")
+    assert values["Takings"].startswith("+")
+    assert values["Money you keep"].startswith("−")
     assert not page.is_hidden("#profit-note")
 
 
@@ -157,7 +157,7 @@ def test_cost_above_price_is_rejected_next_to_the_field(page):
     assert page.is_visible("#cost-error")
     assert "below the current price" in page.text_content("#cost-error")
     labels = page.eval_on_selector_all(".tile .tile-label", "els => els.map(e => e.textContent)")
-    assert "Gross profit" not in labels
+    assert "Money you keep" not in labels
 
 
 def test_a_discount_that_barely_moves_profit_is_called_out(page):
@@ -177,18 +177,18 @@ def test_a_discount_that_barely_moves_profit_is_called_out(page):
         ".tile", "els => Object.fromEntries(els.map(e => ["
                  "e.querySelector('.tile-label').textContent,"
                  "e.querySelector('.tile-value').textContent]))")
-    assert values["Revenue"].startswith("+")
-    assert values["Gross profit"].startswith("+")
+    assert values["Takings"].startswith("+")
+    assert values["Money you keep"].startswith("+")
 
     assert not page.is_hidden("#profit-note")
     text = page.text_content("#profit-note-text")
-    assert "moves much further than profit" in text
+    assert "move much further than your profit" in text
     assert "notice-warn" in page.get_attribute("#profit-note", "class")
 
 
 def test_revenue_not_profit_is_stated_when_no_cost_is_given(page):
     assert not page.is_hidden("#profit-note")
-    assert "revenue, not profit" in page.text_content("#profit-note-text")
+    assert "takings, not profit" in page.text_content("#profit-note-text")
 
 
 # ------------------------------------------------------------ scope + pick --
@@ -616,4 +616,4 @@ def test_the_method_section_accounts_for_the_reference_markets(page):
     text = page.text_content("#method-benchmarks")
     assert "5,960" in text and "26" in text
     assert "12" in text, "the roster size should come from the payload"
-    assert "2 of the 12 came out unusable" in text
+    assert "2 more" in text and "labelled" in text

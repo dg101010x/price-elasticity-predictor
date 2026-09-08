@@ -105,10 +105,10 @@ REFERENCE_DATASETS: list[ReferenceSpec] = [
     ),
     ReferenceSpec(
         key="cigarettes_us_panel",
-        label="Cigarettes (US states, 1963–1992)",
+        label="Cigarettes (US states, 1963 to 1992)",
         filename="cigarettes_baltagi.csv",
         url=RDATASETS.format(pkg="Ecdat", item="Cigar"),
-        market="46 US states, annual, 1963–1992",
+        market="46 US states, annual, 1963 to 1992",
         source="Baltagi & Levin (1992), Structural Change and Economic Dynamics 3:321-335",
         estimator="panel",
         entity="state",
@@ -132,14 +132,14 @@ REFERENCE_DATASETS: list[ReferenceSpec] = [
         price="price",
         quantity="packs",
         deflator="cpi",
-        note="Two periods per state — enough to demean, not enough to be precise.",
+        note="Two periods per state: enough to demean, not enough to be precise.",
     ),
     ReferenceSpec(
         key="natural_gas_residential",
         label="Household natural gas",
         filename="natural_gas.csv",
         url=RDATASETS.format(pkg="AER", item="NaturalGas"),
-        market="6 US states, annual, 1967–1989",
+        market="6 US states, annual, 1967 to 1989",
         source="Baltagi (2002), Econometrics, 3rd ed.",
         estimator="panel",
         entity="state",
@@ -148,7 +148,7 @@ REFERENCE_DATASETS: list[ReferenceSpec] = [
         note=(
             "A utility, and it behaves like one: people cannot easily buy less heat. "
             "The dataset ships no price index, so these are nominal prices across "
-            "twenty-two inflationary years — which is most of why the interval "
+            "twenty-two inflationary years, which is most of why the interval "
             "below is uninformative."
         ),
     ),
@@ -158,7 +158,7 @@ REFERENCE_DATASETS: list[ReferenceSpec] = [
         label="Avocados (California)",
         filename="avocados_california.csv",
         url=RDATASETS.format(pkg="causaldata", item="avocado"),
-        market="California, weekly, 2015–2018, conventional avocados only",
+        market="California, weekly, 2015 to 2018, conventional avocados only",
         source="Hass Avocado Board via Kiggins (2018); packaged in causaldata for Huntington-Klein, The Effect",
         estimator="series",
         price="AveragePrice",
@@ -174,7 +174,7 @@ REFERENCE_DATASETS: list[ReferenceSpec] = [
         label="Rail freight (grain, 1880s)",
         filename="rail_freight_cartel.csv",
         url=RDATASETS.format(pkg="AER", item="CartelStability"),
-        market="US Joint Executive Committee railroads, weekly, 1880–1886",
+        market="US Joint Executive Committee railroads, weekly, 1880 to 1886",
         source="Porter (1983), Bell Journal of Economics 14:301-314",
         estimator="series",
         price="price",
@@ -199,7 +199,7 @@ REFERENCE_DATASETS: list[ReferenceSpec] = [
             "skw": "price.skw", "cosw": "price.cosw", "pw": "price.pw",
             "sko": "price.sko", "coso": "price.coso",
         },
-        note="Five competing tins on one shelf — the most substitutable category in the roster.",
+        note="Five competing tins on one shelf, the most substitutable category in the roster.",
     ),
     ReferenceSpec(
         key="ketchup_brands",

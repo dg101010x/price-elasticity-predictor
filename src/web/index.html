@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Price Sensitivity Lab &mdash; what a price change does to revenue</title>
-<meta name="description" content="Test a price change against real retail sales history and see what it does to units and revenue before you commit to it." />
+<title>Price Sensitivity Lab: what a price change does to your takings</title>
+<meta name="description" content="Try a price change against real shop sales history and see what it does to your takings before you commit to it." />
 <meta name="color-scheme" content="light dark" />
 <link rel="preload" as="font" type="font/woff2" href="/fonts/archivo-400-700.woff2" crossorigin />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='5' fill='%232a78d6'/%3E%3Cpath d='M4 17.5 9.5 12l3.5 3 6-6.5' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M14.5 8h4.5v4.5' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
@@ -24,7 +24,7 @@
       </span>
       <span class="brand-text">
         <strong>Price Sensitivity Lab</strong>
-        <span class="brand-sub">Retail pricing, tested against sales history</span>
+        <span class="brand-sub">Try a price change before you make it</span>
       </span>
     </div>
     <div class="masthead-tools">
@@ -150,13 +150,13 @@
         </span>
       </summary>
       <div class="field">
-        <label class="label" for="cost-input">What each unit costs you</label>
+        <label class="label" for="cost-input">What each one costs you</label>
         <div class="money-input">
           <span class="money-symbol" id="cost-symbol" aria-hidden="true">&pound;</span>
           <input id="cost-input" type="number" min="0" step="0.05" placeholder="0.00"
                  inputmode="decimal" aria-describedby="cost-hint" />
         </div>
-        <p class="hint" id="cost-hint">Optional. Revenue and profit often move in opposite directions &mdash; this is how you check.</p>
+        <p class="hint" id="cost-hint">Optional, and worth it. Takings and profit often move opposite ways. This is how you catch it.</p>
         <p class="field-error" id="cost-error" role="alert" hidden></p>
       </div>
     </details>
@@ -179,10 +179,10 @@
 
       <figure class="scale-figure">
         <figcaption class="figure-head">
-          <h2 class="figure-title">Where this sits on the price-sensitivity scale</h2>
+          <h2 class="figure-title">Where this sits on the scale</h2>
           <p class="figure-note">
             The <button type="button" class="term" data-term="breakeven">break-even line</button>
-            is where a price change leaves revenue untouched.
+            is the point where a price change makes no difference to your takings at all.
           </p>
         </figcaption>
         <div class="scale-host" id="scale-chart"></div>
@@ -192,7 +192,7 @@
     <!-- SCENARIO ------------------------------------------------ -->
     <section class="card" aria-labelledby="scenario-heading">
       <div class="card-head">
-        <h2 class="card-title" id="scenario-heading">If you make that change</h2>
+        <h2 class="card-title" id="scenario-heading">What happens if you do it</h2>
         <p class="card-sub" id="scenario-sub"></p>
       </div>
 
@@ -201,8 +201,8 @@
         <div class="till-head">
           <h3 class="till-title" id="till-title">If you sell
             <span class="till-anchor" id="till-anchor">100</span> a week at today&rsquo;s price</h3>
-          <p class="till-note">Your own numbers will be a different size, not a different shape &mdash;
-            scale them and the percentages hold.</p>
+          <p class="till-note">Your own numbers will be a different size, but the same shape.
+            Scale them up or down and the percentages still hold.</p>
         </div>
         <div class="till-roll" id="till-roll"></div>
       </div>
@@ -216,7 +216,7 @@
 
       <figure class="chart-figure">
         <figcaption class="figure-head">
-          <h3 class="figure-title">Units and revenue across the price range</h3>
+          <h3 class="figure-title">Units and takings across the whole price range</h3>
           <div class="figure-actions">
             <div class="legend" id="scenario-legend"></div>
             <button type="button" class="btn btn-quiet btn-table" data-table-toggle="scenario-table"
@@ -231,10 +231,10 @@
     <!-- COMPARISON ---------------------------------------------- -->
     <section class="card" aria-labelledby="compare-heading">
       <div class="card-head">
-        <h2 class="card-title" id="compare-heading">How categories compare</h2>
+        <h2 class="card-title" id="compare-heading">How your departments compare</h2>
         <p class="card-sub">
-          Everything left of the break-even line grows revenue when you discount.
-          Your current pick is highlighted.
+          Anything to the left of the break-even line brings in more money when you discount it.
+          What you have picked is highlighted.
         </p>
       </div>
       <figure class="chart-figure">
@@ -276,8 +276,8 @@
     <!-- EVIDENCE ------------------------------------------------ -->
     <section class="card" aria-labelledby="evidence-heading">
       <div class="card-head">
-        <h2 class="card-title" id="evidence-heading">How much to trust this</h2>
-        <p class="card-sub">Three things decide whether a number like this is worth acting on.</p>
+        <h2 class="card-title" id="evidence-heading">Should you trust this answer?</h2>
+        <p class="card-sub">Three things decide whether a number like this is worth acting on. Here is how this one scores.</p>
       </div>
       <dl class="evidence" id="evidence-list"></dl>
     </section>
@@ -285,54 +285,64 @@
     <!-- METHOD -------------------------------------------------- -->
     <section class="card card-quiet" id="method" aria-labelledby="method-heading">
       <div class="card-head">
-        <h2 class="card-title" id="method-heading">How this works, and what it isn't</h2>
+        <h2 class="card-title" id="method-heading">Where these numbers come from</h2>
       </div>
 
       <div class="prose">
-        <p>
-          Every estimate here comes from <strong>1.07&nbsp;million real transactions</strong> at a UK
-          online gift and homeware wholesaler between December 2009 and December 2011
-          (<a href="https://archive.ics.uci.edu/dataset/502/online+retail+ii" rel="noreferrer noopener" target="_blank">UCI Online Retail II</a>).
-          Sales are rolled up to one row per product per week, and each product is compared
-          <em>against its own history</em> &mdash; so the answer reflects what happened when
-          <em>that</em> product's price moved, not the fact that expensive things sell in smaller numbers.
+        <p class="prose-lead">
+          Everything on this page comes out of <strong>1.07&nbsp;million real sales</strong> at a
+          British gift and homeware supplier: every order it took between December 2009 and
+          December 2011
+          (<a href="https://archive.ics.uci.edu/dataset/502/online+retail+ii" rel="noreferrer noopener" target="_blank">the Online Retail II records</a>).
         </p>
-        <h3>The three things this can't tell you</h3>
+        <p>
+          We line each product up week by week, what it sold for and how many went out, then
+          compare every product only against <em>its own</em> past. That last part matters. Without
+          it you would just be measuring the obvious, that cheap things sell in bigger numbers than
+          dear ones, which tells you nothing at all about your own price.
+        </p>
+
+        <h3>Three things it can't tell you</h3>
         <ul class="caveat-list">
           <li>
-            <strong>It's a pattern, not a promise.</strong> Nobody ran a pricing experiment here.
-            Prices moved for reasons &mdash; promotions, seasons, clearance &mdash; and those reasons
-            moved sales too. Read this as evidence, not a forecast.
+            <strong>It's what tends to happen, not what will.</strong>
+            Nobody ran an experiment here. Prices moved for reasons: sales, seasons, clearing out old
+            stock. Those same reasons moved the sales figures too. So read this as evidence worth
+            having, not a forecast you can bank.
           </li>
           <li>
-            <strong>Revenue is not profit.</strong> A discount that grows revenue can still shrink
-            what you keep. Add your unit cost in the panel on the left to see both.
+            <strong>Takings are not profit.</strong>
+            A discount can bring more money through the till and still leave you worse off at the end
+            of the week. Put what a unit costs you in the box on the left and you'll see both numbers
+            side by side.
           </li>
           <li>
-            <strong>One catalogue, one market.</strong> These are wholesale gift and homeware prices
-            in GBP. The direction of the effect usually travels; the exact numbers don't.
-            That is what <a href="#bench-heading">the twelve other trades</a> above are for.
+            <strong>One shop, one country.</strong>
+            This is British gift and homeware, priced in pounds. Which <em>way</em> a price change
+            pushes usually travels to other trades. The exact size of it doesn't. That's what
+            <a href="#bench-heading">the twelve other trades</a> above are for.
           </li>
         </ul>
 
         <h3>Where the other trades come from</h3>
         <p id="method-benchmarks"></p>
         <p>
-          The screen was mechanical, and it was not the last word. Three of those candidates had
-          a price column, a quantity column and a perfectly plausible retail story, and were thrown
-          out only because their own documentation says the numbers were invented &mdash; a
-          simulated car-seat dataset, a simulated grocery discount trial, and a textbook
-          demand example whose price and quantity were generated rather than observed. They
-          would have fitted beautifully and meant nothing.
+          Reading the small print is the part that can't be automated. Three of those files had a
+          price column, a sales column and a perfectly believable shop story behind them. We dropped
+          all three because their own paperwork says the numbers were invented: a made-up car seat
+          dataset, a made-up grocery discount trial, and a textbook example where the prices and
+          sales were generated rather than recorded. They would have fitted the maths beautifully
+          and meant absolutely nothing.
         </p>
-        <h3>Categories are inferred, not official</h3>
+
+        <h3>The departments are guesswork</h3>
         <p id="method-categories"></p>
         <p class="hint" id="method-excluded"></p>
       </div>
 
       <details class="tech-details">
         <summary>
-          <span>Technical detail &mdash; for anyone who wants the regression</span>
+          <span>The technical version, for anyone who wants the regression</span>
           <span class="summary-chevron" aria-hidden="true">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
           </span>
@@ -347,15 +357,16 @@
       </details>
 
       <div class="glossary">
-        <h3 class="glossary-title">Plain-English glossary</h3>
+        <h3 class="glossary-title">What the words mean</h3>
         <dl id="glossary-list"></dl>
       </div>
     </section>
 
     <footer class="page-footer">
       <p>
-        A research and portfolio project built on public data. It is not pricing advice,
-        and no part of it knows anything about your business.
+        A research and portfolio project built on public data. It is not pricing advice, and no
+        part of it knows the first thing about your shop, your customers or your competition.
+        You do. Use it as a second opinion.
       </p>
     </footer>
   </main>

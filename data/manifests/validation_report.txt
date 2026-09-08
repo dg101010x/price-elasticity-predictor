@@ -33,7 +33,7 @@ notes: The largest genuine price/quantity panel in the roster: every show's aver
 --- reference/cigarettes_baltagi.csv ---
 source: https://raw.githubusercontent.com/vincentarelbundock/Rdatasets/master/csv/Ecdat/Cigar.csv
 rows: 1,380   columns: 10
-date_range: 46 US states, annual, 1963–1992
+date_range: 46 US states, annual, 1963 to 1992
 data_type: panel
 key_elasticity_columns: state,price,sales,cpi
 notes: The textbook panel-data demand study. Price is deflated by CPI so the slope is a response to real price, not to thirty years of inflation.
@@ -44,20 +44,20 @@ rows: 96   columns: 10
 date_range: 48 continental US states, two years, 1985 and 1995
 data_type: panel
 key_elasticity_columns: state,price,packs,cpi
-notes: Two periods per state — enough to demean, not enough to be precise.
+notes: Two periods per state: enough to demean, not enough to be precise.
 
 --- reference/natural_gas.csv ---
 source: https://raw.githubusercontent.com/vincentarelbundock/Rdatasets/master/csv/AER/NaturalGas.csv
 rows: 138   columns: 11
-date_range: 6 US states, annual, 1967–1989
+date_range: 6 US states, annual, 1967 to 1989
 data_type: panel
 key_elasticity_columns: state,price,consumption
-notes: A utility, and it behaves like one: people cannot easily buy less heat. The dataset ships no price index, so these are nominal prices across twenty-two inflationary years — which is most of why the interval below is uninformative.
+notes: A utility, and it behaves like one: people cannot easily buy less heat. The dataset ships no price index, so these are nominal prices across twenty-two inflationary years, which is most of why the interval below is uninformative.
 
 --- reference/avocados_california.csv ---
 source: https://raw.githubusercontent.com/vincentarelbundock/Rdatasets/master/csv/causaldata/avocado.csv
 rows: 169   columns: 4
-date_range: California, weekly, 2015–2018, conventional avocados only
+date_range: California, weekly, 2015 to 2018, conventional avocados only
 data_type: weekly
 key_elasticity_columns: AveragePrice,TotalVolume
 notes: One market observed over time, so there is no cross-section to demean against and nothing separates a demand response from a supply glut. Reported, and flagged, as the weaker design it is.
@@ -65,7 +65,7 @@ notes: One market observed over time, so there is no cross-section to demean aga
 --- reference/rail_freight_cartel.csv ---
 source: https://raw.githubusercontent.com/vincentarelbundock/Rdatasets/master/csv/AER/CartelStability.csv
 rows: 328   columns: 6
-date_range: US Joint Executive Committee railroads, weekly, 1880–1886
+date_range: US Joint Executive Committee railroads, weekly, 1880 to 1886
 data_type: weekly
 key_elasticity_columns: price,quantity
 notes: Famous precisely because price moved for a reason unrelated to demand: the cartel collapsed and re-formed repeatedly. That is what makes the slope readable here and not elsewhere.
@@ -76,7 +76,7 @@ rows: 13,705   columns: 9
 date_range: US supermarket scanner panel, 13,705 purchase occasions, 5 brands
 data_type: scanner-choice
 key_elasticity_columns: Tuna.choice,price.skw,price.cosw,price.pw,price.sko,price.coso
-notes: Five competing tins on one shelf — the most substitutable category in the roster.
+notes: Five competing tins on one shelf, the most substitutable category in the roster.
 
 --- reference/ketchup_brand_choice.csv ---
 source: https://raw.githubusercontent.com/vincentarelbundock/Rdatasets/master/csv/Ecdat/Ketchup.csv

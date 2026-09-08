@@ -104,7 +104,7 @@ def _flag(result: dict) -> dict:
             "flag_reason": (
                 "The slope comes out positive: higher prices go with more sold, not "
                 "fewer. That is not a demand curve. It is a demand shock showing "
-                "through — whatever made people want the thing also let the seller "
+                "through. Whatever made people want the thing also let the seller "
                 "charge more for it. Kept here because it is the clearest illustration "
                 "of why every number on this page is a pattern and not a promise."
             ),

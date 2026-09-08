@@ -111,7 +111,7 @@
       "rows_in_dataset": 13705,
       "real_prices": false,
       "flag": null,
-      "note": "Five competing tins on one shelf \u2014 the most substitutable category in the roster."
+      "note": "Five competing tins on one shelf, the most substitutable category in the roster."
     },
     {
       "elasticity": -1.399,
@@ -154,7 +154,7 @@
       "rows_in_dataset": 96,
       "real_prices": true,
       "flag": null,
-      "note": "Two periods per state \u2014 enough to demean, not enough to be precise."
+      "note": "Two periods per state: enough to demean, not enough to be precise."
     },
     {
       "elasticity": -0.706,
@@ -167,8 +167,8 @@
       "interpretation": "inelastic (quantity responds less than proportionally to price)",
       "pct_quantity_change_for_10pct_price_increase": -6.5,
       "key": "cigarettes_us_panel",
-      "label": "Cigarettes (US states, 1963\u20131992)",
-      "market": "46 US states, annual, 1963\u20131992",
+      "label": "Cigarettes (US states, 1963 to 1992)",
+      "market": "46 US states, annual, 1963 to 1992",
       "source": "Baltagi & Levin (1992), Structural Change and Economic Dynamics 3:321-335",
       "estimator": "panel",
       "estimator_note": "within-market comparison: each place or show measured against its own history",
@@ -189,7 +189,7 @@
       "pct_quantity_change_for_10pct_price_increase": -6.3,
       "key": "avocados_california",
       "label": "Avocados (California)",
-      "market": "California, weekly, 2015\u20132018, conventional avocados only",
+      "market": "California, weekly, 2015 to 2018, conventional avocados only",
       "source": "Hass Avocado Board via Kiggins (2018); packaged in causaldata for Huntington-Klein, The Effect",
       "estimator": "series",
       "estimator_note": "single market over time: no cross-section to compare against, so read with care",
@@ -210,7 +210,7 @@
       "pct_quantity_change_for_10pct_price_increase": -4.0,
       "key": "rail_freight_1880s",
       "label": "Rail freight (grain, 1880s)",
-      "market": "US Joint Executive Committee railroads, weekly, 1880\u20131886",
+      "market": "US Joint Executive Committee railroads, weekly, 1880 to 1886",
       "source": "Porter (1983), Bell Journal of Economics 14:301-314",
       "estimator": "series",
       "estimator_note": "single market over time: no cross-section to compare against, so read with care",
@@ -231,7 +231,7 @@
       "pct_quantity_change_for_10pct_price_increase": -0.0,
       "key": "natural_gas_residential",
       "label": "Household natural gas",
-      "market": "6 US states, annual, 1967\u20131989",
+      "market": "6 US states, annual, 1967 to 1989",
       "source": "Baltagi (2002), Econometrics, 3rd ed.",
       "estimator": "panel",
       "estimator_note": "within-market comparison: each place or show measured against its own history",
@@ -239,7 +239,7 @@
       "real_prices": false,
       "flag": "inconclusive",
       "flag_reason": "The confidence interval spans zero, so this data cannot tell you whether a price rise moves volume up, down, or not at all.",
-      "note": "A utility, and it behaves like one: people cannot easily buy less heat. The dataset ships no price index, so these are nominal prices across twenty-two inflationary years \u2014 which is most of why the interval below is uninformative."
+      "note": "A utility, and it behaves like one: people cannot easily buy less heat. The dataset ships no price index, so these are nominal prices across twenty-two inflationary years, which is most of why the interval below is uninformative."
     },
     {
       "elasticity": 0.074,
@@ -249,7 +249,7 @@
       "r_squared": 0.006,
       "n_observations": 47361,
       "n_entities": 1098,
-      "interpretation": "positive association (likely confounded \u2014 not a real demand response)",
+      "interpretation": "positive association (likely confounded, not a real demand response)",
       "pct_quantity_change_for_10pct_price_increase": 0.7,
       "key": "broadway_tickets",
       "label": "Theatre tickets (Broadway)",
@@ -260,7 +260,7 @@
       "rows_in_dataset": 47524,
       "real_prices": false,
       "flag": "confounded",
-      "flag_reason": "The slope comes out positive: higher prices go with more sold, not fewer. That is not a demand curve. It is a demand shock showing through \u2014 whatever made people want the thing also let the seller charge more for it. Kept here because it is the clearest illustration of why every number on this page is a pattern and not a promise.",
+      "flag_reason": "The slope comes out positive: higher prices go with more sold, not fewer. That is not a demand curve. It is a demand shock showing through. Whatever made people want the thing also let the seller charge more for it. Kept here because it is the clearest illustration of why every number on this page is a pattern and not a promise.",
       "note": "The largest genuine price/quantity panel in the roster: every show's average ticket price and seats sold, every week, for 35 years. Shows discount and surge constantly, so within-show price variation is real and plentiful."
     }
   ],

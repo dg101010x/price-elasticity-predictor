@@ -37,13 +37,13 @@ REVENUE_BREAKEVEN_ELASTICITY = -1.0
 # Bands for turning a confidence-interval width into plain language. Expressed
 # as the CI half-width as a fraction of the estimate's own magnitude.
 _PRECISION_BANDS = (
-    (0.05, "very precise", "The range around this estimate is tight."),
-    (0.15, "precise", "The range around this estimate is fairly tight."),
-    (0.35, "rough", "The range around this estimate is wide — treat the headline number as a ballpark."),
+    (0.05, "very precise", "Run the same sums on different weeks and you land in much the same place."),
+    (0.15, "precise", "The answer holds fairly steady from one stretch of weeks to the next."),
+    (0.35, "rough", "The answer wobbles a fair bit depending which weeks you look at. Treat it as a ballpark."),
 )
 _PRECISION_FALLBACK = (
     "very rough",
-    "The range around this estimate is very wide — it barely narrows down the answer.",
+    "The answer moves around so much that it barely narrows anything down. Worth a glance, not a decision.",
 )
 
 # Bands for n_observations (SKU-weeks behind the fit).
@@ -181,11 +181,11 @@ def revenue_advice(elasticity: float, ci_low: float, ci_high: float) -> dict:
         return {
             "raising_price": "unclear",
             "certain": False,
-            "headline": "Too close to call which way revenue moves.",
+            "headline": "Too close to call which way your takings move.",
             "detail": (
-                "The likely range for this estimate sits on both sides of the break-even "
-                "point, so the data can't say whether a price rise would grow or shrink "
-                "revenue here."
+                "The range on this answer sits on both sides of the break-even point. "
+                "The history genuinely doesn't say whether putting the price up would "
+                "bring in more money or less."
             ),
         }
 
@@ -193,22 +193,23 @@ def revenue_advice(elasticity: float, ci_low: float, ci_high: float) -> dict:
         return {
             "raising_price": "loses revenue",
             "certain": True,
-            "headline": "Cutting the price tends to grow revenue here.",
+            "headline": "Cutting the price tends to grow your takings.",
             "detail": (
-                "Shoppers react strongly enough that a price rise loses more in units "
-                "than it gains per unit. Discounts tend to pay for themselves in revenue "
-                "terms — though not necessarily in profit terms."
+                "Shoppers here notice a price rise and buy noticeably less. You lose more "
+                "in sales than you gain on each one. Discounts tend to pay for themselves "
+                "in takings. Whether they pay for themselves in profit is a separate "
+                "question, and the cost box answers it."
             ),
         }
 
     return {
         "raising_price": "gains revenue",
         "certain": True,
-        "headline": "Raising the price tends to grow revenue here.",
+        "headline": "Raising the price tends to grow your takings.",
         "detail": (
-            "Shoppers barely change what they buy when the price moves, so a price rise "
-            "keeps more revenue per unit than it loses in units. Discounting here tends "
-            "to give away margin without buying much extra volume."
+            "Shoppers here barely flinch when the price moves. You keep more on each sale "
+            "than you lose in sales, so the takings go up. Discounting mostly gives away "
+            "margin without winning you much extra trade."
         ),
     }
 
@@ -238,12 +239,12 @@ def evidence_summary(estimate: dict) -> dict:
         "fit": fit_label,
         "r_squared": r_squared,
         "fit_detail": (
-            f"Price movements explain {fit_label} of the week-to-week swing in units sold. "
-            "The rest is season, promotion, stock and everything else — which is normal "
-            "for retail data, not a sign the estimate is broken."
+            f"Price accounts for {fit_label} of why sales go up and down week to week. "
+            "The rest is weather, promotions, Christmas, running out of stock. That is "
+            "normal for a shop. It does not mean the number is wrong."
         ),
         "sample_detail": (
-            f"Built from {n_obs:,} weekly price-and-units observations"
+            f"Built from {n_obs:,} weeks of real sales history"
             + (f" across {estimate['n_skus']:,} products." if estimate.get("n_skus") else ".")
         ),
     }

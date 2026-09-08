@@ -1,5 +1,5 @@
 /* ============================================================================
-   Price Sensitivity Lab — design system
+   Price Sensitivity Lab: design system
 
    Direction: the shelf-edge price label. A crisp paper-white working surface,
    ink-blue accent, and figures set like a wholesale price list (tabular mono,
@@ -68,7 +68,7 @@
   --line:         #dde1e8;
   --line-strong:  #c3c9d4;
 
-  /* accent (marks vs text are different steps — see header note) */
+  /* accent (marks vs text are different steps: see header note) */
   --accent:       #2a78d6;
   --accent-text:  #1d64bd;
   --accent-wash:  #eaf2fd;
@@ -109,7 +109,7 @@
   --step-3:  1.75rem;
   --step-4:  clamp(1.6rem, 1.15rem + 2.1vw, 2.6rem);
 
-  /* space — dashboard density */
+  /* space: dashboard density */
   --s1: 4px;  --s2: 8px;  --s3: 12px; --s4: 16px;
   --s5: 24px; --s6: 32px; --s7: 48px; --s8: 64px;
 
@@ -513,7 +513,7 @@ details[open] > summary .summary-chevron { rotate: 180deg; }
   font-size: 11px; font-weight: 700; text-transform: uppercase;
   letter-spacing: .1em; font-stretch: 88%; color: var(--ink-3);
 }
-/* proportional figures on standalone values — tabular only in the table views */
+/* proportional figures on standalone values: tabular only in the table views */
 .tile-value { font-size: var(--step-3); font-weight: 700; letter-spacing: -.03em; line-height: 1.1; }
 .tile-value .unit { font-size: .55em; font-weight: 600; color: var(--ink-3); margin-left: .12em; }
 .tile-sub { font-size: var(--step--1); color: var(--ink-3); line-height: 1.4; }
@@ -665,23 +665,50 @@ details[open] > summary .summary-chevron { rotate: 180deg; }
   font-size: 11px; font-weight: 700; text-transform: uppercase;
   letter-spacing: .1em; font-stretch: 88%; color: var(--ink-3);
 }
-.evidence-grade { display: flex; align-items: center; gap: var(--s2); }
-.evidence-grade b { font-size: var(--step-1); font-weight: 650; letter-spacing: -.01em; }
+/* Grade above, meter below. Side by side, a two-line grade like "a moderate
+   amount" drags the meter out of alignment with the other cards. */
+.evidence-grade { display: flex; flex-direction: column; align-items: flex-start; gap: var(--s2); }
+.evidence-grade b {
+  font-size: var(--step-1); font-weight: 650; letter-spacing: -.01em; line-height: 1.25;
+}
 .evidence-item dd { margin: 0; font-size: var(--step--1); color: var(--ink-3); line-height: 1.5; }
 .meter { display: flex; gap: 3px; }
 .meter span { width: 15px; height: 6px; border-radius: 2px; background: var(--line-strong); }
 .meter span[data-on="true"] { background: var(--accent); }
 
+/* A weak score should not look the same as a strong one at a glance. Colour
+   is a second signal here, never the only one: the filled-segment count and
+   the written grade both say it too. */
+.evidence-item[data-score="4"] .meter span[data-on="true"],
+.evidence-item[data-score="3"] .meter span[data-on="true"] { background: var(--good); }
+.evidence-item[data-score="2"] .meter span[data-on="true"] { background: var(--warn); }
+.evidence-item[data-score="1"] .meter span[data-on="true"] { background: var(--critical); }
+.evidence-item[data-score="4"] .evidence-grade b,
+.evidence-item[data-score="3"] .evidence-grade b { color: var(--good); }
+.evidence-item[data-score="2"] .evidence-grade b { color: var(--warn); }
+.evidence-item[data-score="1"] .evidence-grade b { color: var(--critical); }
+
 /* ---------------------------------------------------------------- prose -- */
-.prose { display: flex; flex-direction: column; gap: var(--s4); max-width: 74ch; }
+.prose { display: flex; flex-direction: column; gap: var(--s4); max-width: 68ch; }
 .prose p { font-size: var(--step-0); color: var(--ink-2); line-height: 1.65; }
-.prose h3 { font-size: var(--step-1); font-weight: 650; color: var(--ink); letter-spacing: -.01em; }
+.prose h3 {
+  font-size: var(--step-1); font-weight: 650; color: var(--ink); letter-spacing: -.01em;
+  margin-top: var(--s3);
+}
+.prose h3:first-child { margin-top: 0; }
 .prose strong { color: var(--ink); font-weight: 650; }
-.caveat-list { display: flex; flex-direction: column; gap: var(--s3); list-style: none; }
+/* The opening paragraph carries the provenance, so it gets to be the one
+   thing at reading size rather than reference size. */
+.prose-lead { font-size: var(--step-1) !important; color: var(--ink) !important; line-height: 1.55 !important; }
+
+.caveat-list { display: flex; flex-direction: column; gap: var(--s4); list-style: none; }
 .caveat-list li {
   font-size: var(--step-0); color: var(--ink-2); line-height: 1.6;
-  padding-left: var(--s4); border-left: 2px solid var(--line-strong);
+  padding: var(--s3) var(--s4); border-left: 3px solid var(--accent-edge);
+  background: var(--surface-sunk); border-radius: 0 var(--r2) var(--r2) 0;
 }
+/* The lead-in is the caveat in four words; the rest explains it. */
+.caveat-list strong { display: block; margin-bottom: 2px; color: var(--ink); }
 .spec-list { display: grid; gap: var(--s3); }
 .spec-list > div { display: grid; gap: 2px; }
 .spec-list dt {
@@ -696,10 +723,17 @@ code {
 
 .glossary { border-top: 1px solid var(--line); padding-top: var(--s5); display: flex; flex-direction: column; gap: var(--s4); }
 .glossary-title { font-size: var(--step-1); font-weight: 650; letter-spacing: -.01em; }
-.glossary dl { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--s4); }
-.glossary dl > div { display: flex; flex-direction: column; gap: 2px; }
-.glossary dt { font-size: var(--step-0); font-weight: 650; color: var(--ink); margin-bottom: 2px; }
-.glossary dd { margin: 0; font-size: var(--step--1); color: var(--ink-3); line-height: 1.55; }
+.glossary dl { display: grid; grid-template-columns: repeat(auto-fit, minmax(268px, 1fr)); gap: var(--s3); }
+.glossary dl > div {
+  display: flex; flex-direction: column; gap: var(--s1);
+  padding: var(--s4); border: 1px solid var(--line); border-radius: var(--r3);
+  background: var(--surface-sunk);
+}
+.glossary dt {
+  font-size: var(--step-0); font-weight: 650; color: var(--ink);
+  padding-bottom: var(--s2); border-bottom: 1px solid var(--line);
+}
+.glossary dd { margin: 0; font-size: var(--step--1); color: var(--ink-2); line-height: 1.6; }
 
 .page-footer { padding: var(--s4) var(--s2); }
 .page-footer p { font-size: var(--step--1); color: var(--ink-3); max-width: 70ch; }

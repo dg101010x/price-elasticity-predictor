@@ -52,7 +52,7 @@
   function money(v) { return state.currencySymbol + nf2.format(v); }
 
   /* -------------------------------------------------- scenario arithmetic -- */
-  /* Mirror of src/elasticity_math.py — keep the two in step. */
+  /* Mirror of src/elasticity_math.py. Keep the two in step. */
   var REVENUE_BREAKEVEN = -1.0;
 
   function quantityRatio(e, m) { return Math.pow(m, e); }
@@ -109,17 +109,17 @@
 
   var GLOSSARY = [
     ["Price sensitivity", "price-sensitivity",
-      "How sharply shoppers change what they buy when a price moves. Economists call it price elasticity: the percentage change in units sold for every 1% the price rises."],
+      "How much your customers change their minds when the price changes. Put 10p on a tin of beans and plenty of people reach for the one next to it. Put 10p on the only phone charger for miles and nobody notices."],
     ["Break-even point", "breakeven",
-      "The price sensitivity at which revenue doesn't care what you do with the price — whatever you gain per unit, you lose in units. It sits at −1. Below it, discounting grows revenue. Above it, raising the price does."],
+      "The point where a price change makes no difference to your takings at all. Whatever you gain on each sale, you lose in sales. It sits at \u22121 on the scale. To the left of it, discounting brings in more money. To the right, putting the price up does."],
     ["Likely range", "likely-range",
-      "A 95% confidence interval. Run this analysis on many similar samples and the true answer would land inside this range about 19 times out of 20. Narrow means precise; wide means take the headline number lightly."],
-    ["Weekly observations", "observations",
-      "One row of evidence is one product in one week: what it sold for, and how many moved. More rows means a steadier estimate."],
-    ["Explained variation", "explained",
-      "How much of the week-to-week swing in units sold tracks price alone (statisticians call it R²). It is normally low in retail, because season, promotion and stock move sales too. Low doesn't mean wrong."],
-    ["Revenue vs profit", "revenue-profit",
-      "Revenue is price × units. Profit is what's left after unit cost. A discount can lift revenue while shrinking profit, which is why the cost box on the left matters."]
+      "This is an estimate, so it comes with a range. Do the same sums on a different stretch of weeks and you would land inside this range about 19 times out of 20. A narrow range means you can lean on the number. A wide one means treat it as a rough steer."],
+    ["Weeks of history", "observations",
+      "One product, one week, one price, one sales figure. That is a single piece of evidence. The more of them behind an answer, the steadier it is."],
+    ["How much price explains", "explained",
+      "How much of the week-to-week swing in sales comes down to the price alone. In a real shop this is always low, because weather, promotions and empty shelves move sales too. Low here does not mean the answer is wrong."],
+    ["Takings vs profit", "revenue-profit",
+      "Takings are the price times the number sold. Profit is what is left after you have paid for the stock. A discount can push your takings up and your profit down at the same time, which is why the cost box on the left is worth filling in."]
   ];
   var GLOSSARY_BY_KEY = {};
   GLOSSARY.forEach(function (g) { GLOSSARY_BY_KEY[g[1]] = { title: g[0], body: g[2] }; });
@@ -195,7 +195,7 @@
       });
       return reported
         ? "Priced as " + state.product.category
-        : "No separate estimate for " + state.product.category + " — using the whole range";
+        : "Nothing specific for " + state.product.category + ", so this uses the whole range";
     }
     if (state.scope === "category") return "Category estimate";
     return "All 11 categories pooled";
@@ -324,12 +324,12 @@
         "Price sensitivity scale from " + nf1.format(d0) + " to 0, with the break-even point marked at minus 1. " +
         scopeLabel() + " sits at " + nf2.format(est.elasticity) +
         ", likely range " + nf2.format(est.ci_low) + " to " + nf2.format(est.ci_high) + ", which is " +
-        (est.elasticity < REVENUE_BREAKEVEN ? "left of break-even, where discounting grows revenue."
-                                            : "right of break-even, where raising the price grows revenue."));
+        (est.elasticity < REVENUE_BREAKEVEN ? "left of break-even, where discounting brings in more money."
+                                            : "right of break-even, where putting the price up brings in more."));
 
     var bx = x(REVENUE_BREAKEVEN);
 
-    // Two zones. The 2px gap at the threshold is the separator — no strokes
+    // Two zones. The 2px gap at the threshold is the separator, no strokes
     // drawn around either fill.
     root.appendChild(svg("rect", {
       x: x(d0), y: bandT, width: Math.max(0, bx - x(d0) - 1), height: bandH,
@@ -353,11 +353,11 @@
       });
     }
     if (narrow) {
-      zoneCaption(x(d0) + 8, ["discount →", "revenue up"], "start");
-      zoneCaption(x(d1) - 8, ["raise price →", "revenue up"], "end");
+      zoneCaption(x(d0) + 8, ["discount →", "takings up"], "start");
+      zoneCaption(x(d1) - 8, ["raise price →", "takings up"], "end");
     } else {
-      zoneCaption((x(d0) + bx) / 2, ["Discounting grows revenue"]);
-      zoneCaption((bx + x(d1)) / 2, ["Raising the price grows revenue"]);
+      zoneCaption((x(d0) + bx) / 2, ["Discounting grows takings"]);
+      zoneCaption((bx + x(d1)) / 2, ["Raising the price grows takings"]);
     }
 
     // Every other reported category, as a faint reference tick: one estimate
@@ -369,7 +369,7 @@
       }));
     });
 
-    // Break-even threshold — solid hairline, always labelled.
+    // Break-even threshold: solid hairline, always labelled.
     root.appendChild(svg("line", {
       x1: bx, y1: bandT - 12, x2: bx, y2: bandB, stroke: token("--ink-3"), "stroke-width": 1.5
     }));
@@ -412,7 +412,7 @@
       root.appendChild(tick);
     }
 
-    // Two anchored labels rather than one padded string — SVG collapses
+    // Two anchored labels rather than one padded string, because SVG collapses
     // runs of whitespace, so a single centred string ran its halves together.
     var leftTitle = svg("text", { x: padL, y: H - 6, class: "chart-label", "text-anchor": "start" });
     leftTitle.textContent = narrow ? "← more sensitive" : "← shoppers more price-sensitive";
@@ -459,9 +459,9 @@
 
     clear(host);
     var root = chartRoot(W, H,
-        "Line chart of units and revenue against price change, both indexed to 100 at today's price. " +
+        "Line chart of units and takings against price change, both indexed to 100 at today's price. " +
         "At " + signedPct(state.change) + ", units are at " +
-        nfInt.format(quantityRatio(est.elasticity, 1 + state.change / 100) * 100) + " and revenue at " +
+        nfInt.format(quantityRatio(est.elasticity, 1 + state.change / 100) * 100) + " and takings at " +
         nfInt.format(revenueRatio(est.elasticity, 1 + state.change / 100) * 100) + ".");
 
     // gridlines + y ticks
@@ -521,7 +521,7 @@
       stroke: accent, "stroke-width": 1.5, opacity: 0.45
     });
     root.appendChild(crosshair);
-    [["units", quiet], ["revenue", accent]].forEach(function (pair) {
+    [["units", quiet], ["revenue", accent]].forEach(function (pair) {   // data keys, not labels
       root.appendChild(svg("circle", {
         cx: x(cur.p), cy: y(cur[pair[0]]), r: 5,
         fill: pair[1], stroke: surface, "stroke-width": 2
@@ -536,13 +536,13 @@
         y: clamp(y(cur.revenue) - 10, padT + 10, padT + plotH),
         class: "chart-strong", "text-anchor": labelRight ? "start" : "end"
       });
-      lab.textContent = "revenue " + nfInt.format(cur.revenue);
+      lab.textContent = "takings " + nfInt.format(cur.revenue);
       root.appendChild(lab);
     }
 
     host.appendChild(root);
 
-    // hover / focus layer — one tooltip listing every series at that x
+    // hover / focus layer: one tooltip listing every series at that x
     var tip = chartTooltip(host);
     var hit = svg("rect", {
       x: padL, y: padT, width: plotW, height: plotH, class: "chart-hit",
@@ -555,7 +555,7 @@
       var d = series.filter(function (s) { return s.p === pv; })[0];
       if (!d) return;
       tip.show(x(d.p), y(Math.max(d.units, d.revenue)), signedPct(d.p, 0) + " price change", [
-        { name: "Revenue", value: nfInt.format(d.revenue), color: accent },
+        { name: "Takings", value: nfInt.format(d.revenue), color: accent },
         { name: "Units", value: nfInt.format(d.units), color: quiet, dashed: true }
       ]);
     }
@@ -637,7 +637,7 @@
       root.appendChild(tk);
     }
 
-    // break-even threshold — solid hairline, labelled (never dashed)
+    // break-even threshold: solid hairline, labelled (never dashed)
     var bx = x(REVENUE_BREAKEVEN);
     root.appendChild(svg("line", {
       x1: bx, y1: padT - 14, x2: bx, y2: H - padB + 2,
@@ -891,7 +891,7 @@
     if (!totals.datasets) return;
     $("#bench-sub").textContent =
       "This catalogue is one shop in one country. These are " + totals.datasets +
-      " other markets — from supermarket shelves to Broadway box office — measured the " +
+      " other trades, from supermarket shelves to Broadway box office, measured the " +
       "same way, so you can see whether your category is unusual or whether everything " +
       "works like this.";
   }
@@ -957,7 +957,7 @@
 
     $("#scenario-sub").textContent =
       "Moving " + scopeLabel().toLowerCase() + " from " + money(state.price) +
-      " to " + money(sc.newPrice) + " — a " + signedPct(state.change, 0) + " change.";
+      " to " + money(sc.newPrice) + ", a " + signedPct(state.change, 0) + " change.";
 
     var host = $("#scenario-tiles");
     clear(host);
@@ -977,18 +977,18 @@
       "was " + money(state.price), "accent"));
 
     host.appendChild(tile("Units sold", signedPct(sc.pctQuantityChange), null,
-      "for every 100 you sell now, about " + nfInt.format(100 * (1 + sc.pctQuantityChange / 100))));
+      "for every 100 you shift now, about " + nfInt.format(100 * (1 + sc.pctQuantityChange / 100))));
 
     var revTone = sc.direction === "up" ? "good" : sc.direction === "down" ? "critical" : null;
     var revSub = sc.pctRevenueLow != null
       ? "likely between " + signedPct(sc.pctRevenueLow) + " and " + signedPct(sc.pctRevenueHigh)
       : "";
-    host.appendChild(tile("Revenue", signedPct(sc.pctRevenueChange), null, revSub, revTone));
+    host.appendChild(tile("Takings", signedPct(sc.pctRevenueChange), null, revSub, revTone));
 
     if (sc.pctProfitChange != null) {
       var profTone = sc.pctProfitChange > 0.5 ? "good" : sc.pctProfitChange < -0.5 ? "critical" : null;
-      host.appendChild(tile("Gross profit", signedPct(sc.pctProfitChange), null,
-        "at " + money(state.cost) + " a unit", profTone));
+      host.appendChild(tile("Money you keep", signedPct(sc.pctProfitChange), null,
+        "after paying " + money(state.cost) + " a unit", profTone));
     }
 
     // The thing a revenue-only tool can quietly get you fired for. Two cases
@@ -1002,19 +1002,19 @@
     var tone = "notice-info";
 
     if (prof != null && material && (rev > 0) !== (prof > 0)) {
-      text = "Revenue and profit point opposite ways here: revenue goes " +
+      text = "Careful: your takings and your profit go opposite ways here. Takings go " +
         (rev > 0 ? "up " : "down ") + signedPct(Math.abs(rev)) +
-        " while gross profit goes " + (prof > 0 ? "up " : "down ") + signedPct(Math.abs(prof)) +
-        ". Profit is usually the one to follow.";
+        " while the money you keep goes " + (prof > 0 ? "up " : "down ") + signedPct(Math.abs(prof)) +
+        ". Follow the profit.";
       tone = "notice-warn";
     } else if (prof != null && Math.abs(rev) > 5 && Math.abs(rev) > Math.abs(prof) * 3) {
-      text = "Revenue moves much further than profit here: " + signedPct(rev) +
-        " revenue but only " + signedPct(prof) + " gross profit. At " + money(state.cost) +
-        " a unit, most of the extra volume goes on covering cost.";
+      text = "Your takings move much further than your profit here: " + signedPct(rev) +
+        " in takings but only " + signedPct(prof) + " in money kept. At " + money(state.cost) +
+        " a unit, most of the extra trade goes straight back out on stock.";
       tone = "notice-warn";
     } else if (prof == null && state.cost == null) {
-      text = "This is revenue, not profit. Add your unit cost on the left to see whether " +
-        "the money you keep moves the same way.";
+      text = "These are takings, not profit. Tell it what a unit costs you, on the left, " +
+        "and it will show you whether the money you keep moves the same way.";
     }
 
     note.classList.remove("notice-info", "notice-warn");
@@ -1119,7 +1119,7 @@
   function renderScenarioLegend() {
     var host = $("#scenario-legend");
     clear(host);
-    [["Revenue", token("--accent"), false], ["Units", token("--mark-quiet"), true]].forEach(function (s) {
+    [["Takings", token("--accent"), false], ["Units", token("--mark-quiet"), true]].forEach(function (s) {
       var item = el("span", "legend-item");
       var key = el("span", "legend-key");
       if (s[2]) { key.setAttribute("data-shape", "dash"); key.style.color = s[1]; }
@@ -1135,12 +1135,12 @@
     clear(host);
     var table = el("table");
     var cap = el("caption", null,
-      "Units and revenue at each price change, indexed to 100 at today's price of " + money(state.price) + ".");
+      "Units and takings at each price change, indexed to 100 at today's price of " + money(state.price) + ".");
     table.appendChild(cap);
 
     var thead = el("thead");
     var hr = el("tr");
-    ["Price change", "New price", "Units index", "Revenue index"].forEach(function (h) {
+    ["Price change", "New price", "Units index", "Takings index"].forEach(function (h) {
       var th = el("th", null, h);
       th.setAttribute("scope", "col");
       hr.appendChild(th);
@@ -1171,7 +1171,7 @@
 
     var table = el("table");
     table.appendChild(el("caption", null,
-      "Price sensitivity by category. Below −1, discounting grows revenue."));
+      "Price sensitivity by department. Below −1, discounting grows takings."));
     var thead = el("thead");
     var hr = el("tr");
     ["Group", "Sensitivity", "Likely range", "Observations"].forEach(function (h) {
@@ -1209,6 +1209,9 @@
 
     function item(label, grade, score, detail, termKey) {
       var wrap = el("div", "evidence-item");
+      // Drives the meter and grade colour. Position and the written grade say
+      // the same thing, so colour is never carrying it alone.
+      wrap.setAttribute("data-score", String(score));
       var dt = el("dt", null, label);
       wrap.appendChild(dt);
       var g = el("div", "evidence-grade");
@@ -1230,13 +1233,13 @@
       host.appendChild(wrap);
     }
 
-    item("How much evidence", ev.sample.charAt(0).toUpperCase() + ev.sample.slice(1),
+    item("How much history", ev.sample.charAt(0).toUpperCase() + ev.sample.slice(1),
       sampleScore, ev.sample_detail, "observations");
-    item("How precise", ev.precision.charAt(0).toUpperCase() + ev.precision.slice(1),
+    item("How steady the answer is", ev.precision.charAt(0).toUpperCase() + ev.precision.slice(1),
       precisionScore,
-      ev.precision_detail + " The likely range runs " + nf2.format(est.ci_low) +
+      ev.precision_detail + " The range runs " + nf2.format(est.ci_low) +
       " to " + nf2.format(est.ci_high) + ".", "likely-range");
-    item("How much price explains", ev.fit.charAt(0).toUpperCase() + ev.fit.slice(1),
+    item("How much of it is price", ev.fit.charAt(0).toUpperCase() + ev.fit.slice(1),
       fitScore, ev.fit_detail, "explained");
   }
 
@@ -1251,10 +1254,11 @@
   function renderMethod() {
     var m = state.estimates.methodology || {};
     $("#method-categories").textContent =
-      "The source data ships no category field — only a free-text product description — so categories " +
-      "here are assigned by keyword rules against that description. A \"Retrospot Cake Case\" lands in Kitchen " +
-      "& Dining because of the word cake. It is a reasonable guess, not a merchandising hierarchy, and a " +
-      "handful of products certainly sit in the wrong bucket.";
+      "The original records don't say what department anything belongs to. They only carry the " +
+      "product name someone typed in. So the departments here are worked out from words in that " +
+      "name. A \"Retrospot Cake Case\" gets filed under Kitchen & Dining because of the word cake. " +
+      "It's a sensible guess rather than a real shop layout, and a handful of things are certainly " +
+      "sitting on the wrong shelf.";
 
     // The reference roster's own provenance, read off the totals rather than
     // written into the markup, so the copy can't drift from the data.
@@ -1262,19 +1266,22 @@
     var bench = $("#method-benchmarks");
     if (bench) {
       bench.textContent = totals.datasets
-        ? "Every CSV file in three public data archives — 5,960 files and 64.5 million rows — was read "
-          + "and checked for a price column sitting beside a quantity column. 26 files passed. Each "
-          + "was then read against its own documentation, and " + totals.datasets + " survived: "
-          + totals.rows_across_datasets.toLocaleString() + " rows of real trade, most of it from published "
-          + "papers. " + (totals.datasets - (totals.usable_benchmarks || 0)) + " of the " + totals.datasets
-          + " came out unusable and are shown above as such, rather than quietly dropped."
+        ? "We opened every spreadsheet in three public data libraries. That's 5,960 files and "
+          + "64.5 million rows, checked for a price column sitting next to a sales column. 26 files "
+          + "made it through. We then read the small print on each one, and " + totals.datasets
+          + " survived: " + totals.rows_across_datasets.toLocaleString() + " rows of genuine trade, "
+          + "most of it from published research. Three we threw out because their own paperwork admits "
+          + "the numbers were made up. " + (totals.datasets - (totals.usable_benchmarks || 0)) + " more "
+          + "turned out to say nothing useful once we ran them, and you can see those above too, "
+          + "labelled, because hiding them would be the dishonest bit."
         : "";
     }
 
     var excluded = state.estimates.excluded_categories || [];
     $("#method-excluded").textContent = excluded.length
-      ? "A category is only reported once it clears 500 weekly observations across at least 15 products. " +
-        excluded.map(function (e) { return e.category; }).join(", ") + " never clears that bar."
+      ? "A department only gets its own answer once it has 500 weeks of history behind it, across at " +
+        "least 15 products. " + excluded.map(function (e) { return e.category; }).join(", ") +
+        " never gets there, so anything in it falls back to the whole-range figure."
       : "";
 
     var spec = $("#method-spec");
@@ -1316,7 +1323,7 @@
   }
 
   /* ======================================================================
-     TERM POPOVERS  (click / keyboard — never hover-only)
+     TERM POPOVERS  (click / keyboard, never hover-only)
      ====================================================================== */
   var openTerm = null;
 
@@ -1395,8 +1402,8 @@
     $("#field-product").hidden = scope !== "product";
     $("#scope-hint").textContent = {
       all: "Every product in the catalogue, averaged into a single figure.",
-      category: "One department at a time — shoppers behave differently across them.",
-      product: "Products inherit their category's estimate; there isn't enough history to price each one alone."
+      category: "One department at a time. Shoppers behave differently across them.",
+      product: "Each product uses its department's answer. No single product has enough history to stand on its own."
     }[scope];
 
     if (scope === "category") {
@@ -1413,7 +1420,7 @@
 
   function defaultProduct() {
     // The catalogue's most recognisable SKU, and one that sits in a reported
-    // category — the old build defaulted to whatever sorted first, which was an
+    // category. The old build defaulted to whatever sorted first, which was an
     // inflatable globe from the excluded bucket.
     var preferred = ["85123A", "22423", "20725"];
     for (var i = 0; i < preferred.length; i++) {
@@ -1454,7 +1461,7 @@
     }
     if (v >= state.price) {
       err.textContent = "Cost has to be below the current price of " + money(state.price) +
-        " — otherwise there's no margin to grow.";
+        ", otherwise there is no margin to grow.";
       err.hidden = false; state.cost = null; return false;
     }
     err.hidden = true; state.cost = v; return true;
@@ -1619,7 +1626,7 @@
     var slider = $("#change-slider");
     slider.addEventListener("input", function () { setChange(Number(this.value)); });
     slider.addEventListener("change", function () {
-      announce(signedPct(state.change, 0) + " price change: revenue " +
+      announce(signedPct(state.change, 0) + " price change: takings " +
         signedPct(buildScenario({
           elasticity: currentEstimate().elasticity, pctPriceChange: state.change,
           price: state.price, cost: state.cost
