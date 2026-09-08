@@ -1,8 +1,10 @@
 DATA VALIDATION REPORT
 ============================================================
 
-Downloaded and profiled: 2
-Requires manual action: 9
+Present and profiled:    12  (77,868 rows on disk)
+Profiled previously:     2  (figures carried forward)
+Requires manual action:  9
+Rows across every profiled dataset: 20,238,226
 
 --- scanner_data.csv ---
 source: https://archive.ics.uci.edu/dataset/502/online+retail+ii
@@ -10,7 +12,7 @@ rows: 1,067,371   columns: 8
 date_range: 2009-12-01 to 2011-12-09
 data_type: transaction
 key_elasticity_columns: InvoiceDate,Quantity,Price,StockCode,Customer ID
-notes: 5305 unique SKUs, 5942 unique customers, 43 countries. 6207 rows with Price<=0 and 22950 rows with negative Quantity (returns) -- filter both before fitting elasticity.
+notes: 5305 unique SKUs, 5942 unique customers, 43 countries. 6207 rows with Price<=0 and 22950 rows with negative Quantity (returns) -- filter both before fitting elasticity. Figures carried forward from an earlier run; the file is not in data/csv/ right now. Re-fetch with `python -m src.data_loader` from a network that can reach archive.ics.uci.edu.
 
 --- monash_dominicks.csv ---
 source: https://zenodo.org/records/4654802
@@ -18,7 +20,103 @@ rows: 19,092,987   columns: 3
 date_range: relative week 0-392 per series, no calendar dates
 data_type: weekly
 key_elasticity_columns: SKU_ID,Week_Index,Weekly_Profit
-notes: 115704 unique series. 9366843 of 19092987 rows are zero-profit weeks (no sale that week, not missing data).
+notes: 115704 unique series. 9366843 of 19092987 rows are zero-profit weeks (no sale that week, not missing data). Figures carried forward from an earlier run; the file is not in data/csv/ right now. Re-fetch with `python -m src.data_loader` from a network that can reach zenodo.org.
+
+--- reference/broadway_grosses.csv ---
+source: https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-04-28/grosses.csv
+rows: 47,524   columns: 14
+date_range: 1,122 Broadway productions, weekly, June 1985 to March 2020
+data_type: panel
+key_elasticity_columns: show,avg_ticket_price,seats_sold
+notes: The largest genuine price/quantity panel in the roster: every show's average ticket price and seats sold, every week, for 35 years. Shows discount and surge constantly, so within-show price variation is real and plentiful.
+
+--- reference/cigarettes_baltagi.csv ---
+source: https://raw.githubusercontent.com/vincentarelbundock/Rdatasets/master/csv/Ecdat/Cigar.csv
+rows: 1,380   columns: 10
+date_range: 46 US states, annual, 1963–1992
+data_type: panel
+key_elasticity_columns: state,price,sales,cpi
+notes: The textbook panel-data demand study. Price is deflated by CPI so the slope is a response to real price, not to thirty years of inflation.
+
+--- reference/cigarettes_stock_watson.csv ---
+source: https://raw.githubusercontent.com/vincentarelbundock/Rdatasets/master/csv/AER/CigarettesSW.csv
+rows: 96   columns: 10
+date_range: 48 continental US states, two years, 1985 and 1995
+data_type: panel
+key_elasticity_columns: state,price,packs,cpi
+notes: Two periods per state — enough to demean, not enough to be precise.
+
+--- reference/natural_gas.csv ---
+source: https://raw.githubusercontent.com/vincentarelbundock/Rdatasets/master/csv/AER/NaturalGas.csv
+rows: 138   columns: 11
+date_range: 6 US states, annual, 1967–1989
+data_type: panel
+key_elasticity_columns: state,price,consumption
+notes: A utility, and it behaves like one: people cannot easily buy less heat. The dataset ships no price index, so these are nominal prices across twenty-two inflationary years — which is most of why the interval below is uninformative.
+
+--- reference/avocados_california.csv ---
+source: https://raw.githubusercontent.com/vincentarelbundock/Rdatasets/master/csv/causaldata/avocado.csv
+rows: 169   columns: 4
+date_range: California, weekly, 2015–2018, conventional avocados only
+data_type: weekly
+key_elasticity_columns: AveragePrice,TotalVolume
+notes: One market observed over time, so there is no cross-section to demean against and nothing separates a demand response from a supply glut. Reported, and flagged, as the weaker design it is.
+
+--- reference/rail_freight_cartel.csv ---
+source: https://raw.githubusercontent.com/vincentarelbundock/Rdatasets/master/csv/AER/CartelStability.csv
+rows: 328   columns: 6
+date_range: US Joint Executive Committee railroads, weekly, 1880–1886
+data_type: weekly
+key_elasticity_columns: price,quantity
+notes: Famous precisely because price moved for a reason unrelated to demand: the cartel collapsed and re-formed repeatedly. That is what makes the slope readable here and not elsewhere.
+
+--- reference/tuna_brand_choice.csv ---
+source: https://raw.githubusercontent.com/vincentarelbundock/Rdatasets/master/csv/Ecdat/Tuna.csv
+rows: 13,705   columns: 9
+date_range: US supermarket scanner panel, 13,705 purchase occasions, 5 brands
+data_type: scanner-choice
+key_elasticity_columns: Tuna.choice,price.skw,price.cosw,price.pw,price.sko,price.coso
+notes: Five competing tins on one shelf — the most substitutable category in the roster.
+
+--- reference/ketchup_brand_choice.csv ---
+source: https://raw.githubusercontent.com/vincentarelbundock/Rdatasets/master/csv/Ecdat/Ketchup.csv
+rows: 4,956   columns: 8
+date_range: US supermarket scanner panel, 4,956 purchase occasions, 4 brands
+data_type: scanner-choice
+key_elasticity_columns: Ketchup.choice,price.heinz,price.hunts,price.delmonte,price.stb
+notes: 
+
+--- reference/crackers_brand_choice.csv ---
+source: https://raw.githubusercontent.com/vincentarelbundock/Rdatasets/master/csv/Ecdat/Cracker.csv
+rows: 3,292   columns: 15
+date_range: US supermarket scanner panel, 3,292 purchase occasions, 4 brands
+data_type: scanner-choice
+key_elasticity_columns: choice,price.sunshine,price.kleebler,price.nabisco,price.private
+notes: 
+
+--- reference/catsup_brand_choice.csv ---
+source: https://raw.githubusercontent.com/vincentarelbundock/Rdatasets/master/csv/Ecdat/Catsup.csv
+rows: 2,798   columns: 15
+date_range: US supermarket scanner panel, 2,798 purchase occasions, 4 SKUs
+data_type: scanner-choice
+key_elasticity_columns: choice,price.heinz41,price.heinz32,price.heinz28,price.hunts32
+notes: Three of the four options are the same brand in different sizes.
+
+--- reference/yogurt_brand_choice.csv ---
+source: https://raw.githubusercontent.com/vincentarelbundock/Rdatasets/master/csv/Ecdat/Yogurt.csv
+rows: 2,412   columns: 11
+date_range: US supermarket scanner panel, 2,412 purchase occasions, 4 brands
+data_type: scanner-choice
+key_elasticity_columns: choice,price.yoplait,price.dannon,price.hiland,price.weight
+notes: 
+
+--- reference/orange_juice_choice.csv ---
+source: https://raw.githubusercontent.com/vincentarelbundock/Rdatasets/master/csv/ISLR/OJ.csv
+rows: 1,070   columns: 19
+date_range: US supermarket, 1,070 purchase occasions, 2 brands, 7 stores
+data_type: scanner-choice
+key_elasticity_columns: Purchase,SalePriceCH,SalePriceMM
+notes: Only two brands, so a shopper leaving one almost always arrives at the other.
 
 REQUIRES MANUAL ACTION
 ------------------------------------------------------------

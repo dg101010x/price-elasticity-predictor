@@ -16,21 +16,27 @@ uvicorn src.api:app --reload      # http://localhost:8000
 
 ```
 src/
-  api.py                    FastAPI app: serves the page and the JSON API
-  elasticity_math.py        the revenue/profit arithmetic (mirrored in app.js)
-  dashboard.py              inlines src/web/* into one self-contained response
+  api.py                       FastAPI app: serves the page and the JSON API
+  elasticity_math.py           the revenue/profit arithmetic (mirrored in app.js)
+  panel_regression.py          the estimator, shared by both model builders
+  dashboard.py                 inlines src/web/* into one self-contained response
   web/
-    index.html              markup
-    app.css                 design system + both themes
-    app.js                  state, interactions, and the three SVG charts
-    fonts/                  self-hosted Archivo + IBM Plex Mono (OFL)
-  build_elasticity_model.py fits the estimates from the raw CSV
-  data_loader.py            downloads the source datasets
-  build_manifest.py         profiles data/csv/*.csv into the manifest
-tests/                      API contract, shared math, browser + a11y
+    index.html                 markup
+    app.css                    design system + both themes
+    app.js                     state, interactions, and the four SVG charts
+    fonts/                     self-hosted Archivo + IBM Plex Mono (OFL)
+  build_elasticity_model.py    fits the catalogue's categories from the raw CSV
+  build_reference_benchmarks.py fits the twelve outside markets
+  data_loader.py               downloads the originally-scoped datasets
+  reference_data.py            downloads the twelve reference markets
+  screen_archives.py           the search that produced that roster
+  build_manifest.py            profiles data/csv/*.csv into the manifest
+tests/                         API contract, estimator, shared math, browser + a11y
 data/
-  processed/                elasticity_results.json, products.json (gitignored)
-  manifests/                data_manifest.csv, validation_report.txt (tracked)
+  processed/                   elasticity_results.json, products.json,
+                               reference_benchmarks.json
+  manifests/                   data_manifest.csv, validation_report.txt,
+                               archive_screen.json (tracked)
 ```
 
 The page ships as a single response with **no external requests at all** — no CDN,
@@ -57,6 +63,7 @@ Decision-level endpoints, added for the current UI:
 | `GET /estimates` | every estimate in one payload, each with `advice` + `evidence` |
 | `GET /scenario` | units, revenue and gross profit at a given `pct_price_change` |
 | `GET /catalog` | the whole product directory in the shape the search box wants |
+| `GET /benchmarks` | twelve outside markets on the same scale, with provenance |
 
 `/estimates` exists because the dashboard used to issue one `/elasticity` request
 per category on every interaction — eleven identical round-trips per keystroke,
@@ -76,16 +83,26 @@ confidence interval is narrow enough to be sure.
 carries a JavaScript mirror so the price slider responds without a round-trip;
 `tests/` pins both against the same expectations so they can't drift.
 
+The estimator itself lives in `src/panel_regression.py`, called by both model
+builders, so a category from the gift catalogue and a benchmark from Broadway
+are the same measurement and belong on the same axis.
+
 ## Data
 
 Datasets live in `data/csv/` (gitignored — regenerate locally, don't commit) and
 are documented in `data/manifests/data_manifest.csv`.
 
 ```
-python -m src.data_loader             # fetches + converts real datasets
-python -m src.build_manifest          # profiles them, writes the manifest
-python -m src.build_elasticity_model  # fits the estimates the API serves
+python -m src.data_loader                 # the originally-scoped datasets
+python -m src.reference_data              # the twelve reference markets
+python -m src.build_manifest              # profiles them, writes the manifest
+python -m src.build_elasticity_model      # fits the catalogue's categories
+python -m src.build_reference_benchmarks  # fits the outside markets
 ```
+
+Fourteen datasets are profiled in `data/manifests/`, **20,238,226 rows** in
+total; nine more are documented and blocked. Twelve of the fourteen can be
+fetched right now with no account.
 
 ### What's actually downloaded vs. what needs manual setup
 
@@ -110,6 +127,80 @@ The rest are genuinely blocked from this environment and are left
 Full detail, row counts, and column notes are in
 `data/manifests/data_manifest.csv` and `data/manifests/validation_report.txt`.
 
+### The twelve reference markets
+
+Eight of the ten originally-scoped datasets are gated, which left the product
+estimating exactly one market — UK wholesale gift and homeware. Nobody asking
+"should I put this price up?" is necessarily in that trade, and a single
+market gives you nothing to judge your own category against.
+
+So the coverage was found somewhere reachable. `src/screen_archives.py` clones
+three public archives and profiles every CSV in them for a positive numeric
+price column beside a non-negative numeric quantity column:
+
+| archive | files | rows | candidates |
+|---|---:|---:|---:|
+| [Rdatasets](https://github.com/vincentarelbundock/Rdatasets) | 3,701 | 15,958,347 | 21 |
+| [TidyTuesday](https://github.com/rfordatascience/tidytuesday) | 1,175 | 38,752,758 | 2 |
+| [plotly/datasets](https://github.com/plotly/datasets) | 1,084 | 9,791,644 | 3 |
+| **total** | **5,960** | **64,502,749** | **26** |
+
+That is 656,584,040 individual values read to find 26 files worth a second
+look. The screen is mechanical on purpose, and it is not the last word: each
+of the 26 was then read against its own documentation, which is the only step
+that could catch these three —
+
+| rejected | its own docs say |
+|---|---|
+| `ISLR/Carseats` | "A simulated data set containing sales of child car seats at 400 different stores." |
+| `Stat2Data/Grocery` | "These data are not real, though they are simulated to approximate an actual study." |
+| `sem/Kmenta` | "The endogenous variables P and Q were generated by simulation." |
+
+All three carry a price column, a quantity column, and a plausible retail
+story. All three would have fit beautifully and meant nothing.
+
+Twelve real markets survived, 77,868 rows, most of them from published
+papers:
+
+| market | rows | source |
+|---|---:|---|
+| Theatre tickets (Broadway) | 47,524 | Playbill weekly grosses, 1,122 shows, 1985–2020 |
+| Canned tuna | 13,705 | Kim, Blattberg & Rossi (1995) |
+| Ketchup | 4,956 | Kim, Blattberg & Rossi (1995) |
+| Crackers | 3,292 | Jain, Vilcassim & Chintagunta (1994) |
+| Catsup | 2,798 | Jain, Vilcassim & Chintagunta (1994) |
+| Yogurt | 2,412 | Jain, Vilcassim & Chintagunta (1994) |
+| Cigarettes (46 states, 1963–1992) | 1,380 | Baltagi & Levin (1992) |
+| Orange juice | 1,070 | Stine, Foster & Waterman (1998) |
+| Rail freight (grain, 1880s) | 328 | Porter (1983) |
+| Avocados (California) | 169 | Hass Avocado Board, 2015–2018 |
+| Household natural gas | 138 | Baltagi (2002) |
+| Cigarettes (48 states, 1985 & 1995) | 96 | Stock & Watson (2007) |
+
+They land where the literature says they should. The Stock & Watson cigarette
+panel comes out at **−1.15**, against their published IV estimates of roughly
+−0.94 to −1.28. Brand-level scanner elasticities run **−1.4 to −3.2**, steep
+in the way brand switching implies — a shopper leaving Heinz usually arrives
+at Hunt's, two feet away.
+
+### The two that came out unusable
+
+Both are reported and labelled rather than quietly dropped, because between
+them they are the best evidence on the page for the caveat everything else
+rests on.
+
+**Household natural gas** returns −0.001 with an interval of −0.030 to
++0.028. The dataset ships no price index, so those are nominal prices across
+twenty-two inflationary years. The interval spans zero: this data cannot tell
+you the sign, let alone the size.
+
+**Broadway** returns **+0.074** — higher prices going with *more* seats sold,
+on 47,361 observations and a tight interval. That is not a demand curve. Hit
+shows raise prices *because* they are selling out, so what the regression
+picks up is the demand shock, not the price response. It is the largest
+dataset in the roster and it produces the wrong sign, which is precisely why
+it is worth showing.
+
 ## Method, and what it isn't
 
 Transactions are rolled up to one row per SKU per week, then `log(quantity)` and
@@ -125,7 +216,9 @@ Three things it can't tell you, all stated on the page itself:
 - **Revenue is not profit.** A discount that grows revenue can still shrink what
   you keep.
 - **One catalogue, one market.** UK wholesale gift and homeware, in GBP. The
-  direction of an effect usually travels; the exact numbers don't.
+  direction of an effect usually travels; the exact numbers don't. This is
+  what the twelve reference markets are for — they put the catalogue's
+  categories next to trades measured the same way.
 
 Categories are assigned by keyword rules against the free-text product description,
 because the source data ships no category field. A category is only reported once
@@ -134,9 +227,17 @@ it clears 500 weekly observations across at least 15 products.
 ## Tests
 
 ```
-pytest                    # everything
-pytest tests/test_api.py  # API contract only, no browser needed
+pytest                              # everything (123 tests)
+pytest tests/test_api.py            # API contract only, no browser needed
+pytest tests/test_reference_data.py # the estimator and the dataset roster
 ```
+
+`tests/test_reference_data.py` builds panels with a known slope and checks the
+estimator recovers it to within 0.01 — including one where big sellers are
+also expensive, so a naive regression reports *upward*-sloping demand and the
+within-entity transform has to be unmoved by it. It also pins that the
+estimator returns nothing, rather than a number, when a slope isn't
+identified.
 
 `tests/test_frontend.py` drives a real Chromium through Playwright: responsive
 behaviour at five widths, keyboard and screen-reader affordances, the combobox,
