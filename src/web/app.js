@@ -52,7 +52,7 @@
   function money(v) { return state.currencySymbol + nf2.format(v); }
 
   /* -------------------------------------------------- scenario arithmetic -- */
-  /* Mirror of src/elasticity_math.py — keep the two in step. */
+  /* Mirror of src/elasticity_math.py. Keep the two in step. */
   var REVENUE_BREAKEVEN = -1.0;
 
   function quantityRatio(e, m) { return Math.pow(m, e); }
@@ -100,24 +100,29 @@
     cost: null,
     change: 10,
     currencySymbol: "£",
+    market: "uk",              // which catalogue we are pricing against
+    compareSpan: "one",        // "one" = this catalogue, "both" = the UNION
+    markets: [],               // every catalogue the API offers
     estimates: null,
+    benchmarks: [],            // twelve outside markets, from /estimates
+    benchmarkTotals: {},
     products: [],              // [{id, name, category, price}]
     domain: [-3, 0]
   };
 
   var GLOSSARY = [
     ["Price sensitivity", "price-sensitivity",
-      "How sharply shoppers change what they buy when a price moves. Economists call it price elasticity: the percentage change in units sold for every 1% the price rises."],
+      "How much your customers change their minds when the price changes. Put 10p on a tin of beans and plenty of people reach for the one next to it. Put 10p on the only phone charger for miles and nobody notices."],
     ["Break-even point", "breakeven",
-      "The price sensitivity at which revenue doesn't care what you do with the price — whatever you gain per unit, you lose in units. It sits at −1. Below it, discounting grows revenue. Above it, raising the price does."],
+      "The point where a price change makes no difference to your takings at all. Whatever you gain on each sale, you lose in sales. It sits at \u22121 on the scale. To the left of it, discounting brings in more money. To the right, putting the price up does."],
     ["Likely range", "likely-range",
-      "A 95% confidence interval. Run this analysis on many similar samples and the true answer would land inside this range about 19 times out of 20. Narrow means precise; wide means take the headline number lightly."],
-    ["Weekly observations", "observations",
-      "One row of evidence is one product in one week: what it sold for, and how many moved. More rows means a steadier estimate."],
-    ["Explained variation", "explained",
-      "How much of the week-to-week swing in units sold tracks price alone (statisticians call it R²). It is normally low in retail, because season, promotion and stock move sales too. Low doesn't mean wrong."],
-    ["Revenue vs profit", "revenue-profit",
-      "Revenue is price × units. Profit is what's left after unit cost. A discount can lift revenue while shrinking profit, which is why the cost box on the left matters."]
+      "This is an estimate, so it comes with a range. Do the same sums on a different stretch of weeks and you would land inside this range about 19 times out of 20. A narrow range means you can lean on the number. A wide one means treat it as a rough steer."],
+    ["Weeks of history", "observations",
+      "One product, one week, one price, one sales figure. That is a single piece of evidence. The more of them behind an answer, the steadier it is."],
+    ["How much price explains", "explained",
+      "How much of the week-to-week swing in sales comes down to the price alone. In a real shop this is always low, because weather, promotions and empty shelves move sales too. Low here does not mean the answer is wrong."],
+    ["Takings vs profit", "revenue-profit",
+      "Takings are the price times the number sold. Profit is what is left after you have paid for the stock. A discount can push your takings up and your profit down at the same time, which is why the cost box on the left is worth filling in."]
   ];
   var GLOSSARY_BY_KEY = {};
   GLOSSARY.forEach(function (g) { GLOSSARY_BY_KEY[g[1]] = { title: g[0], body: g[2] }; });
@@ -193,7 +198,7 @@
       });
       return reported
         ? "Priced as " + state.product.category
-        : "No separate estimate for " + state.product.category + " — using the whole range";
+        : "Nothing specific for " + state.product.category + ", so this uses the whole range";
     }
     if (state.scope === "category") return "Category estimate";
     return "All 11 categories pooled";
@@ -202,6 +207,7 @@
   /* ----------------------------------------------------------- url state -- */
   function writeURL() {
     var p = new URLSearchParams();
+    if (state.market !== "uk") p.set("market", state.market);
     if (state.scope !== "all") p.set("scope", state.scope);
     if (state.scope === "category" && state.category) p.set("category", state.category);
     if (state.scope === "product" && state.product) p.set("product", state.product.id);
@@ -219,7 +225,7 @@
     if (!isNaN(change)) state.change = clamp(Math.round(change), -40, 40);
     var cost = parseFloat(p.get("cost"));
     if (!isNaN(cost) && cost >= 0) state.cost = cost;
-    return { category: p.get("category"), product: p.get("product") };
+    return { category: p.get("category"), product: p.get("product"), market: p.get("market") };
   }
 
   /* ======================================================================
@@ -322,12 +328,12 @@
         "Price sensitivity scale from " + nf1.format(d0) + " to 0, with the break-even point marked at minus 1. " +
         scopeLabel() + " sits at " + nf2.format(est.elasticity) +
         ", likely range " + nf2.format(est.ci_low) + " to " + nf2.format(est.ci_high) + ", which is " +
-        (est.elasticity < REVENUE_BREAKEVEN ? "left of break-even, where discounting grows revenue."
-                                            : "right of break-even, where raising the price grows revenue."));
+        (est.elasticity < REVENUE_BREAKEVEN ? "left of break-even, where discounting brings in more money."
+                                            : "right of break-even, where putting the price up brings in more."));
 
     var bx = x(REVENUE_BREAKEVEN);
 
-    // Two zones. The 2px gap at the threshold is the separator — no strokes
+    // Two zones. The 2px gap at the threshold is the separator, no strokes
     // drawn around either fill.
     root.appendChild(svg("rect", {
       x: x(d0), y: bandT, width: Math.max(0, bx - x(d0) - 1), height: bandH,
@@ -351,11 +357,11 @@
       });
     }
     if (narrow) {
-      zoneCaption(x(d0) + 8, ["discount →", "revenue up"], "start");
-      zoneCaption(x(d1) - 8, ["raise price →", "revenue up"], "end");
+      zoneCaption(x(d0) + 8, ["discount →", "takings up"], "start");
+      zoneCaption(x(d1) - 8, ["raise price →", "takings up"], "end");
     } else {
-      zoneCaption((x(d0) + bx) / 2, ["Discounting grows revenue"]);
-      zoneCaption((bx + x(d1)) / 2, ["Raising the price grows revenue"]);
+      zoneCaption((x(d0) + bx) / 2, ["Discounting grows takings"]);
+      zoneCaption((bx + x(d1)) / 2, ["Raising the price grows takings"]);
     }
 
     // Every other reported category, as a faint reference tick: one estimate
@@ -367,7 +373,7 @@
       }));
     });
 
-    // Break-even threshold — solid hairline, always labelled.
+    // Break-even threshold: solid hairline, always labelled.
     root.appendChild(svg("line", {
       x1: bx, y1: bandT - 12, x2: bx, y2: bandB, stroke: token("--ink-3"), "stroke-width": 1.5
     }));
@@ -410,7 +416,7 @@
       root.appendChild(tick);
     }
 
-    // Two anchored labels rather than one padded string — SVG collapses
+    // Two anchored labels rather than one padded string, because SVG collapses
     // runs of whitespace, so a single centred string ran its halves together.
     var leftTitle = svg("text", { x: padL, y: H - 6, class: "chart-label", "text-anchor": "start" });
     leftTitle.textContent = narrow ? "← more sensitive" : "← shoppers more price-sensitive";
@@ -457,9 +463,9 @@
 
     clear(host);
     var root = chartRoot(W, H,
-        "Line chart of units and revenue against price change, both indexed to 100 at today's price. " +
+        "Line chart of units and takings against price change, both indexed to 100 at today's price. " +
         "At " + signedPct(state.change) + ", units are at " +
-        nfInt.format(quantityRatio(est.elasticity, 1 + state.change / 100) * 100) + " and revenue at " +
+        nfInt.format(quantityRatio(est.elasticity, 1 + state.change / 100) * 100) + " and takings at " +
         nfInt.format(revenueRatio(est.elasticity, 1 + state.change / 100) * 100) + ".");
 
     // gridlines + y ticks
@@ -519,7 +525,7 @@
       stroke: accent, "stroke-width": 1.5, opacity: 0.45
     });
     root.appendChild(crosshair);
-    [["units", quiet], ["revenue", accent]].forEach(function (pair) {
+    [["units", quiet], ["revenue", accent]].forEach(function (pair) {   // data keys, not labels
       root.appendChild(svg("circle", {
         cx: x(cur.p), cy: y(cur[pair[0]]), r: 5,
         fill: pair[1], stroke: surface, "stroke-width": 2
@@ -534,13 +540,13 @@
         y: clamp(y(cur.revenue) - 10, padT + 10, padT + plotH),
         class: "chart-strong", "text-anchor": labelRight ? "start" : "end"
       });
-      lab.textContent = "revenue " + nfInt.format(cur.revenue);
+      lab.textContent = "takings " + nfInt.format(cur.revenue);
       root.appendChild(lab);
     }
 
     host.appendChild(root);
 
-    // hover / focus layer — one tooltip listing every series at that x
+    // hover / focus layer: one tooltip listing every series at that x
     var tip = chartTooltip(host);
     var hit = svg("rect", {
       x: padL, y: padT, width: plotW, height: plotH, class: "chart-hit",
@@ -553,7 +559,7 @@
       var d = series.filter(function (s) { return s.p === pv; })[0];
       if (!d) return;
       tip.show(x(d.p), y(Math.max(d.units, d.revenue)), signedPct(d.p, 0) + " price change", [
-        { name: "Revenue", value: nfInt.format(d.revenue), color: accent },
+        { name: "Takings", value: nfInt.format(d.revenue), color: accent },
         { name: "Units", value: nfInt.format(d.units), color: quiet, dashed: true }
       ]);
     }
@@ -576,6 +582,7 @@
 
   /* ---- 3. category comparison ------------------------------------------- */
   function comparisonRows() {
+    if (state.compareSpan === "both") return blendedRows();
     var rows = state.estimates.by_category.map(function (r) {
       return { name: r.category, value: r.elasticity, ci: [r.ci_low, r.ci_high], n: r.n_observations };
     });
@@ -584,6 +591,30 @@
       ci: [state.estimates.overall.ci_low, state.estimates.overall.ci_high],
       n: state.estimates.overall.n_observations, isOverall: true
     });
+    rows.sort(function (a, b) { return a.value - b.value; });
+    return rows;
+  }
+
+  // Both catalogues stacked. The operation is a UNION, not a join: the two
+  // share no key at all. It works across currencies because a within-entity
+  // log-log slope has the exchange rate demeaned out of it already.
+  function blendedRows() {
+    var blend = state.estimates.blended;
+    if (!blend || !blend.rows.length) return [];
+    var rows = blend.rows.map(function (r) {
+      return {
+        name: r.group, value: r.elasticity, ci: [r.ci_low, r.ci_high],
+        n: r.n_observations, market: r.market,
+        foreign: r.market !== state.market
+      };
+    });
+    var pooled = blend.pooled && blend.pooled.random_effects;
+    if (pooled) {
+      rows.push({
+        name: "Both, pooled", value: pooled.elasticity,
+        ci: [pooled.ci_low, pooled.ci_high], n: null, isOverall: true
+      });
+    }
     rows.sort(function (a, b) { return a.value - b.value; });
     return rows;
   }
@@ -635,7 +666,7 @@
       root.appendChild(tk);
     }
 
-    // break-even threshold — solid hairline, labelled (never dashed)
+    // break-even threshold: solid hairline, labelled (never dashed)
     var bx = x(REVENUE_BREAKEVEN);
     root.appendChild(svg("line", {
       x1: bx, y1: padT - 14, x2: bx, y2: H - padB + 2,
@@ -674,7 +705,11 @@
         " H" + (x1 + r) + " a" + r + " " + r + " 0 0 0 " + (-r) + " " + r +
         " V" + (barY + barH - r) + " a" + r + " " + r + " 0 0 0 " + r + " " + r +
         " H" + x0 + " Z";
-      root.appendChild(svg("path", { d: d, fill: isOn ? accent : quiet, opacity: isOn ? 1 : 0.85 }));
+      // In the stacked view, rows from the catalogue you are not pricing
+      // against are drawn lighter. Position still carries the value, so the
+      // tone is a second signal rather than the only one.
+      var fill = isOn ? accent : (row.foreign ? token("--mark-quieter") : quiet);
+      root.appendChild(svg("path", { d: d, fill: fill, opacity: isOn ? 1 : 0.85 }));
 
       // Value rides the data end of the bar, but never off the left edge:
       // on the stacked layout it sits with the name instead.
@@ -726,11 +761,287 @@
     host.appendChild(root);
   }
 
+  // ---- other trades -------------------------------------------------------
+  // Twelve outside markets fitted with the same estimator (see /benchmarks).
+  // Shown as a plain ladder rather than a second bar chart: the question here
+  // is ordinal -- who is steeper than whom, and where do you sit among them --
+  // not "by how much", which the comparison chart above already answers.
+
+  function usableBenchmarks() {
+    return (state.benchmarks || []).filter(function (b) { return !b.flag; });
+  }
+
+  function drawBenchChart() {
+    var host = $("#bench-chart");
+    var rows = usableBenchmarks();
+    if (!rows.length) { clear(host); return; }
+
+    var est = currentEstimate();
+    var mine = est ? est.elasticity : null;
+
+    var W = chartWidth(host);
+    var rowH = 26, padT = 30, padB = 54, padL = 8, padR = 8;
+    var H = padT + rows.length * rowH + padB;
+
+    var all = rows.map(function (r) { return r.elasticity; });
+    if (mine != null) all.push(mine);
+    var lo = Math.min.apply(null, all.concat([-3.4]));
+    var hi = Math.max.apply(null, all.concat([0]));
+    lo = Math.floor(lo * 2) / 2; hi = Math.ceil(hi * 2) / 2;
+
+    var labelW = Math.min(190, Math.max(120, Math.round(W * 0.38)));
+    var x0 = padL + labelW, x1 = W - padR;
+    function X(v) { return x0 + ((v - lo) / (hi - lo)) * (x1 - x0); }
+
+    var root = chartRoot(W, H,
+      "Price sensitivity in twelve other markets, on the same scale as this catalogue. " +
+      rows.map(function (r) { return r.label + " " + r.elasticity.toFixed(2); }).join("; ") + ".");
+
+    // break-even line: the only reference that matters
+    var be = X(-1);
+    root.appendChild(svg("line", {
+      x1: be, x2: be, y1: padT - 12, y2: H - padB + 2,
+      stroke: token("--line-strong"), "stroke-width": 1, "stroke-dasharray": "3 3"
+    }));
+    var beLabel = svg("text", { x: be, y: padT - 18, "text-anchor": "middle", class: "chart-tick" });
+    beLabel.textContent = "break-even";
+    root.appendChild(beLabel);
+
+    rows.forEach(function (r, i) {
+      var y = padT + i * rowH + rowH / 2;
+      var steeper = mine != null && r.elasticity < mine;
+
+      var name = svg("text", { x: padL, y: y + 4, class: "chart-label" });
+      name.textContent = r.label;
+      root.appendChild(name);
+
+      // a stem from break-even to the value reads as "how far past the line"
+      root.appendChild(svg("line", {
+        x1: be, x2: X(r.elasticity), y1: y, y2: y,
+        stroke: token(steeper ? "--mark-quiet" : "--mark-quieter"), "stroke-width": 2
+      }));
+      var dot = svg("circle", {
+        cx: X(r.elasticity), cy: y, r: 4.5,
+        fill: token("--accent"), tabindex: "0", role: "img",
+        "aria-label": r.label + ": " + r.elasticity.toFixed(2) +
+          ", " + (r.elasticity <= -1 ? "past break-even" : "short of break-even") +
+          ". " + r.market + "."
+      });
+      root.appendChild(dot);
+    });
+
+    // scale along the bottom, so "how much steeper" is readable and not just
+    // "steeper than"
+    var axisY = H - padB + 2;
+    root.appendChild(svg("line", {
+      x1: x0, x2: x1, y1: axisY, y2: axisY, class: "chart-axis"
+    }));
+    for (var t = Math.ceil(lo); t <= hi; t += 1) {
+      var tx = X(t);
+      root.appendChild(svg("line", { x1: tx, x2: tx, y1: axisY, y2: axisY + 4, class: "chart-axis" }));
+      var tk = svg("text", { x: tx, y: axisY + 16, "text-anchor": "middle", class: "chart-tick" });
+      tk.textContent = String(t);
+      root.appendChild(tk);
+    }
+
+    // where the current selection sits
+    if (mine != null) {
+      var mx = X(clamp(mine, lo, hi));
+      root.appendChild(svg("line", {
+        x1: mx, x2: mx, y1: padT - 4, y2: axisY,
+        stroke: token("--accent"), "stroke-width": 2
+      }));
+      var you = svg("text", {
+        x: clamp(mx, x0 + 30, x1 - 30), y: axisY + 34,
+        "text-anchor": "middle", class: "chart-strong chart-you"
+      });
+      you.textContent = scopeLabel() + " (" + mine.toFixed(2) + ")";
+      root.appendChild(you);
+    }
+
+    clear(host);
+    host.appendChild(root);
+  }
+
+  function renderBenchTable() {
+    var host = $("#bench-table");
+    clear(host);
+    var rows = state.benchmarks || [];
+    if (!rows.length) return;
+
+    var table = el("table");
+    table.appendChild(el("caption", null,
+      "Twelve markets outside this catalogue, each fitted with the same estimator."));
+    var thead = el("thead");
+    var hr = el("tr");
+    ["Market", "Sensitivity", "Likely range", "Measured from", "Source"].forEach(function (h) {
+      var th = el("th", null, h);
+      th.setAttribute("scope", "col");
+      hr.appendChild(th);
+    });
+    thead.appendChild(hr);
+    table.appendChild(thead);
+
+    var tbody = el("tbody");
+    rows.forEach(function (r) {
+      var tr = el("tr");
+      var th = el("th", null, r.label);
+      th.setAttribute("scope", "row");
+      tr.appendChild(th);
+      tr.appendChild(el("td", "num", r.flag ? "not usable" : r.elasticity.toFixed(2)));
+      tr.appendChild(el("td", "num", r.ci_low.toFixed(2) + " to " + r.ci_high.toFixed(2)));
+      tr.appendChild(el("td", null, r.market));
+      tr.appendChild(el("td", null, r.source));
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    host.appendChild(table);
+  }
+
+  // The two results that must not be read as a price response. Naming them is
+  // the point: they are the clearest evidence for the caveat the whole page
+  // rests on.
+  function renderBenchFlagged() {
+    var host = $("#bench-flagged");
+    clear(host);
+    var flagged = (state.benchmarks || []).filter(function (b) { return b.flag; });
+    if (!flagged.length) return;
+
+    host.appendChild(el("h3", "bench-flagged-title", "Two that came out unusable"));
+    var list = el("ul", "bench-flagged-list");
+    flagged.forEach(function (b) {
+      var li = el("li");
+      li.appendChild(el("strong", null, b.label));
+      li.appendChild(el("span", "bench-flag-tag", b.flag === "confounded" ? "wrong sign" : "can't tell"));
+      li.appendChild(el("p", null, b.flag_reason));
+      list.appendChild(li);
+    });
+    host.appendChild(list);
+  }
+
+  function renderBenchSub() {
+    var totals = state.benchmarkTotals || {};
+    if (!totals.datasets) return;
+    $("#bench-sub").textContent =
+      "This catalogue is one shop in one country. These are " + totals.datasets +
+      " other trades, from supermarket shelves to Broadway box office, measured the " +
+      "same way, so you can see whether your category is unusual or whether everything " +
+      "works like this.";
+  }
+
+  // ---- catalogue picker ---------------------------------------------------
+  // Two catalogues ship, in two currencies and two decades, so switching is a
+  // full reload of estimates and products rather than a filter over one set.
+
+  function renderMarketPicker() {
+    var host = $("#market-picker");
+    if (!host || state.markets.length < 2) { if (host) host.hidden = true; return; }
+    clear(host);
+
+    state.markets.forEach(function (m) {
+      var btn = el("button", "market-option");
+      btn.type = "button";
+      btn.setAttribute("role", "radio");
+      btn.setAttribute("aria-checked", String(m.key === state.market));
+      btn.dataset.market = m.key;
+      btn.appendChild(el("span", "market-name", m.label));
+      btn.appendChild(el("span", "market-meta",
+        m.period + " \u00b7 " + nfInt.format(m.products) + " products"));
+      btn.addEventListener("click", function () { switchMarket(m.key); });
+      host.appendChild(btn);
+    });
+
+    var current = state.markets.filter(function (m) { return m.key === state.market; })[0];
+    if (current) {
+      $("#market-hint").textContent =
+        current.where + ". Prices in " + current.currency + ", from " +
+        nfInt.format(current.observations) + " weeks of history.";
+    }
+  }
+
+  function switchMarket(key) {
+    if (key === state.market) return;
+    state.market = key;
+    state.category = null;
+    state.product = null;
+    state.cost = null;
+    $("#cost-input").value = "";
+    $("#layout").setAttribute("aria-busy", "true");
+
+    loadMarket().then(function () {
+      $("#layout").removeAttribute("aria-busy");
+      setScope(state.scope === "product" ? "category" : state.scope);
+      announce("Now pricing against " + marketLabel() + ".");
+    }).catch(function (err) {
+      $("#layout").removeAttribute("aria-busy");
+      showBootError(err.message);
+    });
+  }
+
+  function marketLabel() {
+    var m = state.markets.filter(function (x) { return x.key === state.market; })[0];
+    return m ? m.label : state.market;
+  }
+
+  function loadMarket() {
+    var q = "?market=" + encodeURIComponent(state.market);
+    return Promise.all([fetchJSON("/estimates" + q), fetchJSON("/catalog" + q)])
+      .then(function (res) {
+        state.estimates = res[0];
+        state.markets = res[0].markets || state.markets;
+        state.benchmarks = res[0].benchmarks || [];
+        state.benchmarkTotals = res[0].benchmark_totals || {};
+        state.currencySymbol = CURRENCY_SYMBOLS[res[1].currency] || "";
+        $("#price-symbol").textContent = state.currencySymbol;
+        $("#cost-symbol").textContent = state.currencySymbol;
+
+        var cats = res[1].categories;
+        state.products = res[1].products.map(function (row) {
+          return { id: row[0], name: row[1], category: cats[row[2]], price: row[3] };
+        });
+
+        var lows = state.estimates.by_category.map(function (r) { return r.ci_low; })
+          .concat([state.estimates.overall.ci_low]);
+        state.domain = [Math.floor(Math.min.apply(null, lows) * 2 - 0.5) / 2, 0];
+
+        renderMarketPicker();
+        rebuildCategorySelect();
+        rebuildCombo();
+        renderMethod();
+        renderBenchSub();
+        renderBenchFlagged();
+      });
+  }
+
+  // Both of these are built once at boot and again on every catalogue switch,
+  // because the departments and the product list are market-specific.
+  function rebuildCategorySelect() {
+    var catSelect = $("#category-select");
+    if (!catSelect || !state.estimates) return;
+    clear(catSelect);
+    state.estimates.by_category.forEach(function (r) {
+      var opt = el("option", null, r.category);
+      opt.value = r.category;
+      catSelect.appendChild(opt);
+    });
+    if (state.category) catSelect.value = state.category;
+  }
+
+  function rebuildCombo() {
+    var input = $("#product-input");
+    if (!input) return;
+    input.value = "";
+    input.placeholder = "Search " + nfInt.format(state.products.length) + " products\u2026";
+    var clearBtn = $("#product-clear");
+    if (clearBtn) clearBtn.hidden = true;
+  }
+
   function renderCharts() {
     if (!state.estimates) return;
     redrawChart("#scale-chart", drawScaleChart);
     redrawChart("#scenario-chart", drawScenarioChart);
     redrawChart("#compare-chart", drawCompareChart);
+    if (usableBenchmarks().length) redrawChart("#bench-chart", drawBenchChart);
   }
 
   /* ======================================================================
@@ -786,7 +1097,7 @@
 
     $("#scenario-sub").textContent =
       "Moving " + scopeLabel().toLowerCase() + " from " + money(state.price) +
-      " to " + money(sc.newPrice) + " — a " + signedPct(state.change, 0) + " change.";
+      " to " + money(sc.newPrice) + ", a " + signedPct(state.change, 0) + " change.";
 
     var host = $("#scenario-tiles");
     clear(host);
@@ -806,18 +1117,18 @@
       "was " + money(state.price), "accent"));
 
     host.appendChild(tile("Units sold", signedPct(sc.pctQuantityChange), null,
-      "for every 100 you sell now, about " + nfInt.format(100 * (1 + sc.pctQuantityChange / 100))));
+      "for every 100 you shift now, about " + nfInt.format(100 * (1 + sc.pctQuantityChange / 100))));
 
     var revTone = sc.direction === "up" ? "good" : sc.direction === "down" ? "critical" : null;
     var revSub = sc.pctRevenueLow != null
       ? "likely between " + signedPct(sc.pctRevenueLow) + " and " + signedPct(sc.pctRevenueHigh)
       : "";
-    host.appendChild(tile("Revenue", signedPct(sc.pctRevenueChange), null, revSub, revTone));
+    host.appendChild(tile("Takings", signedPct(sc.pctRevenueChange), null, revSub, revTone));
 
     if (sc.pctProfitChange != null) {
       var profTone = sc.pctProfitChange > 0.5 ? "good" : sc.pctProfitChange < -0.5 ? "critical" : null;
-      host.appendChild(tile("Gross profit", signedPct(sc.pctProfitChange), null,
-        "at " + money(state.cost) + " a unit", profTone));
+      host.appendChild(tile("Money you keep", signedPct(sc.pctProfitChange), null,
+        "after paying " + money(state.cost) + " a unit", profTone));
     }
 
     // The thing a revenue-only tool can quietly get you fired for. Two cases
@@ -831,19 +1142,19 @@
     var tone = "notice-info";
 
     if (prof != null && material && (rev > 0) !== (prof > 0)) {
-      text = "Revenue and profit point opposite ways here: revenue goes " +
+      text = "Careful: your takings and your profit go opposite ways here. Takings go " +
         (rev > 0 ? "up " : "down ") + signedPct(Math.abs(rev)) +
-        " while gross profit goes " + (prof > 0 ? "up " : "down ") + signedPct(Math.abs(prof)) +
-        ". Profit is usually the one to follow.";
+        " while the money you keep goes " + (prof > 0 ? "up " : "down ") + signedPct(Math.abs(prof)) +
+        ". Follow the profit.";
       tone = "notice-warn";
     } else if (prof != null && Math.abs(rev) > 5 && Math.abs(rev) > Math.abs(prof) * 3) {
-      text = "Revenue moves much further than profit here: " + signedPct(rev) +
-        " revenue but only " + signedPct(prof) + " gross profit. At " + money(state.cost) +
-        " a unit, most of the extra volume goes on covering cost.";
+      text = "Your takings move much further than your profit here: " + signedPct(rev) +
+        " in takings but only " + signedPct(prof) + " in money kept. At " + money(state.cost) +
+        " a unit, most of the extra trade goes straight back out on stock.";
       tone = "notice-warn";
     } else if (prof == null && state.cost == null) {
-      text = "This is revenue, not profit. Add your unit cost on the left to see whether " +
-        "the money you keep moves the same way.";
+      text = "These are takings, not profit. Tell it what a unit costs you, on the left, " +
+        "and it will show you whether the money you keep moves the same way.";
     }
 
     note.classList.remove("notice-info", "notice-warn");
@@ -851,14 +1162,104 @@
     if (text) { $("#profit-note-text").textContent = text; note.hidden = false; }
     else { note.hidden = true; }
 
+    renderTill(sc);
     renderScenarioLegend();
     renderScenarioTable(est);
+  }
+
+  // Percentages are the honest unit, but nobody prices a shelf in percentages.
+  // This restates the same scenario in money. The anchor is a hundred units a
+  // week rather than a round sum of money, so the units row stays whole and
+  // visibly agrees with its own percentage -- at a £10 price, 100 units and
+  // £1,000 rather than £100 and a fractional 10. The arithmetic is linear, so
+  // a shop selling 2,400 multiplies every figure by 24 and the shape holds.
+  var TILL_UNITS = 100;
+
+  function renderTill(sc) {
+    var host = $("#till-roll");
+    clear(host);
+
+    var ratio = quantityRatio(currentEstimate().elasticity, 1 + state.change / 100);
+    var unitsAfter = TILL_UNITS * ratio;
+    var takingsNow = TILL_UNITS * state.price;
+    var takingsAfter = unitsAfter * sc.newPrice;
+
+    var rows = [
+      {
+        label: "Takings",
+        now: money(takingsNow),
+        after: money(takingsAfter),
+        delta: sc.pctRevenueChange,
+        tone: sc.direction === "up" ? "good" : sc.direction === "down" ? "critical" : null,
+        lead: true
+      },
+      {
+        label: "Units sold",
+        now: nfInt.format(TILL_UNITS),
+        after: nfInt.format(Math.round(unitsAfter)),
+        delta: sc.pctQuantityChange,
+        tone: null
+      }
+    ];
+
+    if (sc.pctProfitChange != null) {
+      rows.push({
+        label: "Money you keep",
+        now: money(TILL_UNITS * (state.price - state.cost)),
+        after: money(unitsAfter * (sc.newPrice - state.cost)),
+        delta: sc.pctProfitChange,
+        tone: sc.pctProfitChange > 0.5 ? "good" : sc.pctProfitChange < -0.5 ? "critical" : null,
+        lead: true
+      });
+    }
+
+    var table = el("table", "till-table");
+    table.appendChild(el("caption", "sr-only",
+      "The same change stated as money, over a week selling " + nfInt.format(TILL_UNITS) +
+      " units at today's price of " + money(state.price) + "."));
+
+    var thead = el("thead");
+    var hr = el("tr");
+    hr.appendChild(el("th", null, ""));
+    [
+      ["Now", "at " + money(state.price)],
+      ["After", "at " + money(sc.newPrice)],
+      ["Change", ""]
+    ].forEach(function (h) {
+      var th = el("th", "till-col");
+      th.setAttribute("scope", "col");
+      th.appendChild(el("span", "till-col-name", h[0]));
+      if (h[1]) th.appendChild(el("span", "till-col-note", h[1]));
+      hr.appendChild(th);
+    });
+    thead.appendChild(hr);
+    table.appendChild(thead);
+
+    var tbody = el("tbody");
+    rows.forEach(function (r) {
+      var tr = el("tr");
+      if (r.lead) tr.setAttribute("data-lead", "true");
+      var th = el("th", null, r.label);
+      th.setAttribute("scope", "row");
+      tr.appendChild(th);
+      tr.appendChild(el("td", "till-num", r.now));
+      var after = el("td", "till-num till-after", r.after);
+      tr.appendChild(after);
+      var d = el("td", "till-num till-delta", signedPct(r.delta));
+      if (r.tone) d.setAttribute("data-tone", r.tone);
+      tr.appendChild(d);
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    host.appendChild(table);
+
+    $("#till-anchor").textContent = nfInt.format(TILL_UNITS);
   }
 
   function renderScenarioLegend() {
     var host = $("#scenario-legend");
     clear(host);
-    [["Revenue", token("--accent"), false], ["Units", token("--mark-quiet"), true]].forEach(function (s) {
+    [["Takings", token("--accent"), false], ["Units", token("--mark-quiet"), true]].forEach(function (s) {
       var item = el("span", "legend-item");
       var key = el("span", "legend-key");
       if (s[2]) { key.setAttribute("data-shape", "dash"); key.style.color = s[1]; }
@@ -874,12 +1275,12 @@
     clear(host);
     var table = el("table");
     var cap = el("caption", null,
-      "Units and revenue at each price change, indexed to 100 at today's price of " + money(state.price) + ".");
+      "Units and takings at each price change, indexed to 100 at today's price of " + money(state.price) + ".");
     table.appendChild(cap);
 
     var thead = el("thead");
     var hr = el("tr");
-    ["Price change", "New price", "Units index", "Revenue index"].forEach(function (h) {
+    ["Price change", "New price", "Units index", "Takings index"].forEach(function (h) {
       var th = el("th", null, h);
       th.setAttribute("scope", "col");
       hr.appendChild(th);
@@ -903,6 +1304,7 @@
   }
 
   function renderCompareTable() {
+    // shares comparisonRows(), so it follows the span toggle automatically
     var host = $("#compare-table");
     clear(host);
     var rows = comparisonRows();
@@ -910,7 +1312,7 @@
 
     var table = el("table");
     table.appendChild(el("caption", null,
-      "Price sensitivity by category. Below −1, discounting grows revenue."));
+      "Price sensitivity by department. Below −1, discounting grows takings."));
     var thead = el("thead");
     var hr = el("tr");
     ["Group", "Sensitivity", "Likely range", "Observations"].forEach(function (h) {
@@ -928,7 +1330,8 @@
       tr.appendChild(el("td", null, r.name));
       tr.appendChild(el("td", null, nf3.format(r.value)));
       tr.appendChild(el("td", null, nf2.format(r.ci[0]) + " to " + nf2.format(r.ci[1])));
-      tr.appendChild(el("td", null, nfInt.format(r.n)));
+      // the pooled row summarises the others, so it has no count of its own
+      tr.appendChild(el("td", null, r.n == null ? "n/a" : nfInt.format(r.n)));
       tbody.appendChild(tr);
     });
     table.appendChild(tbody);
@@ -948,6 +1351,9 @@
 
     function item(label, grade, score, detail, termKey) {
       var wrap = el("div", "evidence-item");
+      // Drives the meter and grade colour. Position and the written grade say
+      // the same thing, so colour is never carrying it alone.
+      wrap.setAttribute("data-score", String(score));
       var dt = el("dt", null, label);
       wrap.appendChild(dt);
       var g = el("div", "evidence-grade");
@@ -969,36 +1375,111 @@
       host.appendChild(wrap);
     }
 
-    item("How much evidence", ev.sample.charAt(0).toUpperCase() + ev.sample.slice(1),
+    item("How much history", ev.sample.charAt(0).toUpperCase() + ev.sample.slice(1),
       sampleScore, ev.sample_detail, "observations");
-    item("How precise", ev.precision.charAt(0).toUpperCase() + ev.precision.slice(1),
+    item("How steady the answer is", ev.precision.charAt(0).toUpperCase() + ev.precision.slice(1),
       precisionScore,
-      ev.precision_detail + " The likely range runs " + nf2.format(est.ci_low) +
+      ev.precision_detail + " The range runs " + nf2.format(est.ci_low) +
       " to " + nf2.format(est.ci_high) + ".", "likely-range");
-    item("How much price explains", ev.fit.charAt(0).toUpperCase() + ev.fit.slice(1),
+    item("How much of it is price", ev.fit.charAt(0).toUpperCase() + ev.fit.slice(1),
       fitScore, ev.fit_detail, "explained");
   }
 
   function renderCompareNote() {
+    var note = $("#compare-note");
+    var blendNote = $("#blend-note");
+
+    if (state.compareSpan === "both") {
+      note.textContent = "";
+      renderBlendNote(blendNote);
+      return;
+    }
+    if (blendNote) blendNote.hidden = true;
+
     var excluded = state.estimates.excluded_categories || [];
-    if (!excluded.length) { $("#compare-note").textContent = ""; return; }
-    $("#compare-note").textContent =
+    if (!excluded.length) { note.textContent = ""; return; }
+    note.textContent =
       "Not shown: " + excluded.map(function (e) { return e.category; }).join(", ") +
       ". Those products don't share enough in common to price as one group, so they fall back to the whole-range figure.";
+  }
+
+  // The pooled figure needs its caveat next to it, not in a footnote. When
+  // I-squared is this high the two catalogues are not really telling one story.
+  function renderBlendNote(host) {
+    if (!host) return;
+    var blend = state.estimates.blended;
+    if (!blend || !blend.pooled || !blend.pooled.random_effects) { host.hidden = true; return; }
+    clear(host);
+    host.hidden = false;
+
+    var p = blend.pooled;
+    var h = p.heterogeneity || {};
+    var markets = blend.by_market || {};
+
+    host.appendChild(el("h4", "blend-title", "Both catalogues, stacked"));
+
+    var list = el("dl", "blend-figures");
+    function figure(term, value, note) {
+      var wrap = el("div");
+      wrap.appendChild(el("dt", null, term));
+      var dd = el("dd");
+      dd.appendChild(el("b", null, value));
+      if (note) dd.appendChild(el("span", "blend-sub", note));
+      wrap.appendChild(dd);
+      list.appendChild(wrap);
+    }
+    Object.keys(markets).forEach(function (k) {
+      var m = markets[k];
+      figure(m.label, nf2.format(m.pooled.random_effects.elasticity),
+             m.groups + " groups, " + m.period);
+    });
+    figure("Pooled across both", nf2.format(p.random_effects.elasticity),
+           "range " + nf2.format(p.random_effects.ci_low) + " to " + nf2.format(p.random_effects.ci_high));
+    host.appendChild(list);
+
+    var caveat = el("p", "blend-caveat");
+    caveat.appendChild(document.createTextNode(
+      "These are stacked, not joined: the two catalogues share no product, no shop and no " +
+      "currency, so there is nothing to join them on. Stacking still works because each " +
+      "number is a percentage answering a percentage, which has no currency in it. " +
+      "But " + nf1.format(h.i_squared_pct) + "% of the gap between these groups is real " +
+      "rather than noise, so read the pooled figure as a midpoint between two different " +
+      "trades, not as one answer covering both."
+    ));
+    host.appendChild(caveat);
   }
 
   function renderMethod() {
     var m = state.estimates.methodology || {};
     $("#method-categories").textContent =
-      "The source data ships no category field — only a free-text product description — so categories " +
-      "here are assigned by keyword rules against that description. A \"Retrospot Cake Case\" lands in Kitchen " +
-      "& Dining because of the word cake. It is a reasonable guess, not a merchandising hierarchy, and a " +
-      "handful of products certainly sit in the wrong bucket.";
+      "The original records don't say what department anything belongs to. They only carry the " +
+      "product name someone typed in. So the departments here are worked out from words in that " +
+      "name. A \"Retrospot Cake Case\" gets filed under Kitchen & Dining because of the word cake. " +
+      "It's a sensible guess rather than a real shop layout, and a handful of things are certainly " +
+      "sitting on the wrong shelf.";
+
+    // The reference roster's own provenance, read off the totals rather than
+    // written into the markup, so the copy can't drift from the data.
+    var totals = state.benchmarkTotals || {};
+    var bench = $("#method-benchmarks");
+    if (bench) {
+      bench.textContent = totals.datasets
+        ? "We opened every spreadsheet in three public data libraries. That's 5,960 files and "
+          + "64.5 million rows, checked for a price column sitting next to a sales column. 26 files "
+          + "made it through. We then read the small print on each one, and " + totals.datasets
+          + " survived: " + totals.rows_across_datasets.toLocaleString() + " rows of genuine trade, "
+          + "most of it from published research. Three we threw out because their own paperwork admits "
+          + "the numbers were made up. " + (totals.datasets - (totals.usable_benchmarks || 0)) + " more "
+          + "turned out to say nothing useful once we ran them, and you can see those above too, "
+          + "labelled, because hiding them would be the dishonest bit."
+        : "";
+    }
 
     var excluded = state.estimates.excluded_categories || [];
     $("#method-excluded").textContent = excluded.length
-      ? "A category is only reported once it clears 500 weekly observations across at least 15 products. " +
-        excluded.map(function (e) { return e.category; }).join(", ") + " never clears that bar."
+      ? "A department only gets its own answer once it has 500 weeks of history behind it, across at " +
+        "least 15 products. " + excluded.map(function (e) { return e.category; }).join(", ") +
+        " never gets there, so anything in it falls back to the whole-range figure."
       : "";
 
     var spec = $("#method-spec");
@@ -1034,12 +1515,13 @@
     renderEvidence();
     renderCompareTable();
     renderCompareNote();
+    renderBenchTable();
     renderCharts();
     writeURL();
   }
 
   /* ======================================================================
-     TERM POPOVERS  (click / keyboard — never hover-only)
+     TERM POPOVERS  (click / keyboard, never hover-only)
      ====================================================================== */
   var openTerm = null;
 
@@ -1117,9 +1599,9 @@
     $("#field-category").hidden = scope !== "category";
     $("#field-product").hidden = scope !== "product";
     $("#scope-hint").textContent = {
-      all: "Every product in the dataset, pooled into one estimate.",
-      category: "One department at a time — shoppers behave differently across them.",
-      product: "Products inherit their category's estimate; there isn't enough history to price each one alone."
+      all: "Every product in the catalogue, averaged into a single figure.",
+      category: "One department at a time. Shoppers behave differently across them.",
+      product: "Each product uses its department's answer. No single product has enough history to stand on its own."
     }[scope];
 
     if (scope === "category") {
@@ -1136,7 +1618,7 @@
 
   function defaultProduct() {
     // The catalogue's most recognisable SKU, and one that sits in a reported
-    // category — the old build defaulted to whatever sorted first, which was an
+    // category. The old build defaulted to whatever sorted first, which was an
     // inflatable globe from the excluded bucket.
     var preferred = ["85123A", "22423", "20725"];
     for (var i = 0; i < preferred.length; i++) {
@@ -1177,7 +1659,7 @@
     }
     if (v >= state.price) {
       err.textContent = "Cost has to be below the current price of " + money(state.price) +
-        " — otherwise there's no margin to grow.";
+        ", otherwise there is no margin to grow.";
       err.hidden = false; state.cost = null; return false;
     }
     err.hidden = true; state.cost = v; return true;
@@ -1318,12 +1800,30 @@
       });
     });
 
-    var catSelect = $("#category-select");
-    state.estimates.by_category.forEach(function (r) {
-      var opt = el("option", null, r.category);
-      opt.value = r.category;
-      catSelect.appendChild(opt);
+    $$("#compare-span [data-span]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        state.compareSpan = b.dataset.span;
+        $$("#compare-span [data-span]").forEach(function (x) {
+          x.setAttribute("aria-checked", String(x.dataset.span === state.compareSpan));
+        });
+        renderCompareTable();
+        renderCompareNote();
+        redrawChart("#compare-chart", drawCompareChart);
+        announce(state.compareSpan === "both"
+          ? "Comparing both catalogues, stacked."
+          : "Comparing this catalogue only.");
+      });
+      b.addEventListener("keydown", function (ev) {
+        if (ev.key !== "ArrowLeft" && ev.key !== "ArrowRight") return;
+        ev.preventDefault();
+        var all = $$("#compare-span [data-span]");
+        var next = all[(all.indexOf(b) + 1) % all.length];
+        next.focus(); next.click();
+      });
     });
+
+    var catSelect = $("#category-select");
+    rebuildCategorySelect();
     catSelect.addEventListener("change", function () {
       state.category = catSelect.value;
       renderAll();
@@ -1342,7 +1842,7 @@
     var slider = $("#change-slider");
     slider.addEventListener("input", function () { setChange(Number(this.value)); });
     slider.addEventListener("change", function () {
-      announce(signedPct(state.change, 0) + " price change: revenue " +
+      announce(signedPct(state.change, 0) + " price change: takings " +
         signedPct(buildScenario({
           elasticity: currentEstimate().elasticity, pctPriceChange: state.change,
           price: state.price, cost: state.cost
@@ -1403,24 +1903,17 @@
     });
 
     var wanted = readURL();
+    if (wanted.market) state.market = wanted.market;
 
-    Promise.all([fetchJSON("/estimates"), fetchJSON("/catalog")])
-      .then(function (res) {
-        state.estimates = res[0];
-        state.currencySymbol = CURRENCY_SYMBOLS[res[1].currency] || "";
-        $("#price-symbol").textContent = state.currencySymbol;
-        $("#cost-symbol").textContent = state.currencySymbol;
-
-        var cats = res[1].categories;
-        state.products = res[1].products.map(function (row) {
-          return { id: row[0], name: row[1], category: cats[row[2]], price: row[3] };
-        });
-
-        // Domain covers every estimate, padded, and always reaches 0.
-        var lows = state.estimates.by_category.map(function (r) { return r.ci_low; })
-          .concat([state.estimates.overall.ci_low]);
-        state.domain = [Math.floor(Math.min.apply(null, lows) * 2 - 0.5) / 2, 0];
-
+    // A shared link can name a catalogue this build doesn't have. Fall back to
+    // the default once rather than showing an error page for a stale URL.
+    loadMarket()
+      .catch(function (err) {
+        if (state.market === "uk") throw err;
+        state.market = "uk";
+        return loadMarket();
+      })
+      .then(function () {
         $("#layout").hidden = false;
 
         if (wanted.category &&
@@ -1436,7 +1929,6 @@
         initControls();
         initResize();
         renderGlossary();
-        renderMethod();
 
         if (state.cost != null) {
           $("#cost-input").value = String(state.cost);

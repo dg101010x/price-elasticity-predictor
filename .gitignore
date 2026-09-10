@@ -17,3 +17,11 @@ data/processed/*.csv
 !data/csv/.gitkeep
 # Manifests are small and worth tracking.
 !data/manifests/
+
+# Archive clones used by src/screen_archives.py -- multi-GB, regenerable.
+data/archives/
+# Reference datasets are refetched by src/reference_data.py.
+data/csv/reference/
+
+# The M5 Walmart files are large and refetchable via src/walmart_data.py.
+data/csv/walmart/

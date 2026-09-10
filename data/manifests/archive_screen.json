@@ -1,0 +1,341 @@
+{
+  "Rdatasets": {
+    "files_screened": 3701,
+    "rows_screened": 15958347,
+    "cells_screened": 195793004,
+    "candidates": [
+      {
+        "file": "csv/modeldata/credit_data.csv",
+        "rows": 4454,
+        "columns": 15,
+        "price_columns": [
+          "Price"
+        ],
+        "quantity_columns": [
+          "Amount"
+        ]
+      },
+      {
+        "file": "csv/modeldata/ames.csv",
+        "rows": 2930,
+        "columns": 75,
+        "price_columns": [
+          "Sale_Price"
+        ],
+        "quantity_columns": [
+          "Mo_Sold",
+          "Year_Sold"
+        ]
+      },
+      {
+        "file": "csv/openintro/ames.csv",
+        "rows": 2930,
+        "columns": 83,
+        "price_columns": [
+          "price"
+        ],
+        "quantity_columns": [
+          "Mo.Sold",
+          "Yr.Sold"
+        ]
+      },
+      {
+        "file": "csv/usdatasets/ames_tbl_df.csv",
+        "rows": 2930,
+        "columns": 83,
+        "price_columns": [
+          "price"
+        ],
+        "quantity_columns": [
+          "Mo.Sold",
+          "Yr.Sold"
+        ]
+      },
+      {
+        "file": "csv/wooldridge/loanapp.csv",
+        "rows": 1989,
+        "columns": 60,
+        "price_columns": [
+          "price"
+        ],
+        "quantity_columns": [
+          "unit"
+        ]
+      },
+      {
+        "file": "csv/openintro/hfi.csv",
+        "rows": 1458,
+        "columns": 124,
+        "price_columns": [
+          "ef_trade_tariffs_revenue",
+          "ef_trade_tariffs_mean",
+          "ef_trade_tariffs_sd",
+          "ef_trade_tariffs",
+          "ef_trade_regulatory_nontariff"
+        ],
+        "quantity_columns": [
+          "ef_government_consumption"
+        ]
+      },
+      {
+        "file": "csv/wooldridge/bwght.csv",
+        "rows": 1388,
+        "columns": 15,
+        "price_columns": [
+          "cigprice"
+        ],
+        "quantity_columns": [
+          "packs"
+        ]
+      },
+      {
+        "file": "csv/plm/Cigar.csv",
+        "rows": 1380,
+        "columns": 10,
+        "price_columns": [
+          "price"
+        ],
+        "quantity_columns": [
+          "sales"
+        ]
+      },
+      {
+        "file": "csv/Ecdat/Cigar.csv",
+        "rows": 1380,
+        "columns": 10,
+        "price_columns": [
+          "price"
+        ],
+        "quantity_columns": [
+          "sales"
+        ]
+      },
+      {
+        "file": "csv/ISLR/OJ.csv",
+        "rows": 1070,
+        "columns": 19,
+        "price_columns": [
+          "PriceCH",
+          "PriceMM",
+          "SalePriceMM",
+          "SalePriceCH"
+        ],
+        "quantity_columns": [
+          "WeekofPurchase"
+        ]
+      },
+      {
+        "file": "csv/Stat2Data/GrinnellHouses.csv",
+        "rows": 929,
+        "columns": 16,
+        "price_columns": [
+          "OrigPrice",
+          "ListPrice",
+          "SalePrice"
+        ],
+        "quantity_columns": [
+          "YearSold",
+          "MonthSold",
+          "DaySold"
+        ]
+      },
+      {
+        "file": "csv/ISLR/Carseats.csv",
+        "rows": 400,
+        "columns": 12,
+        "price_columns": [
+          "CompPrice",
+          "Price"
+        ],
+        "quantity_columns": [
+          "Sales"
+        ]
+      },
+      {
+        "file": "csv/AER/CartelStability.csv",
+        "rows": 328,
+        "columns": 6,
+        "price_columns": [
+          "price"
+        ],
+        "quantity_columns": [
+          "quantity"
+        ]
+      },
+      {
+        "file": "csv/causaldata/avocado.csv",
+        "rows": 169,
+        "columns": 4,
+        "price_columns": [
+          "AveragePrice"
+        ],
+        "quantity_columns": [
+          "TotalVolume"
+        ]
+      },
+      {
+        "file": "csv/Ecdat/Electricity.csv",
+        "rows": 158,
+        "columns": 9,
+        "price_columns": [
+          "cost"
+        ],
+        "quantity_columns": [
+          "q"
+        ]
+      },
+      {
+        "file": "csv/AER/NaturalGas.csv",
+        "rows": 138,
+        "columns": 11,
+        "price_columns": [
+          "price",
+          "eprice",
+          "oprice",
+          "lprice"
+        ],
+        "quantity_columns": [
+          "consumption"
+        ]
+      },
+      {
+        "file": "csv/AER/CigarettesSW.csv",
+        "rows": 96,
+        "columns": 10,
+        "price_columns": [
+          "price"
+        ],
+        "quantity_columns": [
+          "packs"
+        ]
+      },
+      {
+        "file": "csv/Stat2Data/AppleStock.csv",
+        "rows": 66,
+        "columns": 5,
+        "price_columns": [
+          "Price"
+        ],
+        "quantity_columns": [
+          "Volume"
+        ]
+      },
+      {
+        "file": "csv/AER/CigarettesB.csv",
+        "rows": 46,
+        "columns": 4,
+        "price_columns": [
+          "price"
+        ],
+        "quantity_columns": [
+          "packs"
+        ]
+      },
+      {
+        "file": "csv/Stat2Data/Grocery.csv",
+        "rows": 36,
+        "columns": 6,
+        "price_columns": [
+          "Price"
+        ],
+        "quantity_columns": [
+          "Sales"
+        ]
+      },
+      {
+        "file": "csv/sem/Kmenta.csv",
+        "rows": 20,
+        "columns": 6,
+        "price_columns": [
+          "P"
+        ],
+        "quantity_columns": [
+          "Q"
+        ]
+      }
+    ]
+  },
+  "tidytuesday": {
+    "files_screened": 1175,
+    "rows_screened": 38752758,
+    "cells_screened": 389517812,
+    "candidates": [
+      {
+        "file": "data/2020/2020-04-28/grosses.csv",
+        "rows": 47524,
+        "columns": 14,
+        "price_columns": [
+          "avg_ticket_price",
+          "top_ticket_price"
+        ],
+        "quantity_columns": [
+          "seats_sold"
+        ]
+      },
+      {
+        "file": "data/2019/2019-01-29/milkcow_facts.csv",
+        "rows": 35,
+        "columns": 11,
+        "price_columns": [
+          "avg_price_milk",
+          "milk_feed_price_ratio",
+          "alfalfa_hay_price",
+          "slaughter_cow_price"
+        ],
+        "quantity_columns": [
+          "milk_volume_to_buy_cow_in_lbs"
+        ]
+      }
+    ]
+  },
+  "plotly-datasets": {
+    "files_screened": 1084,
+    "rows_screened": 9791644,
+    "cells_screened": 71273224,
+    "candidates": [
+      {
+        "file": "amazon-purchases-sample.csv",
+        "rows": 1816,
+        "columns": 8,
+        "price_columns": [
+          "Purchase Price Per Unit"
+        ],
+        "quantity_columns": [
+          "Purchase Price Per Unit",
+          "Quantity"
+        ]
+      },
+      {
+        "file": "supermarket_Sales.csv",
+        "rows": 1000,
+        "columns": 17,
+        "price_columns": [
+          "Unit price",
+          "Cost of goods sold"
+        ],
+        "quantity_columns": [
+          "Quantity",
+          "Cost of goods sold"
+        ]
+      },
+      {
+        "file": "Mining-BTC-180.csv",
+        "rows": 179,
+        "columns": 9,
+        "price_columns": [
+          "Market-price",
+          "Cost-per-trans-USD"
+        ],
+        "quantity_columns": [
+          "Output-volume(BTC)"
+        ]
+      }
+    ]
+  },
+  "totals": {
+    "files": 5960,
+    "rows": 64502749,
+    "cells": 656584040,
+    "candidates": 26
+  }
+}

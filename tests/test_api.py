@@ -264,3 +264,299 @@ def test_clients_without_gzip_still_get_a_readable_response():
     r = client.get("/estimates", headers={"Accept-Encoding": "identity"})
     assert r.status_code == 200
     assert r.json()["revenue_breakeven_elasticity"] == -1.0
+
+
+# ------------------------------------------------ reference benchmarks (2.1) --
+# Twelve outside markets, screened out of three public archives and fitted with
+# the same estimator as the catalogue. See src/reference_data.py for how the
+# roster was chosen, and why three otherwise-perfect candidates were rejected
+# for being simulated.
+
+def test_benchmarks_cover_every_reference_market():
+    body = client.get("/benchmarks").json()
+    assert body["totals"]["datasets"] == 12
+    assert len(body["benchmarks"]) == 12
+    labels = {b["label"] for b in body["benchmarks"]}
+    # one from each estimator family
+    assert "Ketchup" in labels                       # choice-share scanner panel
+    assert "Avocados (California)" in labels         # single series
+    assert any("Cigarettes" in name for name in labels)  # within-state panel
+
+
+def test_every_benchmark_carries_its_provenance():
+    for row in client.get("/benchmarks").json()["benchmarks"]:
+        for key in ("key", "label", "market", "source", "estimator", "estimator_note",
+                    "elasticity", "ci_low", "ci_high", "std_error", "r_squared",
+                    "n_observations", "rows_in_dataset"):
+            assert key in row, f"{row.get('label')} is missing {key}"
+        assert row["source"].strip(), f"{row['label']} has no named source"
+        assert row["estimator"] in ("panel", "series", "choice")
+
+
+def test_benchmark_intervals_bracket_their_estimate():
+    for row in client.get("/benchmarks").json()["benchmarks"]:
+        assert row["ci_low"] <= row["elasticity"] <= row["ci_high"], row["label"]
+
+
+def test_the_two_unusable_results_are_flagged_not_dropped():
+    """Natural gas can't tell the sign; Broadway comes out the wrong way round.
+
+    Both are kept and labelled rather than quietly binned -- they are the
+    page's own evidence for 'pattern, not promise'.
+    """
+    rows = client.get("/benchmarks").json()["benchmarks"]
+    flagged = {r["label"]: r for r in rows if r.get("flag")}
+    assert set(flagged) == {"Household natural gas", "Theatre tickets (Broadway)"}
+
+    gas = flagged["Household natural gas"]
+    assert gas["flag"] == "inconclusive"
+    assert gas["ci_low"] <= 0 <= gas["ci_high"]
+
+    broadway = flagged["Theatre tickets (Broadway)"]
+    assert broadway["flag"] == "confounded"
+    assert broadway["elasticity"] > 0
+    for row in flagged.values():
+        assert row["flag_reason"].strip()
+
+
+def test_unflagged_benchmarks_all_slope_downwards():
+    usable = [r for r in client.get("/benchmarks").json()["benchmarks"] if not r.get("flag")]
+    assert len(usable) == 10
+    for row in usable:
+        assert row["elasticity"] < 0, f"{row['label']} is not a demand curve"
+        assert row["ci_high"] < 0, f"{row['label']} should have been flagged inconclusive"
+
+
+def test_published_estimates_land_where_the_literature_says():
+    """A guard against a silently broken estimator.
+
+    Stock & Watson put US cigarette demand near -1 (their IV estimates run
+    roughly -0.94 to -1.28); brand-level scanner elasticities are steeper than
+    category-level ones because a shopper leaving one brand usually arrives at
+    another on the same shelf.
+    """
+    rows = {r["label"]: r for r in client.get("/benchmarks").json()["benchmarks"]}
+    sw = rows["Cigarettes (US states, 1985 and 1995)"]["elasticity"] \
+        if "Cigarettes (US states, 1985 and 1995)" in rows \
+        else rows["Cigarettes (US states, 1985 & 1995)"]["elasticity"]
+    assert -1.6 < sw < -0.7, sw
+    assert rows["Ketchup"]["elasticity"] < rows["Cigarettes (US states, 1963 to 1992)"]["elasticity"]
+
+
+def test_estimates_carries_the_benchmarks_so_the_page_loads_once():
+    body = client.get("/estimates").json()
+    assert len(body["benchmarks"]) == 12
+    assert body["benchmark_totals"]["usable_benchmarks"] == 10
+
+
+def test_api_index_lists_benchmarks():
+    assert "/benchmarks" in client.get("/api").json()["endpoints"]
+
+
+# ------------------------------------------------- the second catalogue (2.2) --
+# The M5 Walmart release: 59,181,090 daily store-item records, 2011 to 2016,
+# with the retailer's own category hierarchy rather than a keyword guess.
+
+def test_two_catalogues_are_served():
+    body = client.get("/markets").json()
+    keys = {m["key"] for m in body["markets"]}
+    assert keys == {"uk", "walmart"}
+    assert body["default"] == "uk", "the original catalogue stays the default"
+
+
+def test_the_walmart_catalogue_is_the_bigger_and_more_recent_one():
+    walmart = next(m for m in client.get("/markets").json()["markets"] if m["key"] == "walmart")
+    uk = next(m for m in client.get("/markets").json()["markets"] if m["key"] == "uk")
+
+    assert walmart["scale"]["daily_records"] == 59_181_090
+    assert walmart["scale"]["price_observations"] == 6_841_121
+    assert walmart["observations"] > uk["observations"] * 20
+    assert walmart["currency"] == "USD"
+    assert "2016" in walmart["period"]
+
+
+def test_omitting_the_market_keeps_the_original_behaviour():
+    """Every pre-existing caller passes no market and must see no change."""
+    default = client.get("/estimates").json()
+    explicit = client.get("/estimates?market=uk").json()
+    assert default["overall"] == explicit["overall"]
+    assert [r["category"] for r in default["by_category"]] == \
+           [r["category"] for r in explicit["by_category"]]
+
+
+def test_each_catalogue_has_its_own_categories_and_money():
+    uk = client.get("/catalog?market=uk").json()
+    walmart = client.get("/catalog?market=walmart").json()
+    assert uk["currency"] == "GBP" and walmart["currency"] == "USD"
+    assert set(uk["categories"]) & set(walmart["categories"]) == set(), \
+        "the two catalogues should not share category names"
+    assert set(walmart["categories"]) == {"Foods", "Hobbies", "Household"}
+
+
+def test_walmart_carries_a_second_and_third_hierarchy():
+    body = client.get("/estimates?market=walmart").json()
+    assert len(body["by_department"]) == 7
+    assert len(body["by_state"]) == 3
+    assert {r["category"] for r in body["by_state"]} == {"California", "Texas", "Wisconsin"}
+    # the UK catalogue has no such cuts and must not invent them
+    assert client.get("/estimates").json()["by_department"] == []
+
+
+def test_walmart_departments_are_the_retailers_own_not_inferred():
+    method = client.get("/methodology?market=walmart").json()
+    assert "Not inferred" in method["category_assignment"]
+    uk_method = client.get("/methodology").json()
+    assert "keyword rules" in uk_method["category_assignment"]
+
+
+def test_grocery_is_less_price_sensitive_than_giftware():
+    """A sanity check on the fit, not a coincidence worth ignoring.
+
+    Food and household staples are famously inelastic; discretionary gift and
+    homeware is not. If this ever flips, something upstream has broken.
+    """
+    uk = client.get("/estimates").json()["overall"]["elasticity"]
+    walmart = client.get("/estimates?market=walmart").json()["overall"]["elasticity"]
+    assert walmart > uk, (walmart, uk)
+    assert -1.5 < walmart < 0
+
+
+@pytest.mark.parametrize("path", ["/estimates", "/catalog", "/categories", "/products", "/methodology"])
+def test_an_unknown_market_is_a_404_that_names_the_real_ones(path):
+    r = client.get(f"{path}?market=atlantis")
+    assert r.status_code == 404
+    assert "walmart" in r.json()["detail"]
+
+
+def test_scenario_and_elasticity_resolve_inside_the_chosen_market():
+    body = client.get("/elasticity?market=walmart&category=Foods").json()
+    assert body["scope"] == "Foods"
+    # the same category name does not exist in the UK catalogue
+    assert client.get("/elasticity?category=Foods").status_code == 404
+
+    scenario = client.get(
+        "/scenario?market=walmart&category=Foods&pct_price_change=10&price=4"
+    ).json()
+    assert scenario["scope"] == "Foods"
+    assert scenario["elasticity"] == body["elasticity"]
+
+
+def test_api_index_lists_markets():
+    assert "/markets" in client.get("/api").json()["endpoints"]
+
+
+# ------------------------------------------------------- blending the two --
+# The two catalogues share no match key, so the operation is a UNION ALL, not
+# a join. See src/build_blended_catalogue.py for why, and why the pooled
+# figure is random-effects rather than fixed.
+
+def test_the_blend_is_a_union_not_a_join():
+    body = client.get("/blended").json()
+    assert body["operation"] == "concatenation (UNION ALL)"
+    assert "share no match key" in body["why_not_a_join"]
+
+    uk = {r["group"] for r in body["rows"] if r["market"] == "uk"}
+    walmart = {r["group"] for r in body["rows"] if r["market"] == "walmart"}
+    assert uk and walmart
+    assert uk & walmart == set(), (
+        "if the two catalogues shared a group name, a join would have been possible")
+
+
+def test_the_union_keeps_every_row_from_both_sides():
+    body = client.get("/blended").json()
+    uk_reported = len(client.get("/estimates").json()["by_category"])
+    wm = client.get("/estimates?market=walmart").json()
+    wm_reported = (len(wm["by_category"]) + len(wm["by_department"]) + len(wm["by_state"]))
+    assert body["totals"]["rows"] == uk_reported + wm_reported
+
+
+def test_only_comparable_levels_are_pooled():
+    """Walmart aisles nest inside its categories and states cut across both.
+
+    Pooling all three levels together would count the same weeks up to three
+    times, so the pooled figure uses one level per market.
+    """
+    body = client.get("/blended").json()
+    assert body["totals"]["comparable_groups"] < body["totals"]["rows"]
+    assert body["pooled"]["groups_pooled"] == body["totals"]["comparable_groups"]
+
+
+def test_random_effects_is_the_headline_and_differs_from_fixed():
+    """Fixed-effect weighting hands the answer to whichever side is bigger.
+
+    Walmart brings twenty times the observations, so its inverse variances
+    dominate and the fixed-effect figure lands on top of it. Random effects
+    adds the between-market variance and gives the smaller catalogue a voice.
+    """
+    pooled = client.get("/blended").json()["pooled"]
+    assert pooled["headline"] == "random_effects"
+
+    fixed = pooled["fixed_effect"]["elasticity"]
+    random = pooled["random_effects"]["elasticity"]
+    walmart = client.get("/estimates?market=walmart").json()["overall"]["elasticity"]
+    uk = client.get("/estimates").json()["overall"]["elasticity"]
+
+    assert abs(fixed - walmart) < abs(random - walmart), \
+        "the fixed-effect figure should sit closer to the larger catalogue"
+    assert uk < random < walmart, "the pooled figure should sit between the two markets"
+
+
+def test_the_two_catalogues_are_reported_as_disagreeing():
+    """I squared this high means a single pooled number is a midpoint.
+
+    Saying so is the point of the blend, not a footnote to it.
+    """
+    h = client.get("/blended").json()["pooled"]["heterogeneity"]
+    assert h["i_squared_pct"] > 75
+    assert h["tau_squared"] > 0
+    assert h["degrees_of_freedom"] == client.get("/blended").json()["pooled"]["groups_pooled"] - 1
+    assert "midpoint" in h["reading"]
+
+
+def test_every_union_row_says_which_side_it_came_from():
+    for row in client.get("/blended").json()["rows"]:
+        assert row["market"] in {"uk", "walmart"}
+        assert row["currency"] in {"GBP", "USD"}
+        assert row["level"] in {"department", "category", "aisle", "state"}
+        assert row["ci_low"] <= row["elasticity"] <= row["ci_high"]
+
+
+def test_the_blend_rides_along_on_estimates():
+    blend = client.get("/estimates").json()["blended"]
+    assert len(blend["rows"]) == client.get("/blended").json()["totals"]["comparable_groups"]
+    assert blend["pooled"]["random_effects"]["elasticity"]
+
+
+def test_api_index_lists_blended():
+    assert "/blended" in client.get("/api").json()["endpoints"]
+
+
+# ------------------------------------------------------------ house style --
+
+EM_DASH = "—"
+EN_DASH = "–"
+
+
+def _dash_hits(text: str) -> list[str]:
+    """Every line carrying a dash we don't use, with a little context."""
+    return [
+        line.strip()[:110]
+        for line in text.splitlines()
+        if EM_DASH in line or EN_DASH in line or "&mdash;" in line or "&ndash;" in line
+    ]
+
+
+def test_the_page_uses_no_em_or_en_dashes():
+    """House style: commas, colons and full stops instead.
+
+    The minus sign in a figure like −8.2% is U+2212 and is left alone; it is a
+    mathematical operator, not punctuation.
+    """
+    hits = _dash_hits(client.get("/").text)
+    assert hits == [], f"dashes in the served page: {hits}"
+
+
+@pytest.mark.parametrize("path", ["/estimates", "/benchmarks", "/methodology", "/elasticity"])
+def test_api_copy_uses_no_em_or_en_dashes(path):
+    hits = _dash_hits(client.get(path).text)
+    assert hits == [], f"dashes in {path}: {hits}"

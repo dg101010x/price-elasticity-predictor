@@ -10,6 +10,9 @@ Endpoint groups
 Record-level (unchanged contract):  /elasticity  /categories  /products
                                     /methodology /health      /api
 Decision-level (added for the UI):  /estimates   /catalog     /scenario
+Context (twelve outside markets):   /benchmarks
+Catalogue selection:                /markets, plus ?market= on everything above
+Both catalogues stacked:            /blended
 
 The dashboard reads /estimates and /catalog exactly once at load. It used to
 issue one /elasticity request per category on every interaction, which meant
@@ -97,6 +100,93 @@ ELASTICITY_RESULTS = _loaded_elasticity or STUB_ELASTICITY_RESULTS
 PRODUCTS = _load_json("products.json") or STUB_PRODUCTS
 USING_STUB_DATA = _loaded_elasticity is None
 
+
+class Market:
+    """One catalogue: its estimates, its products, its money.
+
+    Two markets ship. `uk` is the original: a gift and homeware wholesaler,
+    2009 to 2011, departments guessed from words in the product name. `walmart`
+    is the M5 release, five years more recent, ten US stores, and departments
+    that are the retailer's own rather than inferred.
+
+    Every endpoint takes `?market=`, defaulting to `uk`, so nothing that
+    already called this API sees a change.
+    """
+
+    def __init__(self, key: str, label: str, results: dict, products: list,
+                 currency: str, period: str, where: str):
+        self.key = key
+        self.label = label
+        self.results = results
+        self.products = products
+        self.currency = currency
+        self.period = period
+        self.where = where
+        self.by_category = {r["category"]: r for r in results["by_category"]}
+        self.excluded = {e["category"] for e in results.get("excluded_categories", [])}
+
+    def describe(self) -> dict:
+        scale = self.results.get("scale", {})
+        return {
+            "key": self.key, "label": self.label, "currency": self.currency,
+            "period": self.period, "where": self.where,
+            "categories": len(self.by_category), "products": len(self.products),
+            "observations": self.results["overall"]["n_observations"],
+            "scale": scale,
+        }
+
+
+_walmart_results = _load_json("walmart_results.json")
+_walmart_products = _load_json("walmart_products.json")
+
+MARKETS: dict[str, Market] = {
+    "uk": Market(
+        key="uk",
+        label="UK gift and homeware wholesaler",
+        results=ELASTICITY_RESULTS,
+        products=PRODUCTS,
+        currency=PRODUCTS[0].get("currency", "GBP") if PRODUCTS else "GBP",
+        period="December 2009 to December 2011",
+        where="one online wholesaler shipping to 43 countries",
+    )
+}
+
+if _walmart_results and _walmart_products:
+    meta = _walmart_results.get("market", {})
+    MARKETS["walmart"] = Market(
+        key="walmart",
+        label=meta.get("label", "US Walmart, food and household"),
+        results=_walmart_results,
+        products=_walmart_products,
+        currency=meta.get("currency", "USD"),
+        period=meta.get("period", "January 2011 to June 2016"),
+        where=meta.get("where", "10 Walmart stores across three US states"),
+    )
+
+DEFAULT_MARKET = "uk"
+
+
+def _market(key: Optional[str]) -> Market:
+    if key is None:
+        return MARKETS[DEFAULT_MARKET]
+    market = MARKETS.get(key)
+    if market is None:
+        raise HTTPException(
+            status_code=404,
+            detail=f"market '{key}' not found. Available: {', '.join(sorted(MARKETS))}",
+        )
+    return market
+
+# Twelve outside markets, built by src/build_reference_benchmarks.py. Optional:
+# the page degrades to the catalogue-only view if the artifact is absent, which
+# is what happens on a checkout that hasn't run the builder yet.
+REFERENCE_BENCHMARKS = _load_json("reference_benchmarks.json") or {
+    "benchmarks": [], "skipped": [], "totals": {}, "methodology": {},
+}
+
+# The two catalogues stacked and pooled, built by src/build_blended_catalogue.py.
+BLENDED = _load_json("blended_results.json")
+
 _BY_CATEGORY = {r["category"]: r for r in ELASTICITY_RESULTS["by_category"]}
 _EXCLUDED_NAMES = {e["category"] for e in ELASTICITY_RESULTS.get("excluded_categories", [])}
 
@@ -132,8 +222,8 @@ class ElasticityResponse(BaseModel):
     advice: Optional[dict] = None
     evidence: Optional[dict] = None
     caveat: str = (
-        "Descriptive association from observational data, not a causal effect — "
-        "price is not randomly assigned in the underlying datasets. See /methodology."
+        "Descriptive association from observational data, not a causal effect. "
+        "Price is not randomly assigned in the underlying datasets. See /methodology."
     )
 
 
@@ -192,7 +282,8 @@ def api_info() -> dict:
         "name": "Price Elasticity Predictor API",
         "endpoints": [
             "/elasticity", "/scenario", "/estimates", "/categories",
-            "/products", "/catalog", "/methodology", "/health",
+            "/products", "/catalog", "/markets", "/blended", "/benchmarks",
+            "/methodology", "/health",
         ],
         "docs": "/docs",
     }
@@ -204,25 +295,28 @@ def health() -> dict:
 
 
 @app.get("/methodology")
-def methodology() -> dict:
-    return ELASTICITY_RESULTS["methodology"]
+def methodology(market: Optional[str] = None) -> dict:
+    return _market(market).results["methodology"]
 
 
 @app.get("/categories")
-def list_categories() -> dict:
+def list_categories(market: Optional[str] = None) -> dict:
+    m = _market(market)
     return {
-        "reported": sorted(_BY_CATEGORY.keys()),
-        "excluded": ELASTICITY_RESULTS["excluded_categories"],
+        "market": m.key,
+        "reported": sorted(m.by_category.keys()),
+        "excluded": m.results["excluded_categories"],
     }
 
 
 @app.get("/estimates")
-def all_estimates() -> dict:
+def all_estimates(market: Optional[str] = None) -> dict:
     """Every estimate in one payload, with the decision layer attached.
 
     This is what the dashboard loads; it replaces one /elasticity round-trip
     per category per interaction.
     """
+    m = _market(market)
 
     def decorate(estimate: dict, scope: str) -> dict:
         out = dict(estimate)
@@ -232,16 +326,85 @@ def all_estimates() -> dict:
         return out
 
     return {
-        "overall": decorate(ELASTICITY_RESULTS["overall"], "overall"),
+        "market": m.describe(),
+        "markets": [MARKETS[k].describe() for k in sorted(MARKETS)],
+        "overall": decorate(m.results["overall"], "overall"),
         "by_category": [
             decorate(row, row["category"])
-            for row in sorted(ELASTICITY_RESULTS["by_category"], key=lambda r: r["elasticity"])
+            for row in sorted(m.results["by_category"], key=lambda r: r["elasticity"])
         ],
-        "excluded_categories": ELASTICITY_RESULTS["excluded_categories"],
-        "methodology": ELASTICITY_RESULTS["methodology"],
+        # Only the Walmart catalogue carries these; the UK one has no second
+        # hierarchy to cut by.
+        "by_department": [decorate(r, r["category"]) for r in m.results.get("by_department", [])],
+        "by_state": [decorate(r, r["category"]) for r in m.results.get("by_state", [])],
+        "excluded_categories": m.results["excluded_categories"],
+        "methodology": m.results["methodology"],
         "revenue_breakeven_elasticity": REVENUE_BREAKEVEN_ELASTICITY,
         "using_stub_data": USING_STUB_DATA,
+        # Carried here as well as on /benchmarks so the page loads everything
+        # it renders in a single request, which is the whole reason /estimates
+        # exists.
+        "benchmarks": REFERENCE_BENCHMARKS.get("benchmarks", []),
+        "benchmark_totals": REFERENCE_BENCHMARKS.get("totals", {}),
+        "blended": {
+            "rows": [r for r in (BLENDED or {}).get("rows", [])
+                     if r["level"] in ("department", "category")],
+            "pooled": (BLENDED or {}).get("pooled", {}),
+            "by_market": (BLENDED or {}).get("by_market", {}),
+            "operation": (BLENDED or {}).get("operation", ""),
+        } if BLENDED else None,
     }
+
+
+@app.get("/markets")
+def markets() -> dict:
+    """The catalogues this API can price against, and how big each one is."""
+    return {
+        "default": DEFAULT_MARKET,
+        "markets": [MARKETS[k].describe() for k in sorted(MARKETS)],
+    }
+
+
+@app.get("/blended")
+def blended() -> dict:
+    """Both catalogues stacked into one table, and pooled.
+
+    The operation is a UNION ALL, not a join: the two catalogues share no
+    match key, so an inner join returns nothing and an outer join returns
+    nulls. Stacking is legitimate across currencies because every estimate is
+    a within-entity log-log slope, and demeaning log price inside an entity
+    removes any constant multiplicative factor, an exchange rate included.
+
+    The pooled figure is random-effects rather than fixed. Weighting by sample
+    size or inverse variance alone would hand the answer to Walmart, which is
+    twenty times the size. `heterogeneity.i_squared_pct` says how much the two
+    markets disagree, and it is worth reading before the headline.
+    """
+    if BLENDED is None:
+        raise HTTPException(
+            status_code=404,
+            detail="blended results not built. Run: python -m src.build_blended_catalogue",
+        )
+    return BLENDED
+
+
+@app.get("/benchmarks")
+def benchmarks() -> dict:
+    """Twelve outside markets, on the same scale as the catalogue's categories.
+
+    The catalogue is one market -- UK wholesale gift and homeware -- and a
+    price-setter in any other trade has no way to tell from it whether their
+    own category is unusual or whether everything behaves like that. These
+    are the comparison: published cigarette and natural-gas panels, thirty-five
+    years of Broadway box office, California avocados, 1880s rail freight, and
+    six supermarket scanner panels, each fitted with the same estimator.
+
+    Two carry a `flag`. `inconclusive` means the interval spans zero, so the
+    data can't tell you the sign. `confounded` means the slope came out
+    positive -- a demand shock showing through, not a demand curve. Both are
+    reported rather than dropped; the page shows them apart from the rest.
+    """
+    return REFERENCE_BENCHMARKS
 
 
 @app.get("/products")
@@ -249,9 +412,10 @@ def list_products(
     category: Optional[str] = None,
     q: Optional[str] = None,
     limit: int = Query(500, ge=1, le=10000),
+    market: Optional[str] = None,
 ) -> dict:
     """Browsable product directory with typical prices for auto-fill."""
-    products = PRODUCTS
+    products = _market(market).products
     if category is not None:
         products = [p for p in products if p["category"] == category]
     if q:
@@ -264,7 +428,7 @@ def list_products(
 
 
 @app.get("/catalog")
-def catalog() -> dict:
+def catalog(market: Optional[str] = None) -> dict:
     """The whole product directory in a column-oriented shape, for the UI's
     client-side search box.
 
@@ -273,46 +437,50 @@ def catalog() -> dict:
     out of every row. Product names are title-cased here so 4,896 rows don't
     have to be re-cased in the browser on every keystroke.
     """
-    categories = sorted({p["category"] for p in PRODUCTS})
+    m = _market(market)
+    categories = sorted({p["category"] for p in m.products})
     cat_index = {name: i for i, name in enumerate(categories)}
-    currency = PRODUCTS[0]["currency"] if PRODUCTS else "GBP"
+    currency = m.products[0]["currency"] if m.products else m.currency
     return {
+        "market": m.key,
         "currency": currency,
         "categories": categories,
-        "reported": sorted(_BY_CATEGORY.keys()),
-        "excluded": sorted(_EXCLUDED_NAMES),
+        "reported": sorted(m.by_category.keys()),
+        "excluded": sorted(m.excluded),
         # [product_id, title-cased name, category index, typical price]
         "products": [
             [p["product_id"], p["product_name"].strip().title(), cat_index[p["category"]], p["typical_price"]]
-            for p in PRODUCTS
+            for p in m.products
         ],
     }
 
 
-def _resolve_estimate(category: Optional[str], product_id: Optional[str]):
+def _resolve_estimate(category: Optional[str], product_id: Optional[str],
+                      market: Optional[str] = None):
     """Shared lookup for /elasticity and /scenario. Returns (estimate, scope)."""
+    m = _market(market)
     if category is None and product_id is None:
-        return ELASTICITY_RESULTS["overall"], "overall"
+        return m.results["overall"], "overall"
 
     resolved_from_product = False
     if category is None and product_id is not None:
-        product = next((p for p in PRODUCTS if p["product_id"] == product_id), None)
+        product = next((p for p in m.products if p["product_id"] == product_id), None)
         if product is None:
             raise HTTPException(status_code=404, detail=f"product_id '{product_id}' not found")
         category = product["category"]
         resolved_from_product = True
 
-    if category not in _BY_CATEGORY:
+    if category not in m.by_category:
         if resolved_from_product:
             # The product's category didn't clear the reporting bar (e.g. the
             # "Other/Uncategorized" catch-all -- see excluded_categories).
             # Fall back to the overall estimate instead of 404ing on a
             # perfectly valid product just because its category isn't
             # separately reported.
-            return ELASTICITY_RESULTS["overall"], "overall"
+            return m.results["overall"], "overall"
         raise HTTPException(status_code=404, detail=f"category '{category}' not found")
 
-    return _BY_CATEGORY[category], category
+    return m.by_category[category], category
 
 
 @app.get("/elasticity", response_model=ElasticityResponse)
@@ -320,12 +488,13 @@ def get_elasticity(
     category: Optional[str] = None,
     product_id: Optional[str] = None,
     price: Optional[float] = None,
+    market: Optional[str] = None,
 ) -> ElasticityResponse:
     """Look up an elasticity estimate by category or product_id."""
     if price is not None and price <= 0:
         raise HTTPException(status_code=422, detail="price must be positive")
 
-    estimate, scope = _resolve_estimate(category, product_id)
+    estimate, scope = _resolve_estimate(category, product_id, market)
     return _estimate_to_response(estimate, scope=scope, price=price,
                                  resolved_from_product_id=product_id)
 
@@ -338,6 +507,7 @@ def get_scenario(
     product_id: Optional[str] = None,
     price: Optional[float] = None,
     unit_cost: Optional[float] = None,
+    market: Optional[str] = None,
 ) -> dict:
     """What happens to units, revenue and (optionally) gross profit at a given price move.
 
@@ -355,7 +525,7 @@ def get_scenario(
         if unit_cost >= price:
             raise HTTPException(status_code=422, detail="unit_cost must be below price")
 
-    estimate, scope = _resolve_estimate(category, product_id)
+    estimate, scope = _resolve_estimate(category, product_id, market)
     scenario = build_scenario(
         elasticity=estimate["elasticity"],
         pct_price_change=pct_price_change,
