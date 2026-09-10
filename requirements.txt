@@ -9,6 +9,9 @@ pandas==2.2.0
 numpy==1.26.4
 requests==2.32.3
 openpyxl==3.1.5
+xlrd==2.0.2
+wooldridge==0.5.0
+py7zr==0.21.1          # unpacks the M5 archive in src/walmart_data.py
 
 # Tests. tests/test_frontend.py drives a real browser and skips itself when
 # no Chromium is available.

@@ -111,9 +111,11 @@ python -m src.build_reference_benchmarks  # fits the outside markets
 python -m src.build_blended_catalogue     # stacks the two and pools them
 ```
 
-Seventeen datasets are profiled in `data/manifests/`, **27,111,806 CSV rows**;
-nine more are documented and blocked. Fifteen of the seventeen can be fetched
-right now with no account.
+Twenty datasets are profiled in `data/manifests/`, **27,126,883 CSV rows**;
+9 more are documented and blocked, for 29 documented in total. All
+twenty fetch with no account, though not all of them from any one network:
+this project's own CI reaches GitHub and PyPI but not ers.usda.gov, UCI or
+Zenodo, so those keep the figures from the run that last saw them.
 
 That row count understates the largest one. The M5 sales file ships wide, one
 row per store-item and one column per day, so its 30,490 rows carry
@@ -121,23 +123,36 @@ row per store-item and one column per day, so its 30,490 rows carry
 
 ### What's actually downloaded vs. what needs manual setup
 
-Of the ten datasets originally scoped, two are freely downloadable (no account,
-no registration) and are fetched for real by `src/data_loader.py`:
+Of the ten datasets originally scoped, five are freely downloadable (no
+account, no registration) and are fetched for real by `src/data_loader.py`:
 
-| file | source | why it substitutes |
+| file | source | why it's useful |
 |---|---|---|
 | `scanner_data.csv` | [UCI Online Retail II](https://archive.ics.uci.edu/dataset/502/online+retail+ii) | 1.07M transaction rows, 5,305 SKUs, Dec 2009-Dec 2011. Stands in for the gated Kaggle `marian447/retail-scanner-data` notebook dataset. That one is very likely derived from this exact UCI source (5,242 vs. 5,305 SKUs). |
 | `monash_dominicks.csv` | [Monash "Dominick Dataset" on Zenodo](https://zenodo.org/records/4654802) | 19.1M rows, 115,704 weekly per-SKU profit series, reformatted from the Kilts Center Dominick's Finer Foods data. Anonymized (no store/UPC/category), so it's useful for time-series modeling but not for category breakdowns. |
+| `usda_elasticities.csv` | [USDA ERS demand elasticities](https://www.ers.usda.gov/data-products/commodity-and-food-elasticities/documentation) | 14,173 literature-reported own-/cross-price/income elasticity estimates across 100+ countries and commodities. Pre-computed rather than transaction data, so it is a benchmark table to sanity-check whatever the model fits from `scanner_data.csv`, not primary modeling input. Last updated 2006. |
+| `fish_prices.csv` | [`wooldridge` package](https://pypi.org/project/wooldridge/) (`fish`, Graddy 1995) | 97 daily Fulton Fish Market price/quantity observations by buyer type, with wave-height/wind-speed instruments for IV elasticity estimation. Small, clean, classic textbook identification dataset, good for a demo fixture. |
+| `smoking_prices.csv` | [`wooldridge` package](https://pypi.org/project/wooldridge/) (`smoke`, Mullahy 1997) | 807 individuals: state cigarette price vs. cigarettes/day with demographic controls. Individual-level rather than SKU-level elasticity data. |
 
 The rest are genuinely blocked from this environment and are left
 **undownloaded** rather than faked:
 
-- **4 Kaggle datasets** (`retail_transactions.csv`, `retail_price_dataset.csv`, `retail_store_transactions.csv`, plus the scanner data above). The Kaggle API returns `403 Permission 'datasets.get' was denied` for every dataset, gated or public, without credentials. Fix: `pip install kaggle`, create a token at kaggle.com/settings, save it to `~/.kaggle/kaggle.json`, then re-run `python -m src.data_loader` and it will pick these up automatically.
+- **4 Kaggle datasets** (`retail_transactions.csv`, `retail_price_dataset.csv`, `retail_store_transactions.csv`, plus `scanner_data_kaggle.csv`). The Kaggle API returns `403 Permission 'datasets.get' was denied` for every dataset, gated or public, without credentials. Fix: `pip install kaggle`, create a token at kaggle.com/settings, save it to `~/.kaggle/kaggle.json`, then re-run `python -m src.data_loader` and it will pick these up automatically.
 - **`dominicks_combined.csv`** (raw Kilts Center Dominick's data). Requires manual academic registration at chicagobooth.edu, and there is no API.
 - **`walmart_sales_weekly.csv`**. A Kaggle competition dataset, so it needs a competition join plus Kaggle auth.
-- **`efood_elasticities.csv`** (Harvard Dataverse). `dataverse.harvard.edu` sits behind a WAF bot-challenge that blocks non-browser requests. Download manually via the DOI.
+- **`efood_elasticities.csv`** (Harvard Dataverse). **Not actually WAF-blocked**, contrary to what this file said until recently: `GET /api/datasets/:persistentId/` returns clean 200 JSON with full metadata for all 23 files. The real block is a one-time Dataverse guestbook form (name, email, institution) required before any file downloads. Fill it once at the [dataset page](https://doi.org/10.7910/DVN/OXZ0H6) and the `.tab` files download normally, which is closer to free registration than a hard gate.
 - **`cheese.csv`**. No verifiable public source found. The Dominick's raw data has a cheese category, but the anonymized Monash reformat can't be split by category.
 - **`competition_data.csv`**. No concrete URL was ever specified for this one.
+
+### Other candidates researched and ruled out
+
+Also checked for freely-downloadable price/quantity data and found no
+better path than what's above:
+
+- **Instacart Market Basket**. The official dataset page now 404s, it only survives on Kaggle behind the same auth wall, and it lacks a price column entirely.
+- **RetailRocket e-commerce events**. Kaggle-only, and price isn't a clean field (mostly view/cart/transaction events).
+- **M5 / Walmart** was ruled out here on an earlier pass and has since been **adopted** as the second catalogue. The original is behind a Kaggle competition join, and the GitHub mirrors are unofficial. The completeness worry is now settled: `src/walmart_data.py` checks every file against the published M5 shape (1,969 calendar days ending 2016-06-19, 6,841,121 prices, 10 stores, 3,049 items, 1,941 day columns) and refuses to write anything that does not match. The redistribution question is a judgement call rather than a technical one: the data is published by the M Open Forecasting Center, the organisers' own `Mcompetitions/M5-methods` repo is public, and the CSVs are widely mirrored. If that is not a comfortable basis, drop `walmart_data.py` and the catalogue falls back to UK-only cleanly.
+- **OpenICPSR** (Billion Prices Project, markup and price-comparison papers). Landing pages return `403` to a direct fetch, and any download requires a free account, same as Kaggle.
 
 Full detail, row counts, and column notes are in
 `data/manifests/data_manifest.csv` and `data/manifests/validation_report.txt`.
