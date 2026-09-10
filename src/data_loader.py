@@ -1,11 +1,14 @@
 """
 Data acquisition for the price elasticity predictor.
 
-Two sources are freely downloadable with no authentication and are fetched
+Four sources are freely downloadable with no authentication and are fetched
 for real by this module:
 
   - UCI "Online Retail II" (archive.ics.uci.edu)      -> data/csv/scanner_data.csv
   - Monash "Dominick Dataset" on Zenodo                -> data/csv/monash_dominicks.csv
+  - USDA ERS literature elasticities table             -> data/csv/usda_elasticities.csv
+  - Wooldridge `fish` and `smoke` teaching datasets     -> data/csv/fish_prices.csv,
+                                                            data/csv/smoking_prices.csv
 
 Everything else in the target dataset list (Kaggle datasets, the raw Kilts
 Center Dominick's Finer Foods files, the Harvard Dataverse E-FooD dataset,
@@ -17,8 +20,13 @@ scripted:
     no anonymous download path, confirmed against kagglehub directly.
   - Kilts Center (Dominick's raw): requires manual academic registration on
     chicagobooth.edu; no API.
-  - Harvard Dataverse (E-FooD): dataverse.harvard.edu sits behind a WAF
-    challenge that blocks non-browser requests.
+  - Harvard Dataverse (E-FooD): NOT actually WAF-blocked (re-verified --
+    `GET /api/datasets/:persistentId/` returns clean 200 JSON). The real
+    block is a one-time Dataverse "guestbook" form (name/email/institution)
+    required before any file in the dataset can be downloaded -- a 400
+    response names the guestbook explicitly. Closer to "free registration"
+    than "gated"; still not scriptable without a human filling the form
+    once at the dataset page.
 
 `download_kaggle_dataset()` below is a real, working function -- it will
 succeed as soon as valid Kaggle credentials are present -- so re-running
@@ -196,6 +204,106 @@ def download_monash_dominicks() -> DatasetSpec:
 
 
 # ---------------------------------------------------------------------------
+# 3. USDA ERS literature elasticities table -- real, no-auth download. A
+#    compilation of own-/cross-price and income elasticity estimates pulled
+#    from published studies (not raw transaction data), useful as an
+#    external benchmark/sanity-check table for whatever the model fits from
+#    scanner_data.csv. Not updated since 2006 -- treat as a reference table,
+#    not primary modeling data.
+# ---------------------------------------------------------------------------
+
+USDA_ELASTICITIES_URL = "https://www.ers.usda.gov/sites/default/files/images/demandelasdata092507_1_.xls"
+
+
+def download_usda_elasticities() -> DatasetSpec:
+    spec = DatasetSpec(
+        filename="usda_elasticities.csv",
+        source_url="https://www.ers.usda.gov/data-products/commodity-and-food-elasticities/documentation",
+        description=(
+            "USDA Economic Research Service compilation of own-price, "
+            "cross-price, and income elasticity estimates drawn from "
+            "published literature across 100+ countries/commodities. "
+            "Pre-computed elasticities (not transaction data) -- useful as "
+            "an external benchmark to sanity-check whatever the model fits "
+            "from scanner_data.csv. Not updated since 2006."
+        ),
+        data_type="aggregated",
+        key_elasticity_columns="MAJOR_COMMODITY,GEOGRAPHY,ELASTICITY_INFO,AMOUNT,DATA_PERIOD",
+    )
+
+    xls_path = RAW_DIR / "usda_demand_elasticities.xls"
+    out_path = CSV_DIR / spec.filename
+
+    if not xls_path.exists():
+        resp = requests.get(USDA_ELASTICITIES_URL, timeout=120)
+        resp.raise_for_status()
+        xls_path.write_bytes(resp.content)
+
+    import pandas as pd
+
+    df = pd.read_excel(xls_path, sheet_name="tbl_Demand_Data")
+    df.to_csv(out_path, index=False)
+
+    spec.status = "downloaded"
+    spec.row_count = len(df)
+    spec.columns = len(df.columns)
+    spec.date_range = "studies published through 2006, covering data periods back to the 1960s-90s"
+    return spec
+
+
+# ---------------------------------------------------------------------------
+# 4. Wooldridge econometrics teaching datasets (`pip install wooldridge`) --
+#    real, no-auth, no-network-request download (ships as package data).
+#    Small samples, but clean, well-documented price/quantity data long
+#    used in econometrics coursework for exactly this kind of estimation.
+# ---------------------------------------------------------------------------
+
+
+def download_wooldridge_datasets() -> list[DatasetSpec]:
+    import wooldridge as woo
+
+    specs = []
+
+    fish_spec = DatasetSpec(
+        filename="fish_prices.csv",
+        source_url="https://pypi.org/project/wooldridge/ (dataset: fish, Graddy 1995)",
+        description=(
+            "Graddy (1995) Fulton Fish Market daily price/quantity by buyer "
+            "type (Asian vs. white wholesalers), 97 daily observations, "
+            "with wave-height/wind-speed instruments for IV elasticity "
+            "estimation -- a classic clean supply/demand identification "
+            "dataset."
+        ),
+        data_type="aggregated",
+        key_elasticity_columns="avgprc,totqty,prca,prcw,qtya,qtyw,wave2,speed2",
+    )
+    smoke_spec = DatasetSpec(
+        filename="smoking_prices.csv",
+        source_url="https://pypi.org/project/wooldridge/ (dataset: smoke, Mullahy 1997)",
+        description=(
+            "Mullahy (1997) cross-section of 807 individuals: state "
+            "cigarette price (cigpric, cents/pack) vs. cigarettes/day "
+            "(cigs), with income/education/age/restaurant-smoking-ban "
+            "controls -- a demand elasticity dataset at the individual "
+            "level rather than SKU level."
+        ),
+        data_type="aggregated",
+        key_elasticity_columns="cigpric,cigs,income,educ,age,restaurn",
+    )
+
+    for spec, name in ((fish_spec, "fish"), (smoke_spec, "smoke")):
+        df = woo.dataWoo(name)
+        out_path = CSV_DIR / spec.filename
+        df.to_csv(out_path, index=False)
+        spec.status = "downloaded"
+        spec.row_count = len(df)
+        spec.columns = len(df.columns)
+        specs.append(spec)
+
+    return specs
+
+
+# ---------------------------------------------------------------------------
 # Gated / manual-only datasets. These are declared so the manifest documents
 # them, and so download_kaggle_dataset() can be called directly once the
 # user has Kaggle credentials configured (~/.kaggle/kaggle.json or
@@ -314,15 +422,26 @@ MANUAL_ONLY_DATASETS = [
     DatasetSpec(
         filename="efood_elasticities.csv",
         source_url="https://doi.org/10.7910/DVN/OXZ0H6",
-        description="Pre-calculated income/price elasticities of food demand across developing countries.",
+        description=(
+            "Pre-calculated income/price elasticities of food demand across "
+            "22 developing countries (Bangladesh, Ethiopia, Indonesia, "
+            "Kenya, Myanmar, Malawi, Nigeria, Pakistan, Rwanda, etc.), "
+            "2000-2023, 23 files (1 summary xlsx + per-country/year .tab "
+            "files)."
+        ),
         data_type="aggregated",
         key_elasticity_columns="Country,Product,Income_Elasticity,Price_Elasticity,Segment",
         status="manual_required",
         note=(
-            "dataverse.harvard.edu is behind a WAF bot-challenge that blocks "
-            "non-browser requests (confirmed: direct HTTPS GET returns a "
-            "challenge page, not data). Download manually via the DOI link "
-            "in a browser."
+            "Re-verified: NOT a WAF bot-challenge -- "
+            "GET https://dataverse.harvard.edu/api/datasets/:persistentId/"
+            "?persistentId=doi:10.7910/DVN/OXZ0H6 returns clean 200 JSON "
+            "with full file metadata. The actual block is a one-time "
+            "Dataverse 'guestbook' form (name/email/institution) required "
+            "before any file downloads -- a 400 response names the "
+            "guestbook explicitly. Fill the guestbook once at the dataset "
+            "page (URL above), then files are downloadable normally; this "
+            "is closer to free registration than a hard gate."
         ),
     ),
     DatasetSpec(
@@ -361,6 +480,12 @@ def main() -> list[DatasetSpec]:
 
     print("Downloading Monash Dominick Dataset -> monash_dominicks.csv ...")
     specs.append(download_monash_dominicks())
+
+    print("Downloading USDA ERS elasticities table -> usda_elasticities.csv ...")
+    specs.append(download_usda_elasticities())
+
+    print("Loading Wooldridge fish/smoke datasets -> fish_prices.csv, smoking_prices.csv ...")
+    specs.extend(download_wooldridge_datasets())
 
     print("Attempting Kaggle datasets (requires ~/.kaggle/kaggle.json) ...")
     for kd in KAGGLE_DATASETS:

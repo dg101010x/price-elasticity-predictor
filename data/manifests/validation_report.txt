@@ -1,7 +1,7 @@
 DATA VALIDATION REPORT
 ============================================================
 
-Downloaded and profiled: 2
+Downloaded and profiled: 5
 Requires manual action: 9
 
 --- scanner_data.csv ---
@@ -19,6 +19,30 @@ date_range: relative week 0-392 per series, no calendar dates
 data_type: weekly
 key_elasticity_columns: SKU_ID,Week_Index,Weekly_Profit
 notes: 115704 unique series. 9366843 of 19092987 rows are zero-profit weeks (no sale that week, not missing data).
+
+--- usda_elasticities.csv ---
+source: https://www.ers.usda.gov/data-products/commodity-and-food-elasticities/documentation
+rows: 14,173   columns: 24
+date_range: studies published through 2006, covering data periods back to the 1960s-90s
+data_type: aggregated
+key_elasticity_columns: MAJOR_COMMODITY,GEOGRAPHY,ELASTICITY_INFO,AMOUNT,DATA_PERIOD
+notes: 116 distinct geographies, 293 major commodities, 4 elasticity types (own price/cross price/income/etc). One row per literature-reported estimate, not per commodity -- expect duplicates across studies.
+
+--- fish_prices.csv ---
+source: https://pypi.org/project/wooldridge/ (dataset: fish, Graddy 1995)
+rows: 97   columns: 20
+date_range: 
+data_type: aggregated
+key_elasticity_columns: avgprc,totqty,prca,prcw,qtya,qtyw,wave2,speed2
+notes: 97 daily market-level observations, no missing avgprc/totqty rows -- small enough for a demo/test fixture rather than primary modeling data.
+
+--- smoking_prices.csv ---
+source: https://pypi.org/project/wooldridge/ (dataset: smoke, Mullahy 1997)
+rows: 807   columns: 10
+date_range: 
+data_type: aggregated
+key_elasticity_columns: cigpric,cigs,income,educ,age,restaurn
+notes: 497 of 807 respondents report zero cigarettes/day (non-smokers) -- consider a two-part/Tobit model rather than plain OLS.
 
 REQUIRES MANUAL ACTION
 ------------------------------------------------------------
@@ -48,7 +72,7 @@ why blocked: Kaggle competition dataset -- requires competition-join + Kaggle au
 
 --- efood_elasticities.csv ---
 source: https://doi.org/10.7910/DVN/OXZ0H6
-why blocked: dataverse.harvard.edu is behind a WAF bot-challenge that blocks non-browser requests (confirmed: direct HTTPS GET returns a challenge page, not data). Download manually via the DOI link in a browser.
+why blocked: Re-verified: NOT a WAF bot-challenge -- GET https://dataverse.harvard.edu/api/datasets/:persistentId/?persistentId=doi:10.7910/DVN/OXZ0H6 returns clean 200 JSON with full file metadata. The actual block is a one-time Dataverse 'guestbook' form (name/email/institution) required before any file downloads -- a 400 response names the guestbook explicitly. Fill the guestbook once at the dataset page (URL above), then files are downloadable normally; this is closer to free registration than a hard gate.
 
 --- cheese.csv ---
 source: (no verifiable public source found)

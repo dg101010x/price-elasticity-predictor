@@ -87,8 +87,91 @@ def profile_monash_dominicks() -> DatasetSpec:
     )
 
 
+def profile_usda_elasticities() -> DatasetSpec:
+    path = CSV_DIR / "usda_elasticities.csv"
+    df = pd.read_csv(path)
+    return DatasetSpec(
+        filename="usda_elasticities.csv",
+        source_url="https://www.ers.usda.gov/data-products/commodity-and-food-elasticities/documentation",
+        description=(
+            "USDA Economic Research Service compilation of own-price, "
+            "cross-price, and income elasticity estimates drawn from "
+            "published literature across 100+ countries/commodities. "
+            "Pre-computed elasticities (not transaction data) -- useful as "
+            "an external benchmark to sanity-check whatever the model fits "
+            "from scanner_data.csv. Not updated since 2006."
+        ),
+        row_count=len(df),
+        columns=len(df.columns),
+        date_range="studies published through 2006, covering data periods back to the 1960s-90s",
+        data_type="aggregated",
+        key_elasticity_columns="MAJOR_COMMODITY,GEOGRAPHY,ELASTICITY_INFO,AMOUNT,DATA_PERIOD",
+        status="downloaded",
+        note=(
+            f"{df['GEOGRAPHY'].nunique()} distinct geographies, "
+            f"{df['MAJOR_COMMODITY'].nunique()} major commodities, "
+            f"{df['ELASTICITY_INFO'].nunique()} elasticity types "
+            "(own price/cross price/income/etc). One row per literature-"
+            "reported estimate, not per commodity -- expect duplicates "
+            "across studies."
+        ),
+    )
+
+
+def profile_wooldridge_fish() -> DatasetSpec:
+    path = CSV_DIR / "fish_prices.csv"
+    df = pd.read_csv(path)
+    return DatasetSpec(
+        filename="fish_prices.csv",
+        source_url="https://pypi.org/project/wooldridge/ (dataset: fish, Graddy 1995)",
+        description=(
+            "Graddy (1995) Fulton Fish Market daily price/quantity by buyer "
+            "type (Asian vs. white wholesalers), 97 daily observations, "
+            "with wave-height/wind-speed instruments for IV elasticity "
+            "estimation -- a classic clean supply/demand identification "
+            "dataset."
+        ),
+        row_count=len(df),
+        columns=len(df.columns),
+        date_range="",
+        data_type="aggregated",
+        key_elasticity_columns="avgprc,totqty,prca,prcw,qtya,qtyw,wave2,speed2",
+        status="downloaded",
+        note="97 daily market-level observations, no missing avgprc/totqty rows -- small enough for a demo/test fixture rather than primary modeling data.",
+    )
+
+
+def profile_wooldridge_smoke() -> DatasetSpec:
+    path = CSV_DIR / "smoking_prices.csv"
+    df = pd.read_csv(path)
+    return DatasetSpec(
+        filename="smoking_prices.csv",
+        source_url="https://pypi.org/project/wooldridge/ (dataset: smoke, Mullahy 1997)",
+        description=(
+            "Mullahy (1997) cross-section of 807 individuals: state "
+            "cigarette price (cigpric, cents/pack) vs. cigarettes/day "
+            "(cigs), with income/education/age/restaurant-smoking-ban "
+            "controls -- a demand elasticity dataset at the individual "
+            "level rather than SKU level."
+        ),
+        row_count=len(df),
+        columns=len(df.columns),
+        date_range="",
+        data_type="aggregated",
+        key_elasticity_columns="cigpric,cigs,income,educ,age,restaurn",
+        status="downloaded",
+        note=f"{int((df['cigs'] == 0).sum())} of {len(df)} respondents report zero cigarettes/day (non-smokers) -- consider a two-part/Tobit model rather than plain OLS.",
+    )
+
+
 def build() -> list[DatasetSpec]:
-    specs = [profile_scanner_data(), profile_monash_dominicks()]
+    specs = [
+        profile_scanner_data(),
+        profile_monash_dominicks(),
+        profile_usda_elasticities(),
+        profile_wooldridge_fish(),
+        profile_wooldridge_smoke(),
+    ]
 
     for kd in KAGGLE_DATASETS:
         specs.append(DatasetSpec(
