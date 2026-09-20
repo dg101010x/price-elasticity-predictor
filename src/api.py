@@ -10,6 +10,9 @@ Endpoint groups
 Record-level (unchanged contract):  /elasticity  /categories  /products
                                     /methodology /health      /api
 Decision-level (added for the UI):  /estimates   /catalog     /scenario
+Context layer:                      /benchmarks  -- the same question asked
+                                    of other markets, so a single-catalogue
+                                    number can be read against something
 
 The dashboard reads /estimates and /catalog exactly once at load. It used to
 issue one /elasticity request per category on every interaction, which meant
@@ -97,6 +100,11 @@ ELASTICITY_RESULTS = _loaded_elasticity or STUB_ELASTICITY_RESULTS
 PRODUCTS = _load_json("products.json") or STUB_PRODUCTS
 USING_STUB_DATA = _loaded_elasticity is None
 
+# External reference estimates, fitted by src/build_benchmarks.py from
+# datasets this repository does not redistribute. Optional: the site works
+# without them, and /benchmarks says so rather than 500ing.
+BENCHMARKS = _load_json("benchmarks.json")
+
 _BY_CATEGORY = {r["category"]: r for r in ELASTICITY_RESULTS["by_category"]}
 _EXCLUDED_NAMES = {e["category"] for e in ELASTICITY_RESULTS.get("excluded_categories", [])}
 
@@ -105,7 +113,7 @@ app = FastAPI(
     description="Price-sensitivity estimates from public retail transaction data, plus the "
                 "revenue arithmetic that turns them into a pricing decision. "
                 "See /methodology for caveats.",
-    version="2.0.0",
+    version="2.1.0",
 )
 
 # The page inlines its own CSS and JS, and /catalog ships the whole 4,896-row
@@ -191,8 +199,8 @@ def api_info() -> dict:
     return {
         "name": "Price Elasticity Predictor API",
         "endpoints": [
-            "/elasticity", "/scenario", "/estimates", "/categories",
-            "/products", "/catalog", "/methodology", "/health",
+            "/elasticity", "/scenario", "/estimates", "/benchmarks",
+            "/categories", "/products", "/catalog", "/methodology", "/health",
         ],
         "docs": "/docs",
     }
@@ -241,6 +249,50 @@ def all_estimates() -> dict:
         "methodology": ELASTICITY_RESULTS["methodology"],
         "revenue_breakeven_elasticity": REVENUE_BREAKEVEN_ELASTICITY,
         "using_stub_data": USING_STUB_DATA,
+    }
+
+
+@app.get("/benchmarks")
+def benchmarks() -> dict:
+    """Price elasticities fitted from other markets, for context.
+
+    Everything else on this site comes from a single UK catalogue, which
+    makes "is -0.7 a normal number?" unanswerable from the data itself.
+    These are fitted by src/build_benchmarks.py from public datasets that
+    need no account to download — cigarettes, fuel, orange juice, rail
+    freight, a fish market — each carrying its own method, identification
+    strategy and licence.
+
+    `this_catalogue` is the site's own overall estimate in the same shape,
+    so a client can draw both on one axis without joining two payloads.
+    """
+    if BENCHMARKS is None:
+        return {
+            "available": False,
+            "reason": "data/processed/benchmarks.json is not present — run `python -m src.build_benchmarks`.",
+            "benchmarks": [],
+            "brand_choice_benchmarks": [],
+        }
+
+    overall = ELASTICITY_RESULTS["overall"]
+    return {
+        "available": True,
+        "generated": BENCHMARKS.get("generated"),
+        "this_catalogue": {
+            "id": "this_catalogue",
+            "market": "UK gift & homeware (this site)",
+            "elasticity": overall["elasticity"],
+            "ci_low": overall["ci_low"],
+            "ci_high": overall["ci_high"],
+            "n_observations": overall["n_observations"],
+            "method": "within",
+            "method_label": "Within-SKU log-log, weekly panel",
+            "identification": "descriptive",
+        },
+        "benchmarks": BENCHMARKS["benchmarks"],
+        "brand_choice_benchmarks": BENCHMARKS["brand_choice_benchmarks"],
+        "methodology": BENCHMARKS["methodology"],
+        "revenue_breakeven_elasticity": REVENUE_BREAKEVEN_ELASTICITY,
     }
 
 

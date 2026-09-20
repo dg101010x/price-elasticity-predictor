@@ -178,6 +178,68 @@ def test_scenario_rejects_a_total_price_cut():
     assert client.get("/scenario", params={"pct_price_change": -100}).status_code == 422
 
 
+# ----------------------------------------------------------- context layer --
+
+def test_benchmarks_are_available_and_sorted():
+    body = client.get("/benchmarks").json()
+    assert body["available"] is True, "tests expect data/processed/benchmarks.json to be built"
+    values = [b["elasticity"] for b in body["benchmarks"]]
+    assert values == sorted(values), "most price-sensitive first, so the chart doesn't re-sort"
+    assert len(body["benchmarks"]) >= 10
+
+
+def test_every_benchmark_carries_its_provenance():
+    """A number from someone else's dataset is only usable if you can say
+    whose dataset, under what licence, fitted how."""
+    body = client.get("/benchmarks").json()
+    for row in body["benchmarks"] + body["brand_choice_benchmarks"]:
+        for key in ("id", "market", "elasticity", "ci_low", "ci_high", "n_observations",
+                    "method", "method_label", "identification", "source", "description"):
+            assert key in row, f"{row.get('id')} is missing {key}"
+        for key in ("package", "item", "url", "license", "citation"):
+            assert row["source"][key], f"{row['id']} has an empty source.{key}"
+        assert row["identification"] in ("descriptive", "instrumented")
+        assert row["ci_low"] <= row["elasticity"] <= row["ci_high"]
+        assert row["n_observations"] > 0
+
+
+def test_benchmarks_are_all_downward_sloping():
+    """Every point estimate should be negative.
+
+    Stat2Data::Grocery fitted at +3.3 before anyone noticed its Price column
+    is derived from its Sales column; it was dropped, and this is the guard
+    that catches the next one of those.
+    """
+    body = client.get("/benchmarks").json()
+    for row in body["benchmarks"] + body["brand_choice_benchmarks"]:
+        assert row["elasticity"] < 0, f"{row['id']} slopes the wrong way: {row['elasticity']}"
+
+
+def test_brand_choice_estimates_are_kept_in_their_own_bucket():
+    """They measure switching between brands, not category volume, so they
+    must never be pooled with the quantity regressions."""
+    body = client.get("/benchmarks").json()
+    assert body["brand_choice_benchmarks"], "the choice panels should still be reported"
+    assert all(b["method"] == "logit" for b in body["brand_choice_benchmarks"])
+    assert all(b["method"] != "logit" for b in body["benchmarks"])
+
+
+def test_instrumented_benchmarks_report_a_first_stage():
+    body = client.get("/benchmarks").json()
+    instrumented = [b for b in body["benchmarks"] if b["identification"] == "instrumented"]
+    assert instrumented, "the tax/weather/cartel instruments should still be fitted"
+    for row in instrumented:
+        assert row["instrument"], f"{row['id']} claims instrumentation without naming an instrument"
+        assert row["first_stage_f"] > 10, f"{row['id']} has a weak first stage: {row['first_stage_f']}"
+
+
+def test_benchmarks_echo_this_sites_own_estimate():
+    body = client.get("/benchmarks").json()
+    overall = client.get("/elasticity").json()
+    assert body["this_catalogue"]["elasticity"] == overall["elasticity"]
+    assert body["this_catalogue"]["ci_low"] == overall["ci_low"]
+
+
 # ------------------------------------------------------------------- page ----
 
 SUBRESOURCE_TAGS = ("script", "link", "img", "iframe", "source", "video", "audio", "embed")
@@ -248,13 +310,13 @@ def test_font_route_refuses_anything_but_a_bundled_font(name):
 
 def test_api_index_lists_the_new_endpoints():
     endpoints = client.get("/api").json()["endpoints"]
-    for path in ("/elasticity", "/scenario", "/estimates", "/catalog"):
+    for path in ("/elasticity", "/scenario", "/estimates", "/catalog", "/benchmarks"):
         assert path in endpoints
 
 
 def test_large_responses_are_compressed():
     """/catalog is ~233KB uncompressed; it should never go over the wire that way."""
-    for path in ("/", "/catalog", "/estimates"):
+    for path in ("/", "/catalog", "/estimates", "/benchmarks"):
         r = client.get(path, headers={"Accept-Encoding": "gzip"})
         assert r.status_code == 200
         assert r.headers.get("content-encoding") == "gzip", f"{path} was not compressed"

@@ -1,14 +1,23 @@
 """
 Data acquisition for the price elasticity predictor.
 
-Four sources are freely downloadable with no authentication and are fetched
-for real by this module:
+Four primary sources are freely downloadable with no authentication and are
+fetched for real by this module:
 
   - UCI "Online Retail II" (archive.ics.uci.edu)      -> data/csv/scanner_data.csv
   - Monash "Dominick Dataset" on Zenodo                -> data/csv/monash_dominicks.csv
   - USDA ERS literature elasticities table             -> data/csv/usda_elasticities.csv
   - Wooldridge `fish` and `smoke` teaching datasets     -> data/csv/fish_prices.csv,
                                                             data/csv/smoking_prices.csv
+
+On top of those, `download_reference_datasets()` pulls eighteen external
+price/quantity datasets that ship inside CRAN and PyPI packages -- see
+src/reference_datasets.py for the list, the licences and the ones that were
+examined and rejected. They are what src/build_benchmarks.py fits the
+"other markets" comparison from. The standout is bayesm::orangeJuice: a
+106,139-row store-level extract of the same Dominick's Finer Foods scanner
+archive that the Kilts Center still gates behind academic registration,
+redistributed on CRAN under GPL.
 
 Everything else in the target dataset list (Kaggle datasets, the raw Kilts
 Center Dominick's Finer Foods files, the Harvard Dataverse E-FooD dataset,
@@ -472,6 +481,41 @@ MANUAL_ONLY_DATASETS = [
 ]
 
 
+def download_reference_datasets() -> list[DatasetSpec]:
+    """Fetch the external benchmark datasets (see src/reference_datasets.py).
+
+    These are the ones added after the first pass over this problem: CRAN and
+    PyPI ship a surprising amount of real price/quantity data -- including a
+    licensed extract of the same Dominick's scanner archive that the Kilts
+    Center gates behind academic registration -- and none of it needs an
+    account. Failures are recorded per dataset rather than aborting the run,
+    because one unreachable mirror shouldn't cost the other seventeen.
+    """
+    from .reference_datasets import REFERENCE_DATASETS, fetch
+
+    specs: list[DatasetSpec] = []
+    for ref in REFERENCE_DATASETS:
+        spec = DatasetSpec(
+            filename=ref.filename,
+            source_url=ref.doc_url or ref.source_url,
+            description=ref.description,
+            data_type=ref.data_type,
+            key_elasticity_columns=ref.key_elasticity_columns,
+            note=f"{ref.package}::{ref.item} — {ref.license}. {ref.citation} {ref.note}".strip(),
+        )
+        try:
+            df = fetch(ref)
+            spec.status = "downloaded"
+            spec.row_count = len(df)
+            spec.columns = len(df.columns)
+            spec.date_range = ref.period
+        except Exception as exc:                            # noqa: BLE001
+            spec.status = "manual_required"
+            spec.note = f"fetch failed ({type(exc).__name__}: {exc}). {spec.note}"
+        specs.append(spec)
+    return specs
+
+
 def main() -> list[DatasetSpec]:
     specs: list[DatasetSpec] = []
 
@@ -486,6 +530,9 @@ def main() -> list[DatasetSpec]:
 
     print("Loading Wooldridge fish/smoke datasets -> fish_prices.csv, smoking_prices.csv ...")
     specs.extend(download_wooldridge_datasets())
+
+    print("Fetching external benchmark datasets (CRAN mirrors + PyPI) ...")
+    specs.extend(download_reference_datasets())
 
     print("Attempting Kaggle datasets (requires ~/.kaggle/kaggle.json) ...")
     for kd in KAGGLE_DATASETS:
