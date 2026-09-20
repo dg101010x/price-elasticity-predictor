@@ -161,6 +161,7 @@ def fit_dominicks_oj(df: pd.DataFrame) -> dict:
         controls="competing-brand price index, feature ad, in-store display",
         cross_price_elasticity=round(float(fit["beta"][1]), 3),
         cross_price_std_error=round(float(fit["se"][1]), 3),
+        cross_price_label="brands",
         n_units=int(n_entity),
         clustered_on=f"{d['store'].nunique()} stores",
     )

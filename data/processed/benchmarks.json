@@ -15,6 +15,7 @@
       "controls": "competing-brand price index, feature ad, in-store display",
       "cross_price_elasticity": 1.947,
       "cross_price_std_error": 0.157,
+      "cross_price_label": "brands",
       "n_units": 913,
       "clustered_on": "83 stores",
       "id": "dominicks_oj",

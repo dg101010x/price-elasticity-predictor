@@ -1153,7 +1153,9 @@
       "price with something that moves supply and not demand; the rest carry the same caveat this site's " +
       "own estimates do. Rebuild them with `python -m src.build_benchmarks`.";
 
-    var noted = quantity.filter(function (b) { return b.note || b.literature; });
+    var noted = quantity.filter(function (b) {
+      return b.note || b.literature || typeof b.cross_price_elasticity === "number";
+    });
     var notesBox = $("#benchmark-notes");
     var notesList = $("#benchmark-notes-list");
     clear(notesList);
@@ -1172,6 +1174,16 @@
         if (b.note) dd.appendChild(el("span", null, " "));
       }
       if (b.note) dd.appendChild(document.createTextNode(b.note));
+      // Two of these datasets carry the rival's price as well as their own,
+      // which answers a question none of the rest can: does a competitor's
+      // discount cost you volume?
+      if (typeof b.cross_price_elasticity === "number" && b.cross_price_elasticity > 0.05) {
+        dd.appendChild(document.createTextNode(
+          " When competing " + (b.cross_price_label || "products") +
+          " get 10% dearer, this one's volume rises about " +
+          Math.round((Math.pow(1.1, b.cross_price_elasticity) - 1) * 100) +
+          "% — on this shelf, the price next to yours matters as much as yours."));
+      }
       pair.appendChild(dd);
       notesList.appendChild(pair);
     });
