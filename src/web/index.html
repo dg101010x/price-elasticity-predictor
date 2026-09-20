@@ -239,6 +239,65 @@
       <p class="hint" id="compare-note"></p>
     </section>
 
+    <!-- OTHER MARKETS ------------------------------------------- -->
+    <!-- Hidden until /benchmarks answers. It loads after the page is already
+         usable, so a missing or slow benchmarks file costs nothing. -->
+    <section class="card" id="benchmark-card" aria-labelledby="benchmark-heading" hidden>
+      <div class="card-head">
+        <h2 class="card-title" id="benchmark-heading">Is that a normal number?</h2>
+        <p class="card-sub">
+          The same question asked of other markets, from public datasets: cigarettes, motor fuel,
+          orange juice on a supermarket shelf, 1880s rail freight, a New York fish market.
+          Your current pick sits among them.
+        </p>
+      </div>
+      <figure class="chart-figure">
+        <figcaption class="figure-head figure-head-end">
+          <div class="figure-actions">
+            <button type="button" class="btn btn-quiet btn-table" data-table-toggle="benchmark-table"
+                    aria-expanded="false" aria-controls="benchmark-table">Table</button>
+          </div>
+        </figcaption>
+        <div class="chart-host" id="benchmark-chart"></div>
+        <div class="table-view" id="benchmark-table" hidden></div>
+      </figure>
+      <p class="hint" id="benchmark-note"></p>
+
+      <details class="tech-details" id="benchmark-notes" hidden>
+        <summary>
+          <span>What each of these numbers does and doesn&rsquo;t mean</span>
+          <span class="summary-chevron" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </span>
+        </summary>
+        <div class="tech-body">
+          <p class="hint">
+            Where a fitted number disagrees with the published literature, or where the dataset can&rsquo;t
+            quite answer the question asked of it, it says so here rather than somewhere less visible.
+          </p>
+          <dl class="spec-list" id="benchmark-notes-list"></dl>
+        </div>
+      </details>
+
+      <details class="tech-details" id="benchmark-brands" hidden>
+        <summary>
+          <span>Brand switching is a different, much bigger number</span>
+          <span class="summary-chevron" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </span>
+        </summary>
+        <div class="tech-body">
+          <p class="hint">
+            These come from supermarket panels that record which brand a shopper picked, not how many
+            units the category sold. Raising one brand's price sends shoppers to the brand beside it,
+            which is a far larger effect than the whole category buying less &mdash; so these numbers
+            belong to a different question and are kept off the chart above.
+          </p>
+          <dl class="spec-list" id="benchmark-brand-list"></dl>
+        </div>
+      </details>
+    </section>
+
     <!-- EVIDENCE ------------------------------------------------ -->
     <section class="card" aria-labelledby="evidence-heading">
       <div class="card-head">

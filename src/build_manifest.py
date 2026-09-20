@@ -164,14 +164,97 @@ def profile_wooldridge_smoke() -> DatasetSpec:
     )
 
 
+def profile_reference_datasets(already_listed: set[str]) -> list[DatasetSpec]:
+    """Profile whichever of the external benchmark datasets are on disk.
+
+    These are small and re-fetchable, so a missing one is reported as
+    manual_required with the reason rather than failing the run.
+    `already_listed` skips the two Wooldridge files that src/data_loader.py
+    has been fetching since before the benchmarks existed -- one file, one
+    row, even though it now has two jobs.
+    """
+    from .reference_datasets import REFERENCE_DATASETS
+
+    specs = []
+    for ref in REFERENCE_DATASETS:
+        if ref.filename in already_listed:
+            continue
+        spec = DatasetSpec(
+            filename=ref.filename,
+            source_url=ref.doc_url or ref.source_url,
+            description=ref.description,
+            data_type=ref.data_type,
+            key_elasticity_columns=ref.key_elasticity_columns,
+            date_range=ref.period,
+            note=f"{ref.package}::{ref.item} — {ref.license}. {ref.citation} {ref.note}".strip(),
+        )
+        path = CSV_DIR / ref.filename
+        if path.exists():
+            df = pd.read_csv(path)
+            spec.status = "downloaded"
+            spec.row_count = len(df)
+            spec.columns = len(df.columns)
+        else:
+            spec.status = "manual_required"
+            spec.note = f"not fetched yet — run `python -m src.data_loader`. {spec.note}"
+        specs.append(spec)
+    return specs
+
+
+def _previous_rows() -> dict[str, dict]:
+    """The last manifest, keyed by filename.
+
+    src/data_loader.py's primary sources live behind hosts that some networks
+    block outright. When one can't be re-profiled, carrying its previous row
+    forward keeps the manifest a record of what this project has actually
+    seen, instead of quietly losing a dataset because today's network was
+    narrower than yesterday's.
+    """
+    if not MANIFEST_PATH.exists():
+        return {}
+    with open(MANIFEST_PATH, newline="") as f:
+        return {row["filename"]: row for row in csv.DictReader(f)}
+
+
+def _carry_forward(filename: str, previous: dict[str, dict], reason: str) -> DatasetSpec | None:
+    row = previous.get(filename)
+    if row is None:
+        return None
+    spec = DatasetSpec(
+        filename=row["filename"],
+        source_url=row["source_url"],
+        description=row["description"],
+        data_type=row["data_type"],
+        key_elasticity_columns=row["key_elasticity_columns"],
+        date_range=row["date_range"],
+        status=row["status"],
+        note=row["note"],
+        row_count=int(row["row_count"]) if row["row_count"] else None,
+        columns=int(row["columns"]) if row["columns"] else None,
+    )
+    print(f"  [carried forward] {filename}: {reason}")
+    return spec
+
+
 def build() -> list[DatasetSpec]:
-    specs = [
-        profile_scanner_data(),
-        profile_monash_dominicks(),
-        profile_usda_elasticities(),
-        profile_wooldridge_fish(),
-        profile_wooldridge_smoke(),
-    ]
+    previous = _previous_rows()
+    specs: list[DatasetSpec] = []
+
+    for filename, profiler in (
+        ("scanner_data.csv", profile_scanner_data),
+        ("monash_dominicks.csv", profile_monash_dominicks),
+        ("usda_elasticities.csv", profile_usda_elasticities),
+        ("fish_prices.csv", profile_wooldridge_fish),
+        ("smoking_prices.csv", profile_wooldridge_smoke),
+    ):
+        try:
+            specs.append(profiler())
+        except (FileNotFoundError, OSError) as exc:
+            carried = _carry_forward(filename, previous, f"{type(exc).__name__} — not on disk")
+            if carried is not None:
+                specs.append(carried)
+
+    specs.extend(profile_reference_datasets({s.filename for s in specs}))
 
     for kd in KAGGLE_DATASETS:
         specs.append(DatasetSpec(

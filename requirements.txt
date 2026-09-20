@@ -11,6 +11,9 @@ requests==2.32.3
 openpyxl==3.1.5
 xlrd==2.0.2
 wooldridge==0.5.0
+# Reads bayesm's orangeJuice.rda off the CRAN mirror. pyreadr can't: that
+# object is an R list, and pyreadr silently returns nothing for one.
+rdata==1.1.0
 
 # Tests. tests/test_frontend.py drives a real browser and skips itself when
 # no Chromium is available.

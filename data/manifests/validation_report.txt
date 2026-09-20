@@ -1,7 +1,7 @@
 DATA VALIDATION REPORT
 ============================================================
 
-Downloaded and profiled: 5
+Downloaded and profiled: 21
 Requires manual action: 9
 
 --- scanner_data.csv ---
@@ -43,6 +43,134 @@ date_range:
 data_type: aggregated
 key_elasticity_columns: cigpric,cigs,income,educ,age,restaurn
 notes: 497 of 807 respondents report zero cigarettes/day (non-smokers) -- consider a two-part/Tobit model rather than plain OLS.
+
+--- dominicks_oj.csv ---
+source: https://raw.githubusercontent.com/cran/bayesm/master/data/orangeJuice.rda
+rows: 106,139   columns: 19
+date_range: 1989-1994, weekly
+data_type: store-brand-week panel
+key_elasticity_columns: store,brand,week,logmove,price1..price11,deal,feat
+notes: bayesm::orangeJuice — GPL (>= 2). Dominick's Finer Foods store-level scanner data, distributed as bayesm::orangeJuice (Rossi, Allenby & McCulloch, Bayesian Statistics and Marketing). The raw Kilts Center Dominick's archive needs academic registration; this 11-brand extract is redistributed on CRAN under GPL, which is why it's reachable here at all.
+
+--- cigar_state_panel.csv ---
+source: https://vincentarelbundock.github.io/Rdatasets/doc/Ecdat/Cigar.html
+rows: 1,380   columns: 9
+date_range: 1963-1992, annual
+data_type: state-year panel
+key_elasticity_columns: state,year,price,sales,cpi,ndi,pimin
+notes: Ecdat::Cigar — GPL (>= 2). Baltagi & Levin (1992); Baltagi et al. (2000). Ecdat::Cigar.
+
+--- cigarettes_sw.csv ---
+source: https://vincentarelbundock.github.io/Rdatasets/doc/AER/CigarettesSW.html
+rows: 96   columns: 9
+date_range: 1985 and 1995
+data_type: state panel
+key_elasticity_columns: state,year,packs,price,tax,taxs,income,cpi
+notes: AER::CigarettesSW — GPL-2 | GPL-3. Stock & Watson, Introduction to Econometrics. AER::CigarettesSW.
+
+--- gasoline_oecd.csv ---
+source: https://vincentarelbundock.github.io/Rdatasets/doc/AER/OECDGas.html
+rows: 342   columns: 6
+date_range: 1960-1978, annual
+data_type: country-year panel
+key_elasticity_columns: country,year,gas,price,income,cars
+notes: AER::OECDGas — GPL-2 | GPL-3. Baltagi & Griffin (1983). AER::OECDGas / Ecdat::Gasoline.
+
+--- natural_gas_states.csv ---
+source: https://vincentarelbundock.github.io/Rdatasets/doc/AER/NaturalGas.html
+rows: 138   columns: 10
+date_range: 1967-1989, annual
+data_type: state-year panel
+key_elasticity_columns: state,year,consumption,price,eprice,oprice,heating,income
+notes: AER::NaturalGas — GPL-2 | GPL-3. Balestra & Nerlove (1966); Greene, Econometric Analysis. AER::NaturalGas.
+
+--- rail_freight_cartel.csv ---
+source: https://vincentarelbundock.github.io/Rdatasets/doc/AER/CartelStability.html
+rows: 328   columns: 5
+date_range: 1880-1886, weekly
+data_type: weekly time series
+key_elasticity_columns: price,quantity,cartel,season,ice
+notes: AER::CartelStability — GPL-2 | GPL-3. Porter (1983), 'A Study of Cartel Stability'. AER::CartelStability.
+
+--- economics_journals.csv ---
+source: https://vincentarelbundock.github.io/Rdatasets/doc/AER/Journals.html
+rows: 180   columns: 10
+date_range: 2000
+data_type: cross-section
+key_elasticity_columns: subs,price,citations,pages,foundingyear
+notes: AER::Journals — GPL-2 | GPL-3. Bergstrom (2001), 'Free Labor for Costly Journals?'. AER::Journals.
+
+--- avocados_california.csv ---
+source: https://vincentarelbundock.github.io/Rdatasets/doc/causaldata/avocado.html
+rows: 169   columns: 3
+date_range: 2015-2018, weekly
+data_type: weekly time series
+key_elasticity_columns: Date,AveragePrice,TotalVolume
+notes: causaldata::avocado — MIT. Hass Avocado Board retail scan data, via causaldata::avocado (Huntington-Klein).
+
+--- ice_cream.csv ---
+source: https://vincentarelbundock.github.io/Rdatasets/doc/Ecdat/Icecream.html
+rows: 30   columns: 4
+date_range: 1951-1953, four-weekly
+data_type: time series
+key_elasticity_columns: cons,price,income,temp
+notes: Ecdat::Icecream — GPL (>= 2). Hildreth & Lu (1960). Ecdat::Icecream.
+
+--- us_gasoline_market.csv ---
+source: https://vincentarelbundock.github.io/Rdatasets/doc/AER/USGasG.html
+rows: 36   columns: 10
+date_range: 1960-1995, annual
+data_type: time series
+key_elasticity_columns: gas,price,income,newcar,usedcar
+notes: AER::USGasG — GPL-2 | GPL-3. Greene, Econometric Analysis, Table F2.2. AER::USGasG.
+
+--- recreation_trips.csv ---
+source: https://vincentarelbundock.github.io/Rdatasets/doc/AER/RecreationDemand.html
+rows: 659   columns: 8
+date_range: 1980 survey
+data_type: cross-section
+key_elasticity_columns: trips,costS,costC,costH,income,quality,ski
+notes: AER::RecreationDemand — GPL-2 | GPL-3. Ozuna & Gomez (1995); Cameron & Trivedi (1998). AER::RecreationDemand.
+
+--- choice_ketchup.csv ---
+source: https://vincentarelbundock.github.io/Rdatasets/doc/Ecdat/Ketchup.html
+rows: 4,956   columns: 7
+date_range: scanner panel
+data_type: brand-choice panel
+key_elasticity_columns: Ketchup.choice,price.heinz,price.hunts,price.delmonte,price.stb
+notes: Ecdat::Ketchup — GPL (>= 2). Kim, Allenby & Rossi (2002). Ecdat::Ketchup.
+
+--- choice_catsup.csv ---
+source: https://vincentarelbundock.github.io/Rdatasets/doc/Ecdat/Catsup.html
+rows: 2,798   columns: 14
+date_range: scanner panel
+data_type: brand-choice panel
+key_elasticity_columns: choice,price.*,disp.*,feat.*
+notes: Ecdat::Catsup — GPL (>= 2). Jain, Vilcassim & Chintagunta (1994). Ecdat::Catsup.
+
+--- choice_tuna.csv ---
+source: https://vincentarelbundock.github.io/Rdatasets/doc/Ecdat/Tuna.html
+rows: 13,705   columns: 8
+date_range: scanner panel
+data_type: brand-choice panel
+key_elasticity_columns: Tuna.choice,price.skw,price.cosw,price.sko,price.coso,price.pw
+notes: Ecdat::Tuna — GPL (>= 2). Chintagunta (2002)-style tuna panel. Ecdat::Tuna.
+
+--- choice_yogurt.csv ---
+source: https://vincentarelbundock.github.io/Rdatasets/doc/Ecdat/Yogurt.html
+rows: 2,412   columns: 10
+date_range: scanner panel
+data_type: brand-choice panel
+key_elasticity_columns: choice,price.*,feat.*
+notes: Ecdat::Yogurt — GPL (>= 2). Jain, Vilcassim & Chintagunta (1994). Ecdat::Yogurt.
+
+--- choice_crackers.csv ---
+source: https://vincentarelbundock.github.io/Rdatasets/doc/Ecdat/Cracker.html
+rows: 3,292   columns: 14
+date_range: scanner panel
+data_type: brand-choice panel
+key_elasticity_columns: choice,price.*,disp.*,feat.*
+notes: Ecdat::Cracker — GPL (>= 2). Jain, Vilcassim & Chintagunta (1994). Ecdat::Cracker.
 
 REQUIRES MANUAL ACTION
 ------------------------------------------------------------

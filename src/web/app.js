@@ -101,6 +101,7 @@
     change: 10,
     currencySymbol: "£",
     estimates: null,
+    benchmarks: null,          // /benchmarks, loaded after first paint
     products: [],              // [{id, name, category, price}]
     domain: [-3, 0]
   };
@@ -726,11 +727,159 @@
     host.appendChild(root);
   }
 
+  /* ---- 4. other markets (forest plot) ----------------------------------- */
+  /* Every other chart on this page is one dataset read against itself. This
+     one is thirteen different datasets, fitted by different estimators on
+     different decades, so it is drawn as a forest plot: the interval is the
+     point, and a dot without its whiskers would overstate how much any one
+     of these rows knows. */
+  function benchmarkRows() {
+    if (!state.benchmarks) return [];
+    var est = currentEstimate();
+    var rows = state.benchmarks.benchmarks.map(function (b) {
+      return {
+        name: b.market, value: b.elasticity, ci: [b.ci_low, b.ci_high],
+        n: b.n_observations, method: b.method, methodLabel: b.method_label,
+        instrumented: b.identification === "instrumented",
+        source: b.source, period: b.period, region: b.region,
+        note: b.note, literature: b.literature
+      };
+    });
+    if (est) {
+      // The label gutter is fixed; a full product name is not.
+      var own = scopeLabel();
+      if (own.length > 34) own = own.slice(0, 33).replace(/\s+\S*$/, "") + "…";
+      rows.push({
+        name: own, value: est.elasticity, ci: [est.ci_low, est.ci_high],
+        n: est.n_observations, method: "within",
+        methodLabel: "Within-SKU log-log, weekly panel",
+        instrumented: false, isCurrent: true,
+        period: "2009–2011", region: "UK gift & homeware"
+      });
+    }
+    rows.sort(function (a, b) { return a.value - b.value; });
+    return rows;
+  }
+
+  function drawBenchmarkChart() {
+    var host = $("#benchmark-chart");
+    if (!host || !state.benchmarks) return;
+    var rows = benchmarkRows();
+    if (!rows.length) return;
+
+    var W = chartWidth(host);
+    var stacked = W < 620;
+    var padL = stacked ? 4 : 214;
+    var padR = stacked ? 4 : 56, padT = 26, padB = 34;
+    var rowH = stacked ? 44 : 28;
+    var H = padT + rows.length * rowH + padB;
+
+    // A couple of these intervals cross zero -- a dataset with no usable
+    // price variation says so by running past it -- so the axis has to make
+    // room on the right rather than clipping the whisker at the frame.
+    var lo = rows.reduce(function (m, r) { return Math.min(m, r.ci[0]); }, -1.2);
+    var hi = rows.reduce(function (m, r) { return Math.max(m, r.ci[1]); }, 0);
+    var d0 = Math.floor(lo * 2 - 0.5) / 2, d1 = Math.ceil(hi * 2 + 0.5) / 2;
+    var x = function (v) { return padL + ((v - d0) / (d1 - d0)) * (W - padL - padR); };
+
+    var accent = token("--accent");
+    var quiet = token("--mark-quiet");
+    var surface = token("--surface");
+
+    clear(host);
+    var root = chartRoot(W, H,
+      "Price sensitivity across " + rows.length + " markets, each with its likely range, " +
+      "from " + rows[0].name + " at " + nf2.format(rows[0].value) +
+      " to " + rows[rows.length - 1].name + " at " + nf2.format(rows[rows.length - 1].value) + ".");
+
+    for (var t = Math.ceil(d0); t <= d1 + 1e-9; t += 1) {
+      root.appendChild(svg("line", { x1: x(t), y1: padT - 6, x2: x(t), y2: H - padB + 2, class: "chart-grid" }));
+      var tk = svg("text", { x: x(t), y: H - padB + 18, class: "chart-tick", "text-anchor": "middle" });
+      tk.textContent = t === 0 ? "0" : (t < 0 ? "−" : "+") + Math.abs(t);
+      root.appendChild(tk);
+    }
+
+    var bx = x(REVENUE_BREAKEVEN);
+    root.appendChild(svg("line", {
+      x1: bx, y1: padT - 14, x2: bx, y2: H - padB + 2,
+      stroke: token("--ink-3"), "stroke-width": 1.5
+    }));
+    var beTag = svg("text", { x: bx, y: padT - 18, class: "chart-strong", "text-anchor": "middle" });
+    beTag.textContent = "break-even";
+    root.appendChild(beTag);
+
+    var tip = chartTooltip(host);
+
+    rows.forEach(function (row, i) {
+      var top = padT + i * rowH;
+      var cy = stacked ? top + 30 : top + rowH / 2;
+      var colour = row.isCurrent ? accent : quiet;
+      var label = row.name + (row.instrumented ? "  · IV" : "");
+
+      if (stacked) {
+        var above = svg("text", { x: 2, y: top + 14, class: row.isCurrent ? "chart-strong" : "chart-label" });
+        above.textContent = label;
+        root.appendChild(above);
+      } else {
+        var name = svg("text", {
+          x: padL - 12, y: cy + 4,
+          class: row.isCurrent ? "chart-strong" : "chart-label", "text-anchor": "end"
+        });
+        name.textContent = label;
+        root.appendChild(name);
+      }
+
+      // Interval first, estimate on top of it.
+      root.appendChild(svg("line", {
+        x1: x(row.ci[0]), y1: cy, x2: x(row.ci[1]), y2: cy,
+        stroke: colour, "stroke-width": 2, "stroke-linecap": "round", opacity: 0.55
+      }));
+      root.appendChild(svg("circle", {
+        cx: x(row.value), cy: cy, r: row.isCurrent ? 6 : 5,
+        fill: colour, stroke: surface, "stroke-width": 2
+      }));
+
+      var val = svg("text", {
+        x: W - 4, y: stacked ? top + 14 : cy + 4,
+        class: row.isCurrent ? "chart-strong" : "chart-tick", "text-anchor": "end"
+      });
+      val.textContent = nf2.format(row.value);
+      root.appendChild(val);
+
+      var hit = svg("rect", {
+        x: 0, y: top, width: W, height: Math.max(24, rowH), class: "chart-hit",
+        tabindex: "0", role: "img", "data-focus-key": "bench-" + row.name,
+        "aria-label": row.name + ": price sensitivity " + nf2.format(row.value) +
+          ", likely range " + nf2.format(row.ci[0]) + " to " + nf2.format(row.ci[1]) +
+          ", from " + nfInt.format(row.n) + " observations. " + row.methodLabel + "."
+      });
+      var showTip = function () {
+        var lines = [
+          { name: "Sensitivity", value: nf2.format(row.value), color: colour },
+          { name: "Likely range", value: nf2.format(row.ci[0]) + " to " + nf2.format(row.ci[1]) },
+          { name: "Observations", value: nfInt.format(row.n) },
+          { name: "Measured", value: row.methodLabel }
+        ];
+        if (row.period) lines.push({ name: "Period", value: row.period });
+        if (row.literature) lines.push({ name: "Published", value: row.literature.range });
+        tip.show(x(row.value), stacked ? cy - 8 : top, row.name, lines);
+      };
+      hit.addEventListener("pointerenter", showTip);
+      hit.addEventListener("pointerleave", tip.hide);
+      hit.addEventListener("focus", showTip);
+      hit.addEventListener("blur", tip.hide);
+      root.appendChild(hit);
+    });
+
+    host.appendChild(root);
+  }
+
   function renderCharts() {
     if (!state.estimates) return;
     redrawChart("#scale-chart", drawScaleChart);
     redrawChart("#scenario-chart", drawScenarioChart);
     redrawChart("#compare-chart", drawCompareChart);
+    if (state.benchmarks) redrawChart("#benchmark-chart", drawBenchmarkChart);
   }
 
   /* ======================================================================
@@ -935,6 +1084,117 @@
     host.appendChild(table);
   }
 
+  function renderBenchmarkTable() {
+    var host = $("#benchmark-table");
+    if (!host || !state.benchmarks) return;
+    clear(host);
+
+    var table = el("table");
+    table.appendChild(el("caption", null,
+      "One market per row, each fitted from its own public dataset. IV marks the rows where price was " +
+      "instrumented, which is as close to a causal claim as any of these get."));
+
+    var thead = el("thead");
+    var hr = el("tr");
+    ["Market", "Sensitivity", "Likely range", "How it was measured", "Observations"]
+      .forEach(function (h) {
+        var th = el("th", null, h);
+        th.setAttribute("scope", "col");
+        hr.appendChild(th);
+      });
+    thead.appendChild(hr);
+    table.appendChild(thead);
+
+    var tbody = el("tbody");
+    benchmarkRows().forEach(function (r) {
+      var tr = el("tr");
+      if (r.isCurrent) tr.setAttribute("data-current", "true");
+
+      // Source rides under the market name rather than taking a sixth
+      // column: at six the table stopped fitting its card on a laptop.
+      var market = el("td", "t-market");
+      market.appendChild(el("div", null, r.name + (r.instrumented ? "  · IV" : "")));
+      if (r.source) {
+        // Attribution, not a dependency: an outbound link fetches nothing.
+        var a = el("a", null, r.source.package + "::" + r.source.item);
+        a.href = r.source.url;
+        a.target = "_blank";
+        a.rel = "noreferrer noopener";
+        a.title = r.source.citation + " — " + r.source.license;
+        var line = el("div", "t-source");
+        line.appendChild(a);
+        market.appendChild(line);
+      } else {
+        market.appendChild(el("div", "t-source", "this site, from UCI Online Retail II"));
+      }
+      tr.appendChild(market);
+
+      tr.appendChild(el("td", null, nf3.format(r.value)));
+      tr.appendChild(el("td", null, nf2.format(r.ci[0]) + " to " + nf2.format(r.ci[1])));
+      tr.appendChild(el("td", "t-text", r.methodLabel));
+      tr.appendChild(el("td", null, nfInt.format(r.n)));
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    host.appendChild(table);
+  }
+
+  function renderBenchmarks() {
+    if (!state.benchmarks) return;
+    var card = $("#benchmark-card");
+    var quantity = state.benchmarks.benchmarks || [];
+    if (!quantity.length) { card.hidden = true; return; }
+    card.hidden = false;
+
+    var instrumented = quantity.filter(function (b) { return b.identification === "instrumented"; }).length;
+    $("#benchmark-note").textContent =
+      quantity.length + " markets, each fitted from a public dataset that needs no account to download — " +
+      "no data is republished here, only the coefficients. " + instrumented + " of them (marked IV) instrument the " +
+      "price with something that moves supply and not demand; the rest carry the same caveat this site's " +
+      "own estimates do. Rebuild them with `python -m src.build_benchmarks`.";
+
+    var noted = quantity.filter(function (b) { return b.note || b.literature; });
+    var notesBox = $("#benchmark-notes");
+    var notesList = $("#benchmark-notes-list");
+    clear(notesList);
+    notesBox.hidden = !noted.length;
+    noted.forEach(function (b) {
+      var pair = el("div");
+      pair.appendChild(el("dt", null, b.market));
+      var dd = el("dd");
+      if (b.literature) {
+        dd.appendChild(document.createTextNode("Published estimates: " + b.literature.range + " "));
+        var cite = el("a", null, "(" + b.literature.source_label + ")");
+        cite.href = b.literature.source;
+        cite.target = "_blank";
+        cite.rel = "noreferrer noopener";
+        dd.appendChild(cite);
+        if (b.note) dd.appendChild(el("span", null, " "));
+      }
+      if (b.note) dd.appendChild(document.createTextNode(b.note));
+      pair.appendChild(dd);
+      notesList.appendChild(pair);
+    });
+
+    var brands = state.benchmarks.brand_choice_benchmarks || [];
+    var brandBox = $("#benchmark-brands");
+    var list = $("#benchmark-brand-list");
+    clear(list);
+    brandBox.hidden = !brands.length;
+    brands.forEach(function (b) {
+      var pair = el("div");
+      pair.appendChild(el("dt", null, b.market));
+      pair.appendChild(el("dd", null,
+        nf2.format(b.elasticity) + " (likely " + nf2.format(b.ci_low) + " to " + nf2.format(b.ci_high) + "), " +
+        "from " + nfInt.format(b.n_observations) + " purchase occasions across " + b.n_units + " brands. " +
+        b.source.package + "::" + b.source.item + ", " + b.source.license + "."));
+      list.appendChild(pair);
+    });
+
+    renderBenchmarkTable();
+    redrawChart("#benchmark-chart", drawBenchmarkChart);
+  }
+
   function renderEvidence() {
     var est = currentEstimate();
     if (!est) return;
@@ -1034,6 +1294,7 @@
     renderEvidence();
     renderCompareTable();
     renderCompareNote();
+    if (state.benchmarks) renderBenchmarkTable();
     renderCharts();
     writeURL();
   }
@@ -1444,6 +1705,16 @@
         }
         setChange(state.change);
         setScope(state.scope);
+
+        // Context, not content: the page is already usable, so a missing or
+        // slow benchmarks file leaves the section hidden and nothing else.
+        fetchJSON("/benchmarks")
+          .then(function (b) {
+            if (!b || !b.available) return;
+            state.benchmarks = b;
+            renderBenchmarks();
+          })
+          .catch(function () { /* the rest of the page does not depend on it */ });
       })
       .catch(function (err) {
         showBootError(err.message + " The API may still be starting up.");

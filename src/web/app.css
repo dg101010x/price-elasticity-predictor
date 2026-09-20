@@ -574,6 +574,17 @@ details[open] > summary .summary-chevron { rotate: 180deg; }
 .table-view td:first-child { font-family: var(--sans); color: var(--ink); }
 .table-view tbody tr + tr td { border-top: 1px solid var(--line); }
 .table-view tbody tr[data-current="true"] td { background: var(--accent-wash); color: var(--ink); font-weight: 600; }
+/* Prose columns (how an estimate was measured, where it came from) are not
+   figures: tabular-nums mono on a sentence reads like a serial number, and
+   nowrap on one pushes the whole table into a horizontal scroll. */
+/* Market names and the method sentence are the only prose in this table;
+   left nowrap they set the table wider than the card that holds it. */
+.table-view td.t-market { white-space: normal; max-width: 24ch; }
+.table-view .t-source { font-size: 11px; color: var(--ink-3); margin-top: 2px; }
+.table-view td.t-text {
+  font-family: var(--sans); font-variant-numeric: normal;
+  white-space: normal; min-width: 14ch; max-width: 20ch;
+}
 
 /* ------------------------------------------------------------- evidence -- */
 .evidence { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: var(--s4); }
@@ -658,6 +669,9 @@ code {
 .chart-label  { fill: var(--ink-2); font-size: 12px; }
 .chart-strong { fill: var(--ink); font-size: 12px; font-weight: 600; }
 .chart-hit    { fill: transparent; cursor: pointer; }
+/* Benchmark rows are readable, not clickable -- a pointer cursor there would
+   promise an interaction that does not exist. */
+.chart-hit[role="img"] { cursor: default; }
 /* set inside a filled pill, so it takes white rather than an ink token */
 .chart-pill-text {
   fill: #ffffff; font-family: var(--mono); font-size: 12px; font-weight: 600;

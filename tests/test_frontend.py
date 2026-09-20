@@ -297,6 +297,7 @@ def test_selection_is_shareable_through_the_url(page, base_url):
 @pytest.mark.parametrize("button,table", [
     ('[data-table-toggle="scenario-table"]', "#scenario-table"),
     ('[data-table-toggle="compare-table"]', "#compare-table"),
+    ('[data-table-toggle="benchmark-table"]', "#benchmark-table"),
 ])
 def test_every_chart_has_a_table_twin(page, button, table):
     """Values must never be gated behind a hover."""
@@ -319,6 +320,93 @@ def test_comparison_table_carries_every_group_and_its_range(page):
     assert len(rows) == 12          # 11 reported categories + the pooled figure
     headers = page.eval_on_selector_all("#compare-table thead th", "els => els.map(e => e.textContent)")
     assert "Likely range" in headers
+
+
+# -------------------------------------------------------- other markets --
+
+def _wait_for_benchmarks(page):
+    """/benchmarks loads after first paint, so every test here waits for it."""
+    page.wait_for_selector("#benchmark-card:not([hidden])", timeout=20000)
+    page.wait_for_selector("#benchmark-chart svg", timeout=20000)
+
+
+def test_other_markets_appear_after_the_page_is_already_usable(page):
+    """The benchmark fetch must never gate the page.
+
+    It is context, not content: the verdict and the scenario are rendered
+    from /estimates alone, and this section arrives when it arrives.
+    """
+    assert page.text_content("#verdict-text").strip(), "the verdict should not wait on benchmarks"
+    _wait_for_benchmarks(page)
+    assert page.query_selector_all("#benchmark-chart .chart-hit")
+
+
+def test_every_benchmark_row_is_focusable_and_described(page):
+    _wait_for_benchmarks(page)
+    marks = page.query_selector_all("#benchmark-chart .chart-hit")
+    assert len(marks) >= 10
+    for mark in marks:
+        assert mark.get_attribute("tabindex") == "0"
+        label = mark.get_attribute("aria-label") or ""
+        assert "price sensitivity" in label.lower()
+        assert "likely range" in label.lower()
+
+
+def test_this_catalogues_own_estimate_sits_among_the_benchmarks(page):
+    """The comparison is worthless if you can't see where you land."""
+    _wait_for_benchmarks(page)
+    page.click('[data-table-toggle="benchmark-table"]')
+    current = page.query_selector_all('#benchmark-table tbody tr[data-current="true"]')
+    assert len(current) == 1, "exactly one row should be marked as this site's own estimate"
+    assert "Whole range" in current[0].text_content()
+
+
+def test_benchmark_table_credits_every_source(page):
+    _wait_for_benchmarks(page)
+    page.click('[data-table-toggle="benchmark-table"]')
+    rows = page.query_selector_all("#benchmark-table tbody tr")
+    links = page.query_selector_all("#benchmark-table tbody a")
+    # Every row but this site's own carries a link out to the source package.
+    assert len(links) == len(rows) - 1
+    for link in links:
+        assert link.get_attribute("href").startswith("https://")
+        assert link.get_attribute("rel") == "noreferrer noopener"
+        assert "::" in link.text_content()
+
+
+def test_brand_switching_estimates_are_disclosed_separately(page):
+    """They answer a different question, so they must not sit on the chart."""
+    _wait_for_benchmarks(page)
+    assert page.is_visible("#benchmark-brands")
+    chart_labels = page.eval_on_selector_all(
+        "#benchmark-chart .chart-hit", "els => els.map(e => e.getAttribute('aria-label'))")
+    assert not any("brand" in (label or "").lower() and "ketchup" in (label or "").lower()
+                   for label in chart_labels)
+    page.click("#benchmark-brands summary")
+    entries = page.query_selector_all("#benchmark-brand-list > div")
+    assert len(entries) >= 3
+    assert "purchase occasions" in page.text_content("#benchmark-brand-list")
+
+
+def test_per_market_caveats_are_visible_without_hovering(page):
+    """The disagreements with the literature are the interesting part; they
+    must not be gated behind a tooltip."""
+    _wait_for_benchmarks(page)
+    assert page.is_visible("#benchmark-notes")
+    page.click("#benchmark-notes summary")
+    text = page.text_content("#benchmark-notes-list")
+    assert "Published estimates" in text
+    assert page.query_selector_all("#benchmark-notes-list > div")
+    for link in page.query_selector_all("#benchmark-notes-list a"):
+        assert link.get_attribute("href").startswith("https://")
+
+
+def test_other_markets_chart_fits_a_phone(mobile_page):
+    """Regression guard, same class of defect as the 280px chart floor."""
+    _wait_for_benchmarks(mobile_page)
+    overflow = mobile_page.evaluate(
+        "() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1")
+    assert overflow is False, "the benchmark chart pushed the page into a horizontal scroll"
 
 
 # --------------------------------------------------------- accessibility --
