@@ -13,6 +13,9 @@ Decision-level (added for the UI):  /estimates   /catalog     /scenario
 Context layer:                      /benchmarks  -- the same question asked
                                     of other markets, so a single-catalogue
                                     number can be read against something
+Accounts (src/account/):            /api/*       -- sign-in, uploads, and a
+                                    business's own estimates in the same
+                                    shapes as the three above
 
 The dashboard reads /estimates and /catalog exactly once at load. It used to
 issue one /elasticity request per category on every interaction, which meant
@@ -25,11 +28,16 @@ import json
 from pathlib import Path
 from typing import Optional
 
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.middleware.gzip import GZipMiddleware
-from fastapi.responses import FileResponse, HTMLResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 from pydantic import BaseModel
 
+from .account import config as account_config
+from .account.pages import router as account_pages
+from .account.routes import router as account_router
+from .account.session import apply_staged_cookies, is_cross_site
+from .account.supabase import SupabaseError
 from .dashboard import render_dashboard
 from .elasticity_math import (
     REVENUE_BREAKEVEN_ELASTICITY,
@@ -122,6 +130,37 @@ app = FastAPI(
 # under the size threshold handling below anyway.
 app.add_middleware(GZipMiddleware, minimum_size=1024)
 
+# Signed-in pages and their API never come from a shared cache, carry their
+# refreshed session cookies out on whatever response they produce, and
+# refuse state changes a browser marks as cross-site.
+_PRIVATE_PREFIXES = ("/api/", "/login", "/onboarding", "/dashboard")
+
+
+@app.middleware("http")
+async def account_sessions(request: Request, call_next):
+    path = request.url.path
+    if (path.startswith("/api/") and request.method not in ("GET", "HEAD", "OPTIONS")
+            and is_cross_site(request)):
+        return JSONResponse({"detail": "Cross-site request refused."}, status_code=403)
+    response = await call_next(request)
+    apply_staged_cookies(request, response)
+    if path.startswith(_PRIVATE_PREFIXES):
+        response.headers["Cache-Control"] = "no-store"
+    return response
+
+
+@app.exception_handler(SupabaseError)
+async def supabase_error(request: Request, exc: SupabaseError) -> JSONResponse:
+    if exc.status >= 500 or exc.status == 0:
+        return JSONResponse({"detail": "The data service didn't answer. Try again in a moment."},
+                            status_code=502)
+    status = 403 if exc.code == "42501" else exc.status
+    return JSONResponse({"detail": exc.message}, status_code=status)
+
+
+app.include_router(account_router)
+app.include_router(account_pages)
+
 
 class ElasticityResponse(BaseModel):
     scope: str
@@ -208,7 +247,13 @@ def api_info() -> dict:
 
 @app.get("/health")
 def health() -> dict:
-    return {"status": "ok", "using_stub_data": USING_STUB_DATA}
+    settings = account_config.settings()
+    return {
+        "status": "ok",
+        "using_stub_data": USING_STUB_DATA,
+        "accounts_configured": settings.supabase_configured,
+        "insights_configured": settings.gemini_configured,
+    }
 
 
 @app.get("/methodology")

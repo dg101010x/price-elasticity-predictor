@@ -1,0 +1,22 @@
+<header class="page-head">
+  <p class="eyebrow">By category</p>
+  <h1 class="page-title">Which of your categories react most to price</h1>
+  <p class="page-lede">
+    A category gets its own estimate once it has at least 500 product-weeks across 15 or more products.
+    Select a bar to test a price change for that category.
+  </p>
+</header>
+
+<!--@partial boot-states-->
+
+<div class="page-stack" id="layout" hidden>
+  <!--@partial compare-->
+
+  <section class="card" id="excluded-card" aria-labelledby="excluded-heading" hidden>
+    <div class="card-head">
+      <h2 class="card-title" id="excluded-heading">Left out, and why</h2>
+      <p class="card-sub">These products still count towards the whole-range estimate, and the simulator prices them with it.</p>
+    </div>
+    <dl class="spec-list" id="excluded-list"></dl>
+  </section>
+</div>

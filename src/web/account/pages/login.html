@@ -1,0 +1,44 @@
+<div class="auth">
+  <section class="card auth-card" aria-labelledby="auth-heading">
+    <p class="eyebrow">Your own sales history</p>
+    <h1 class="auth-title" id="auth-heading">Sign in</h1>
+    <p class="card-sub">
+      See how price-sensitive your own customers have been &mdash; with the same likely ranges and
+      honesty about the evidence as the public example.
+    </p>
+
+    <p class="notice notice-warn" id="auth-unavailable" hidden>
+      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Z"/><path d="M12 10v4.5M12 17.5h.01"/></svg>
+      <span>Accounts aren't switched on for this deployment yet. The <a href="/">public example</a> works without one.</span>
+    </p>
+
+    <div class="segmented segmented-2" role="radiogroup" aria-label="Sign in or create an account">
+      <button type="button" role="radio" aria-checked="true" data-auth-mode="signin">Sign in</button>
+      <button type="button" role="radio" aria-checked="false" data-auth-mode="signup">Create an account</button>
+    </div>
+
+    <form id="auth-form" class="stack" novalidate>
+      <div class="field">
+        <label class="label" for="auth-email">Email</label>
+        <input class="text-input" id="auth-email" name="email" type="email" autocomplete="email" required />
+      </div>
+      <div class="field">
+        <label class="label" for="auth-password">Password</label>
+        <input class="text-input" id="auth-password" name="password" type="password" autocomplete="current-password" required minlength="6" />
+        <p class="hint" id="password-hint" hidden>At least 6 characters.</p>
+      </div>
+      <p class="field-error" id="auth-error" role="alert" hidden></p>
+      <p class="notice notice-info" id="auth-message" role="status" hidden></p>
+      <button class="btn btn-primary btn-block" type="submit" id="auth-submit">Sign in</button>
+    </form>
+  </section>
+
+  <aside class="auth-aside" aria-labelledby="privacy-heading">
+    <h2 class="aside-title" id="privacy-heading">What happens to your file</h2>
+    <dl class="spec-list">
+      <div><dt>Stored privately</dt><dd>Under your account only. Nobody on another account can read it, and the database refuses them &mdash; not just this website.</dd></div>
+      <div><dt>Fitted, not guessed</dt><dd>The estimate and its likely range come from a regression on your rows. No language model produces or adjusts a number.</dd></div>
+      <div><dt>Recommendations</dt><dd>Written by an AI model from the fitted numbers alone &mdash; category names and six figures per estimate. Your sales rows are never sent to it.</dd></div>
+    </dl>
+  </aside>
+</div>

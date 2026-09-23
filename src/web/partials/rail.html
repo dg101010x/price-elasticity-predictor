@@ -1,0 +1,100 @@
+<form class="rail" id="controls" novalidate>
+    <h2 class="rail-title">What are you pricing?</h2>
+
+    <fieldset class="field">
+      <legend class="label">Look at</legend>
+      <div class="segmented" role="radiogroup" aria-label="Level of detail">
+        <button type="button" role="radio" aria-checked="true" data-scope="all">Whole range</button>
+        <button type="button" role="radio" aria-checked="false" data-scope="category">A category</button>
+        <button type="button" role="radio" aria-checked="false" data-scope="product">One product</button>
+      </div>
+      <p class="hint" id="scope-hint">Every product in the dataset, pooled into one estimate.</p>
+    </fieldset>
+
+    <!-- category picker -->
+    <div class="field" id="field-category" hidden>
+      <label class="label" for="category-select">Category</label>
+      <div class="select-wrap">
+        <select id="category-select"></select>
+        <svg class="select-chevron" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+    </div>
+
+    <!-- product combobox -->
+    <div class="field" id="field-product" hidden>
+      <label class="label" for="product-input">Product</label>
+      <div class="combo" id="product-combo">
+        <div class="combo-input-wrap">
+          <svg class="combo-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input
+            id="product-input"
+            type="text"
+            role="combobox"
+            autocomplete="off"
+            spellcheck="false"
+            aria-expanded="false"
+            aria-controls="product-listbox"
+            aria-autocomplete="list"
+            aria-describedby="product-hint"
+            placeholder="Search 4,896 products&hellip;" />
+          <button type="button" class="combo-clear" id="product-clear" hidden>
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            <span class="sr-only">Clear product search</span>
+          </button>
+        </div>
+        <ul id="product-listbox" role="listbox" aria-label="Matching products" hidden></ul>
+      </div>
+      <p class="hint" id="product-hint">Type a few letters, then use the arrow keys to pick.</p>
+    </div>
+
+    <hr class="rail-rule" />
+
+    <h2 class="rail-title">Test a price change</h2>
+
+    <div class="field">
+      <label class="label" for="price-input">Current price</label>
+      <div class="money-input">
+        <span class="money-symbol" id="price-symbol" aria-hidden="true">&pound;</span>
+        <input id="price-input" type="number" min="0.01" step="0.05" value="10.00"
+               inputmode="decimal" aria-describedby="price-hint" />
+      </div>
+      <p class="hint" id="price-hint">Auto-filled from what the product actually sold for.</p>
+    </div>
+
+    <div class="field">
+      <div class="label-row">
+        <label class="label" for="change-slider">Price change</label>
+        <output class="change-readout" id="change-readout" for="change-slider">+10%</output>
+      </div>
+      <input id="change-slider" type="range" min="-40" max="40" step="1" value="10"
+             aria-describedby="change-hint" />
+      <div class="slider-scale" aria-hidden="true"><span>&minus;40%</span><span>0</span><span>+40%</span></div>
+      <div class="quick-changes" role="group" aria-label="Common price changes">
+        <button type="button" data-change="-20">&minus;20%</button>
+        <button type="button" data-change="-10">&minus;10%</button>
+        <button type="button" data-change="5">+5%</button>
+        <button type="button" data-change="10">+10%</button>
+        <button type="button" data-change="20">+20%</button>
+      </div>
+      <p class="hint" id="change-hint">Drag, or use the arrow keys for single percentage points.</p>
+    </div>
+
+    <details class="cost-block" id="cost-block">
+      <summary>
+        <span>Add unit cost for profit impact</span>
+        <span class="summary-chevron" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </span>
+      </summary>
+      <div class="field">
+        <label class="label" for="cost-input">What each unit costs you</label>
+        <div class="money-input">
+          <span class="money-symbol" id="cost-symbol" aria-hidden="true">&pound;</span>
+          <input id="cost-input" type="number" min="0" step="0.05" placeholder="0.00"
+                 inputmode="decimal" aria-describedby="cost-hint" />
+        </div>
+        <p class="hint" id="cost-hint">Optional. Revenue and profit often move in opposite directions &mdash; this is how you check.</p>
+        <p class="field-error" id="cost-error" role="alert" hidden></p>
+      </div>
+    </details>
+  </form>

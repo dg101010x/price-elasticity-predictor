@@ -1,0 +1,23 @@
+<div class="onboard">
+  <ol class="steps" aria-label="Setting up">
+    <li id="step-marker-1" aria-current="step"><span class="step-n">1</span> Name your business</li>
+    <li id="step-marker-2"><span class="step-n">2</span> Upload sales</li>
+  </ol>
+
+  <section class="card" id="step-name" aria-labelledby="name-heading">
+    <h1 class="auth-title" id="name-heading">What's your business called?</h1>
+    <p class="card-sub">It labels your estimate where it sits among the other markets. You can't change it yet, so use the name you trade under.</p>
+    <form id="name-form" class="stack" novalidate>
+      <div class="field">
+        <label class="label" for="business-name">Business name</label>
+        <input class="text-input" id="business-name" name="name" type="text" maxlength="120" autocomplete="organization" required />
+      </div>
+      <p class="field-error" id="name-error" role="alert" hidden></p>
+      <button class="btn btn-primary" type="submit" id="name-submit">Create account</button>
+    </form>
+  </section>
+
+  <div id="step-upload" hidden>
+    <!--@partial uploader-->
+  </div>
+</div>

@@ -22,6 +22,11 @@ cross-sectional variation. It's still descriptive/observational, not causal
 -- price isn't randomly assigned here -- which is why every API response
 carries that caveat.
 
+The estimator itself lives in src/stats_engine.py, shared with the
+per-account runs so a business's own number is fitted by the same code as
+this one. This module is the UCI-specific part: loading, cleaning and the
+keyword categories.
+
 Run: python -m src.build_elasticity_model
 """
 
@@ -31,13 +36,18 @@ import json
 import re
 from pathlib import Path
 
-import numpy as np
 import pandas as pd
+
+from .stats_engine import (
+    MIN_OBS_PER_CATEGORY,
+    MIN_PRODUCTS_PER_CATEGORY as MIN_SKUS_PER_CATEGORY,
+    fit_catalogue,
+    weekly_panel,
+)
 
 ROOT = Path(__file__).resolve().parent.parent
 CSV_PATH = ROOT / "data" / "csv" / "scanner_data.csv"
 OUT_DIR = ROOT / "data" / "processed"
-OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 NON_PRODUCT_CODES = {
     "POST", "DOT", "M", "C2", "D", "S", "B", "BANK CHARGES", "ADJUST",
@@ -67,9 +77,6 @@ CATEGORY_RULES: list[tuple[str, re.Pattern]] = [
     ("Bags & Storage", re.compile(r"\bBAG\b|BASKET|\bBOX\b|STORAGE|POUCH", re.I)),
 ]
 
-MIN_OBS_PER_CATEGORY = 500  # SKU-weeks, after fixed-effects transform
-MIN_SKUS_PER_CATEGORY = 15
-
 
 def categorize(description: str) -> str:
     if not isinstance(description, str):
@@ -94,80 +101,11 @@ def load_clean() -> pd.DataFrame:
 
 
 def weekly_sku_panel(df: pd.DataFrame) -> pd.DataFrame:
-    df = df.copy()
-    df["Week"] = df["InvoiceDate"].dt.to_period("W").dt.start_time
-    grouped = df.groupby(["StockCode", "Category", "Week"], observed=True).apply(
-        lambda g: pd.Series({
-            "qty": g["Quantity"].sum(),
-            "price": np.average(g["Price"], weights=g["Quantity"]),
-        }),
-        include_groups=False,
-    ).reset_index()
-    return grouped[(grouped["qty"] > 0) & (grouped["price"] > 0)]
-
-
-def within_sku_regression(panel: pd.DataFrame) -> dict | None:
-    """Log-log fixed-effects (within-SKU demeaned) OLS, single regressor,
-    no intercept needed post-demeaning. Requires >=2 distinct weeks and
-    price variation within at least some SKUs to identify beta."""
-    p = panel.copy()
-    p["log_q"] = np.log(p["qty"])
-    p["log_p"] = np.log(p["price"])
-
-    sku_counts = p.groupby("StockCode")["log_p"].transform("count")
-    p = p[sku_counts >= 2]
-    if p.empty:
-        return None
-
-    p["log_q_dm"] = p["log_q"] - p.groupby("StockCode")["log_q"].transform("mean")
-    p["log_p_dm"] = p["log_p"] - p.groupby("StockCode")["log_p"].transform("mean")
-
-    # Drop SKUs with zero within-SKU price variance -- they can't identify beta.
-    price_var = p.groupby("StockCode")["log_p_dm"].transform(lambda s: s.abs().sum())
-    p = p[price_var > 1e-9]
-    if len(p) < 30:
-        return None
-
-    x = p["log_p_dm"].to_numpy()
-    y = p["log_q_dm"].to_numpy()
-    n = len(x)
-    n_skus = p["StockCode"].nunique()
-
-    sxx = float(np.dot(x, x))
-    if sxx < 1e-12:
-        return None
-    beta = float(np.dot(x, y) / sxx)
-    resid = y - beta * x
-    # k=1 slope param; SKU fixed effects already removed by demeaning, so
-    # dof correction uses n - n_skus - 1 (SKU means + the slope).
-    dof = max(n - n_skus - 1, 1)
-    sigma2 = float(np.dot(resid, resid) / dof)
-    se = float(np.sqrt(sigma2 / sxx))
-    ci_low, ci_high = beta - 1.96 * se, beta + 1.96 * se
-
-    ss_tot = float(np.dot(y, y))
-    r_squared = 1 - float(np.dot(resid, resid)) / ss_tot if ss_tot > 1e-12 else 0.0
-
-    pct_change = round(((1.10 ** beta) - 1) * 100, 1)
-    interpretation = (
-        "elastic (quantity responds more than proportionally to price)"
-        if beta <= -1 else
-        "inelastic (quantity responds less than proportionally to price)"
-        if beta < 0 else
-        "positive association (likely confounded -- not a real demand response)"
-    )
-
-    return dict(
-        elasticity=round(beta, 3),
-        std_error=round(se, 3),
-        ci_low=round(ci_low, 3),
-        ci_high=round(ci_high, 3),
-        r_squared=round(r_squared, 3),
-        n_observations=n,
-        n_skus=n_skus,
-        interpretation=interpretation,
-        pct_quantity_change_for_10pct_price_increase=pct_change,
-    )
+    """One row per SKU per week, via the shared rollup in src/stats_engine.py."""
+    return weekly_panel(df.rename(columns={
+        "StockCode": "product", "Category": "category",
+        "InvoiceDate": "date", "Quantity": "quantity", "Price": "price",
+    }))
 
 
 def build_products_directory(df: pd.DataFrame) -> list[dict]:
@@ -187,41 +125,17 @@ def main() -> None:
     print(f"  {len(df):,} clean transaction rows after filtering")
 
     panel = weekly_sku_panel(df)
-    print(f"  {len(panel):,} SKU-week observations across {panel['StockCode'].nunique():,} SKUs")
+    print(f"  {len(panel):,} SKU-week observations across {panel['product'].nunique():,} SKUs")
 
-    overall = within_sku_regression(panel)
+    fitted = fit_catalogue(panel, catch_all={
+        "Other/Uncategorized": "catch-all bucket for descriptions that matched none of the keyword "
+                               "rules -- too heterogeneous to report as a single category",
+    })
+    overall = fitted["overall"]
     if overall is None:
         raise SystemExit("Overall regression failed to identify beta -- insufficient price variation.")
-
-    by_category = []
-    excluded_categories = []
-    for category, group in panel.groupby("Category", observed=True):
-        n_skus = group["StockCode"].nunique()
-        if category == "Other/Uncategorized":
-            excluded_categories.append({
-                "category": category,
-                "reason": "catch-all bucket for descriptions that matched none of the keyword "
-                          "rules -- too heterogeneous to report as a single category",
-            })
-            continue
-        if len(group) < MIN_OBS_PER_CATEGORY or n_skus < MIN_SKUS_PER_CATEGORY:
-            excluded_categories.append({
-                "category": category,
-                "reason": f"insufficient data ({len(group)} obs across {n_skus} SKUs; "
-                          f"need >={MIN_OBS_PER_CATEGORY} obs and >={MIN_SKUS_PER_CATEGORY} SKUs)",
-            })
-            continue
-        result = within_sku_regression(group)
-        if result is None:
-            excluded_categories.append({
-                "category": category,
-                "reason": "regression could not identify beta (no within-SKU price variation)",
-            })
-            continue
-        result["category"] = category
-        by_category.append(result)
-
-    by_category.sort(key=lambda r: r["elasticity"])
+    by_category = fitted["by_category"]
+    excluded_categories = fitted["excluded_categories"]
 
     results = {
         "overall": overall,
@@ -237,6 +151,7 @@ def main() -> None:
         },
     }
 
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
     (OUT_DIR / "elasticity_results.json").write_text(json.dumps(results, indent=2))
     print(f"Wrote {OUT_DIR / 'elasticity_results.json'} "
           f"({len(by_category)} reported categories, {len(excluded_categories)} excluded)")

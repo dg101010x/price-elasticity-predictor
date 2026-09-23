@@ -1,0 +1,18 @@
+<div id="boot-error" class="notice notice-critical" hidden>
+  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.5h.01"/></svg>
+  <div>
+    <strong>Couldn't load your estimates.</strong>
+    <p id="boot-error-detail"></p>
+    <button type="button" class="btn btn-quiet" id="boot-retry">Try again</button>
+  </div>
+</div>
+
+<section class="empty-state" id="empty-state" hidden aria-labelledby="empty-heading">
+  <p class="eyebrow">Nothing fitted yet</p>
+  <h2 class="empty-title" id="empty-heading">Upload a sales file to see your own numbers</h2>
+  <p class="card-sub">
+    Once a file finishes, this page shows how price-sensitive your customers have been, with the likely
+    range and how much to trust it.
+  </p>
+  <a class="btn btn-primary" href="/dashboard/data">Upload sales data</a>
+</section>

@@ -1,0 +1,79 @@
+<section class="card uploader" id="uploader" aria-labelledby="upload-heading">
+  <div class="card-head">
+    <h2 class="card-title" id="upload-heading">Upload sales history</h2>
+    <p class="card-sub">
+      A CSV with one row per sale, per day or per week. It needs a product ID, a date, units sold, and
+      either the unit price or the sales amount. A product name and a category are optional &mdash; with a
+      category you also get an estimate for each one.
+    </p>
+  </div>
+
+  <label class="dropzone" id="dropzone">
+    <input type="file" id="file-input" accept=".csv,text/csv" />
+    <span class="dropzone-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4"/><path d="m7.5 8.5 4.5-4.5 4.5 4.5"/><path d="M4 15v3.5A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5V15"/></svg>
+    </span>
+    <span class="dropzone-main">Choose a CSV file</span>
+    <span class="dropzone-sub">or drop it here &middot; up to 40&nbsp;MB</span>
+  </label>
+  <p class="hint">
+    No file to hand? Try a
+    <a href="/examples/sample_gift_shop_weekly.csv" download>gift shop's weekly sales</a> or a
+    <a href="/examples/sample_coffee_roaster_daily.csv" download>coffee roaster's daily sales</a>.
+  </p>
+
+  <div class="mapping" id="mapping" hidden>
+    <p class="file-line" id="file-line"></p>
+    <p class="notice notice-warn" id="mapping-warning" hidden>
+      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Z"/><path d="M12 10v4.5M12 17.5h.01"/></svg>
+      <span id="mapping-warning-text"></span>
+    </p>
+    <div class="table-view">
+      <table class="mapping-table">
+        <caption>Which column is which. Rows marked &ldquo;check&rdquo; couldn't be matched by name for certain.</caption>
+        <thead><tr><th scope="col">What it's used for</th><th scope="col">Column in your file</th><th scope="col">First values</th></tr></thead>
+        <tbody id="mapping-rows"></tbody>
+      </table>
+    </div>
+
+    <fieldset class="field" id="date-order-field" hidden>
+      <legend class="label">How are the dates in this file written?</legend>
+      <p class="hint">Every date in the file could be read either way round, so it can't be worked out from the data.</p>
+      <label class="radio"><input type="radio" name="date-order" value="dmy" /> Day first &mdash; 03/04/2025 is 3 April</label>
+      <label class="radio"><input type="radio" name="date-order" value="mdy" /> Month first &mdash; 03/04/2025 is 4 March</label>
+    </fieldset>
+
+    <div class="field field-narrow">
+      <label class="label" for="currency-select">Currency of the prices</label>
+      <div class="select-wrap">
+        <select id="currency-select">
+          <option value="USD">US dollar (USD)</option>
+          <option value="GBP">Pound sterling (GBP)</option>
+          <option value="EUR">Euro (EUR)</option>
+          <option value="CAD">Canadian dollar (CAD)</option>
+          <option value="AUD">Australian dollar (AUD)</option>
+          <option value="NZD">New Zealand dollar (NZD)</option>
+          <option value="INR">Indian rupee (INR)</option>
+          <option value="JPY">Japanese yen (JPY)</option>
+          <option value="CHF">Swiss franc (CHF)</option>
+          <option value="SEK">Swedish krona (SEK)</option>
+          <option value="SGD">Singapore dollar (SGD)</option>
+          <option value="ZAR">South African rand (ZAR)</option>
+        </select>
+        <svg class="select-chevron" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+    </div>
+
+    <p class="field-error" id="upload-error" role="alert" hidden></p>
+    <div class="actions">
+      <button type="button" class="btn btn-primary" id="upload-button">Upload and fit</button>
+      <button type="button" class="btn btn-quiet" id="upload-cancel">Choose a different file</button>
+    </div>
+  </div>
+
+  <div class="progress" id="upload-progress" role="status" hidden>
+    <span class="spinner" aria-hidden="true"></span>
+    <span id="progress-text">Uploading&hellip;</span>
+  </div>
+  <div class="upload-result" id="upload-result" hidden></div>
+</section>
