@@ -503,3 +503,22 @@ def test_a_second_upload_is_checked_against_the_first(supa, shops):
     for row in rows.values():
         prev, cur = row["previous"], row["current"]
         assert row["held"] == (prev["ci_low"] <= cur["coefficient"] <= prev["ci_high"])
+
+
+def test_a_hand_picked_ambiguous_date_column_is_refused_until_settled(supa, shops):
+    """Dates the inspector couldn't see (the user chose the column) are still
+    never guessed: the upload is refused before anything is stored."""
+    client = shops["b"]["client"]
+    lines = make_sales_csv({"Beans": (16, -1.0)}, seed=4, weeks=10, date_format="%d/%m/%Y").decode().splitlines()
+    keep = [l for l in lines[1:] if int(l.split(",")[0].split("/")[0]) <= 12]
+    body = ("When,Ref,Name,Group,Cost,How many\n" + "\n".join(keep) + "\n").encode()
+    mapping = {"date": "When", "product_key": "Ref", "description": "Name", "category": "Group",
+               "price": "Cost", "units": "How many"}
+    before = len(client.get("/api/uploads").json()["uploads"])
+    r = client.post("/api/uploads", content=gzip.compress(body),
+                    params={"filename": "odd.csv", "mapping": json.dumps(mapping)})
+    assert r.status_code == 422 and "either way round" in r.json()["detail"]
+    assert len(client.get("/api/uploads").json()["uploads"]) == before
+    r = client.post("/api/uploads", content=gzip.compress(body),
+                    params={"filename": "odd.csv", "mapping": json.dumps(mapping), "date_order": "dmy"})
+    assert r.status_code == 200

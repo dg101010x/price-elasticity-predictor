@@ -13,8 +13,15 @@ normal number?* — by fitting the same kind of estimate to eighteen other
 public datasets, from 1880s rail freight to a Chicago supermarket's orange
 juice shelf, and putting your catalogue among them.
 
+Since 3.0 a business can run it on **its own sales**: sign up, upload a CSV,
+and get its own estimate — fitted by the same code, with the same likely
+range, the same R², the same caveats — plus recommendations written from
+those numbers and nothing else, and its number placed among the same
+thirteen markets. See [Accounts](#accounts-30).
+
 ```
-uvicorn src.api:app --reload      # http://localhost:8000
+uvicorn src.api:app --reload      # http://localhost:8000 — the public page
+python -m tests.dev_stack         # the whole product, locally, no keys needed
 ```
 
 ## What's here
@@ -35,7 +42,26 @@ src/
   reference_datasets.py     the 18 external datasets, their licences and citations
   panel_fit.py              the estimators: within, clustered OLS, 2SLS, conditional logit
   build_benchmarks.py       fits one benchmark per external dataset
-tests/                      API contract, shared math, estimators, browser + a11y
+  stats_engine.py           THE estimator: weekly rollup, within-product regression,
+                            category bar. Used by the public build and every account
+  account/                  sign-in, uploads, per-account estimates and insights
+    routes.py               /api/* — auth, onboarding, uploads, account estimates
+    pages.py                /login, /onboarding, /dashboard/* (gated server-side)
+    ingest.py               CSV -> column mapping -> clean -> weekly panel -> fit
+    pipeline.py             upload -> Storage -> data_sources -> observations -> runs
+    insights.py             recommendations, and the check on every number in them
+    llm.py                  the only file that knows about Gemini
+    supabase.py             Auth / Data / Storage over plain HTTP
+    session.py              httpOnly cookie sessions, refreshed server-side
+    results.py              stored runs -> the shapes the page already draws
+  web/
+    partials/               sections shared by the public page and the dashboard
+    account/                dashboard shell and page bodies
+    account.css, dash.js    what only a signed-in business needs
+supabase/migrations/        the schema, RLS policies, grants and storage bucket
+examples/                   two synthetic sales CSVs to try the uploader with
+tests/                      API contract, shared math, estimators, browser + a11y,
+                            RLS, end-to-end accounts, insights grounding
 data/
   processed/                elasticity_results.json, products.json, benchmarks.json
   manifests/                data_manifest.csv, validation_report.txt (tracked)
@@ -71,7 +97,123 @@ Decision-level endpoints, added for the current UI:
 per category on every interaction — eleven identical round-trips per keystroke,
 for data that never changes.
 
+Account endpoints, added in 3.0 (cookie session; `401` signed out, `503` when
+Supabase isn't configured):
+
+| endpoint | what it gives you |
+|---|---|
+| `POST /api/auth/signup` · `/login` · `/logout` · `/session` | cookie sessions over Supabase Auth |
+| `GET /api/me` · `POST /api/account` | who's signed in; onboarding |
+| `POST /api/uploads/inspect` · `POST /api/uploads` · `GET /api/uploads` | column mapping, synchronous upload-and-fit, history |
+| `GET /api/account/estimates` · `/catalog` · `/benchmarks` | the latest upload, in the same shapes as the three public ones |
+| `GET` · `POST /api/account/insights` | grounded recommendations, their trace, and the run-over-run check |
+
 Interactive docs at `/docs`.
+
+## Accounts (3.0)
+
+The public page answers "what did price do to one UK catalogue". The signed-in
+product asks the same question of a business's own sales history, and keeps
+the three things that made the public answer worth trusting:
+
+1. **Every number has a real confidence interval and R², fitted, never
+   generated.** Uploads go through `src/stats_engine.py` — the *same* function
+   the public estimate comes from, not a re-implementation.
+   `tests/test_stats_engine.py` freezes the 2.1.0 code as an oracle and
+   requires identical published figures; `tests/test_account_e2e.py` refits
+   each account's stored observations and requires the stored estimate back
+   exactly.
+2. **The plain-English method and glossary apply to the account's results.**
+   The same verdict, evidence grades, "three things this can't tell you" and
+   glossary, reworded for "your sales" rather than "a UK wholesaler".
+3. **The thirteen public markets stay on the dashboard** as context
+   (`/dashboard/benchmarks`), with the business drawn among them.
+
+### How it fits together
+
+```
+browser ──same origin only──▶ FastAPI on Vercel (one Python function)
+                                 │  pages + /api/*, cookie session
+                                 │  CSV → ingest → stats_engine → runs
+                                 │  runs (six numbers each) → Gemini → validator
+                                 ▼
+                              Supabase: Auth · Postgres + RLS · Storage
+```
+
+- **No framework, no CDN, still.** The dashboard is the public page's own
+  `app.js` pointed at `/api/account/*`, plus `dash.js` for what only an
+  account has. Shared sections live once in `src/web/partials/`. Each page is
+  one self-contained response; the browser never talks to Supabase or Google.
+- **Tenant isolation is the database's job.** Every table carries
+  `account_id` under row-level security. The server reads with the user's own
+  token, so RLS — not app code — decides what they see. Computed results
+  (observations, runs, insights) are written only by the server's service
+  role: an account cannot insert an estimate it didn't fit, or file an upload
+  as `ready`. Uploads go to Storage with the user's token, so the bucket
+  policy decides who may write (`owner`/`manage` only).
+- **Uploads are synchronous.** A catalogue of weekly sales fits in one
+  request. The browser gzips the CSV (Vercel caps request bodies at 4.5 MB;
+  CSV compresses 5–10×). Columns are matched by alias; anything not matched
+  exactly — including dates that read either way round, 03/04 — is put to the
+  user rather than guessed. Every failure is recorded with a reason on the
+  Data page.
+- **Categories follow the public rule**: at least 500 product-weeks across 15
+  products, otherwise excluded with the reason shown. Rows with no category
+  count towards the whole-range estimate, like "Other/Uncategorized".
+
+### Insights, and why they can't make numbers up
+
+The model is shown one thing: the list of six-field run objects —
+`category, coefficient, ci_low, ci_high, r_squared, n_observations`. No sales
+rows, no product names, nothing to compute a new number from. Every numeric
+token in the reply must equal one of those values (as written, with its sign
+dropped, or r_squared as a percentage); spelled-out quantities ("ten
+percent", "twice") are refused. One stricter retry names what was wrong;
+after that a deterministic template writes the recommendations instead,
+held to the same validator by a property test. What's stored links each
+number to the run and field it came from, and the Insights page lets anyone
+select a number and see its source.
+
+`src/account/llm.py` is the only file that knows the model. Moving to
+Gemini's **paid tier** is a billing switch in AI Studio, not code — same key,
+same endpoint; set `GEMINI_TIER=paid` so the page stops telling people their
+numbers may be used to improve Google's products. `GEMINI_MODEL` pins a model
+instead of the rolling `gemini-flash-latest` alias. With no key, the
+template writes them and the page says so.
+
+The first step of the feedback loop is in: each upload's estimates are
+checked against the previous upload's intervals ("did the last estimate
+hold?"), derived from the stored runs.
+
+### Setting it up
+
+1. **Database.** Apply `supabase/migrations/*.sql` to the Supabase project —
+   `supabase db push`, or paste it into the SQL editor. It creates the
+   tables, policies, grants (explicit, since new projects no longer grant
+   `public` tables automatically), the `sales-uploads` bucket and its policies.
+2. **Environment** (Vercel → Project Settings → Environment Variables, or a
+   local `.env.local` — see `.env.example`): `NEXT_PUBLIC_SUPABASE_URL`,
+   `NEXT_PUBLIC_SUPABASE_ANON_KEY` (anon or `sb_publishable_` key),
+   `SUPABASE_SERVICE_ROLE_KEY` (service_role or `sb_secret_` key),
+   `GEMINI_API_KEY`. All are read server-side only.
+3. **Auth redirect.** Supabase → Authentication → URL Configuration: add
+   `https://<your-domain>/login` to the redirect URLs, so the confirmation
+   email lands back on the sign-in page. (If it lands on `/` instead, the
+   public page forwards it.)
+
+Without step 2 the public page is unchanged and `/login` says accounts
+aren't switched on.
+
+### Running it locally without any of that
+
+```
+python -m tests.dev_stack        # http://127.0.0.1:8000, demo@example.com / demo-password
+```
+
+Starts a throwaway Postgres with the real migration, real PostgREST, and a
+small stand-in for Supabase Auth and Storage (`tests/supabase_gateway.py`),
+then seeds a demo business. Needs the Postgres server binaries and a
+PostgREST binary on `PATH` (or at `.tools/postgrest`).
 
 ## The one number that matters
 
@@ -261,7 +403,27 @@ it clears 500 weekly observations across at least 15 products.
 pytest                         # everything
 pytest tests/test_api.py       # API contract only, no browser needed
 pytest tests/test_panel_fit.py # the estimators, against known answers
+pytest tests/test_rls.py       # row-level security, by result set
 ```
+
+The account tests need more than Python, and skip cleanly without it:
+
+- `tests/test_rls.py` runs the migration on a throwaway local Postgres and
+  checks every policy by what each role actually gets back — an UPDATE with
+  no SELECT policy "succeeds" on zero rows, so no test here trusts the
+  absence of an error. It runs twice, under Supabase's current no-auto-grant
+  default and the old grant-everything one, and was mutation-tested:
+  loosening any read policy, letting members upload, or re-granting the
+  `status` column each turns it red.
+- `tests/test_account_e2e.py` signs up, confirms, onboards and uploads through
+  the real app against real PostgREST, with both key styles. Two synthetic
+  businesses (`tests/synthetic_sales.py`, known elasticities) must come back
+  with different, correct answers, and a second account's real token must
+  get nothing back from any tenant table.
+- `tests/test_insights.py` holds the validator to its promise, and the
+  template to the validator across random inputs.
+- `tests/test_dashboard_browser.py` drives onboarding, the mapping step and
+  number tracing in Chromium, and every dashboard page at 360px.
 
 `tests/test_panel_fit.py` checks each estimator against simulated data with a
 coefficient chosen in advance — including a dataset built so that OLS is
@@ -283,7 +445,10 @@ at 500 entries in a plain `<select>`.
 ## Deploying
 
 Vercel builds `src.api:app` from the `[tool.vercel]` entrypoint in
-`pyproject.toml`, which pins only `fastapi` and `pydantic`. Everything the page
+`pyproject.toml`, and installs from its `[project] dependencies` — not from
+`requirements.txt`. numpy and pandas are there for uploads, but imported only
+when a file arrives, so the public page's cold start doesn't pay for them
+(a test checks). `.python-version` pins 3.12. Everything the page
 needs is inlined or served from the same origin, so there is no build step and no
 static asset pipeline.
 

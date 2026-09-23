@@ -1,0 +1,53 @@
+<div class="method-body" id="method">
+  <div class="prose">
+    <p>
+      Every figure here is fitted from <strong>your own upload</strong><span id="method-source"></span>, by the
+      same code that fits the public example on the <a href="/">Price Sensitivity Lab front page</a>.
+      Sales are rolled up to one row per product per week, and each product is compared
+      <em>against its own history</em> &mdash; so the answer reflects what happened when <em>that</em>
+      product's price moved, not the fact that expensive things sell in smaller numbers.
+    </p>
+    <h3>The three things this can't tell you</h3>
+    <ul class="caveat-list">
+      <li>
+        <strong>It's a pattern, not a promise.</strong> Your prices weren't set at random. They moved for
+        reasons &mdash; promotions, seasons, clearance &mdash; and those reasons moved sales too. Read this
+        as evidence, not a forecast.
+      </li>
+      <li>
+        <strong>Revenue is not profit.</strong> A discount that grows revenue can still shrink what you
+        keep. Add your unit cost in the <a href="/dashboard/simulator">simulator</a> to see both.
+      </li>
+      <li>
+        <strong>Your past, not your future.</strong> The estimate describes the customers, products and
+        prices in the file you uploaded. If your range, market or competitors have changed since, the
+        numbers may have too &mdash; which is what the <a href="/dashboard/benchmarks">other markets</a>
+        comparison is for.
+      </li>
+    </ul>
+    <h3>How categories are handled</h3>
+    <p id="method-categories"></p>
+    <p class="hint" id="method-excluded"></p>
+  </div>
+
+  <details class="tech-details">
+    <summary>
+      <span>Technical detail &mdash; for anyone who wants the regression</span>
+      <span class="summary-chevron" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+      </span>
+    </summary>
+    <div class="tech-body">
+      <dl class="spec-list" id="method-spec"></dl>
+      <p class="hint">
+        Every estimate is stored with the weekly observations it was fitted from, so it can be refitted
+        from them and checked at any time.
+      </p>
+    </div>
+  </details>
+
+  <div class="glossary">
+    <h3 class="glossary-title">Plain-English glossary</h3>
+    <dl id="glossary-list"></dl>
+  </div>
+</div>

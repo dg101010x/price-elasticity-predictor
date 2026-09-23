@@ -116,7 +116,11 @@ class TokenPair(BaseModel):
 @router.post("/auth/signup")
 def signup(body: Credentials, request: Request) -> dict:
     settings = _require_configured()
-    redirect = str(request.base_url).rstrip("/") + "/login"
+    # Behind Vercel's proxy the app may see plain http; the address the
+    # browser used is in the forwarded headers.
+    proto = request.headers.get("x-forwarded-proto", request.url.scheme).split(",")[0].strip()
+    host = request.headers.get("x-forwarded-host") or request.headers.get("host") or request.url.netloc
+    redirect = f"{proto}://{host.split(',')[0].strip()}/login"
     try:
         auth = client(settings).sign_up(body.email.strip(), body.password, redirect_to=redirect)
     except SupabaseError as exc:

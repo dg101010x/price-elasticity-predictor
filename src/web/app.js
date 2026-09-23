@@ -9,6 +9,12 @@
 
    Scenario arithmetic mirrors src/elasticity_math.py so the slider can respond
    without a round-trip. tests/ pins both sides against the same expectations.
+
+   The same script draws the signed-in dashboard: those pages set
+   window.PSL_CONFIG to point it at an account's own estimates, and include
+   only the sections they show. Every renderer below skips a section whose
+   host isn't on the page, so the public page and the dashboard share one
+   verdict, one break-even scale, one scenario curve and one simulator.
    ========================================================================== */
 (function () {
   "use strict";
@@ -38,7 +44,22 @@
   function clear(node) { while (node.firstChild) node.removeChild(node.firstChild); }
   function clamp(v, lo, hi) { return Math.min(hi, Math.max(lo, v)); }
 
-  var CURRENCY_SYMBOLS = { GBP: "£", USD: "$", EUR: "€", INR: "₹" };
+  var CONFIG = window.PSL_CONFIG || {};
+  var ACCOUNT = CONFIG.mode === "account";
+  var URLS = {
+    estimates: CONFIG.estimatesUrl || "/estimates",
+    catalog: CONFIG.catalogUrl || "/catalog",
+    benchmarks: CONFIG.benchmarksUrl || "/benchmarks"
+  };
+  function hook(name) {
+    var cfg = window.PSL_CONFIG || {};
+    return typeof cfg[name] === "function" ? cfg[name] : null;
+  }
+
+  var CURRENCY_SYMBOLS = {
+    GBP: "£", USD: "$", EUR: "€", INR: "₹", CAD: "CA$", AUD: "A$", NZD: "NZ$",
+    JPY: "¥", CHF: "CHF ", SEK: "kr ", SGD: "S$", ZAR: "R "
+  };
 
   var nf1 = new Intl.NumberFormat(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
   var nf2 = new Intl.NumberFormat(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -157,10 +178,12 @@
 
   /* ------------------------------------------------------------ data i/o -- */
   function fetchJSON(url) {
-    return fetch(url).then(function (r) {
+    return fetch(url, { credentials: "same-origin" }).then(function (r) {
       if (!r.ok) {
         return r.json().catch(function () { return {}; }).then(function (body) {
-          throw new Error(body.detail || (r.status + " " + r.statusText));
+          var err = new Error(body.detail || (r.status + " " + r.statusText));
+          err.status = r.status;
+          throw err;
         });
       }
       return r.json();
@@ -197,7 +220,8 @@
         : "No separate estimate for " + state.product.category + " — using the whole range";
     }
     if (state.scope === "category") return "Category estimate";
-    return "All 11 categories pooled";
+    var n = state.estimates.by_category.length;
+    return n ? "All " + n + " categories pooled" : "Every product pooled — no category has enough history yet";
   }
 
   /* ----------------------------------------------------------- url state -- */
@@ -714,6 +738,8 @@
       hit.addEventListener("focus", showTip);
       hit.addEventListener("blur", tip.hide);
       var pick = function () {
+        var onPick = hook("onCategoryPick");
+        if (onPick) { onPick(row.isOverall ? null : row.name); return; }
         if (row.isOverall) setScope("all");
         else { state.category = row.name; setScope("category"); }
       };
@@ -746,15 +772,17 @@
       };
     });
     if (est) {
+      var mine = state.benchmarks.this_catalogue || {};
       // The label gutter is fixed; a full product name is not.
-      var own = scopeLabel();
+      var own = ACCOUNT && state.scope === "all" && mine.market ? mine.market : scopeLabel();
       if (own.length > 34) own = own.slice(0, 33).replace(/\s+\S*$/, "") + "…";
       rows.push({
         name: own, value: est.elasticity, ci: [est.ci_low, est.ci_high],
         n: est.n_observations, method: "within",
-        methodLabel: "Within-SKU log-log, weekly panel",
+        methodLabel: ACCOUNT ? "Within-product log-log, weekly panel" : "Within-SKU log-log, weekly panel",
         instrumented: false, isCurrent: true,
-        period: "2009–2011", region: "UK gift & homeware"
+        period: ACCOUNT ? mine.period : "2009–2011",
+        region: ACCOUNT ? "your sales history" : "UK gift & homeware"
       });
     }
     rows.sort(function (a, b) { return a.value - b.value; });
@@ -902,7 +930,7 @@
 
   function renderVerdict() {
     var est = currentEstimate();
-    if (!est) return;
+    if (!est || !$("#verdict-text")) return;
     var advice = est.advice;
 
     $("#verdict-scope").textContent = scopeLabel();
@@ -922,7 +950,7 @@
 
   function renderScenario() {
     var est = currentEstimate();
-    if (!est) return;
+    if (!est || !$("#scenario-tiles")) return;
 
     var sc = buildScenario({
       elasticity: est.elasticity,
@@ -1053,6 +1081,7 @@
 
   function renderCompareTable() {
     var host = $("#compare-table");
+    if (!host) return;
     clear(host);
     var rows = comparisonRows();
     var highlight = highlightedRowName();
@@ -1125,7 +1154,8 @@
         line.appendChild(a);
         market.appendChild(line);
       } else {
-        market.appendChild(el("div", "t-source", "this site, from UCI Online Retail II"));
+        market.appendChild(el("div", "t-source",
+          ACCOUNT ? "your own upload" : "this site, from UCI Online Retail II"));
       }
       tr.appendChild(market);
 
@@ -1142,6 +1172,7 @@
   function renderBenchmarks() {
     if (!state.benchmarks) return;
     var card = $("#benchmark-card");
+    if (!card) return;
     var quantity = state.benchmarks.benchmarks || [];
     if (!quantity.length) { card.hidden = true; return; }
     card.hidden = false;
@@ -1150,8 +1181,8 @@
     $("#benchmark-note").textContent =
       quantity.length + " markets, each fitted from a public dataset that needs no account to download — " +
       "no data is republished here, only the coefficients. " + instrumented + " of them (marked IV) instrument the " +
-      "price with something that moves supply and not demand; the rest carry the same caveat this site's " +
-      "own estimates do. Rebuild them with `python -m src.build_benchmarks`.";
+      "price with something that moves supply and not demand; the rest carry the same caveat " +
+      (ACCOUNT ? "your own estimate does." : "this site's own estimates do. Rebuild them with `python -m src.build_benchmarks`.");
 
     var noted = quantity.filter(function (b) {
       return b.note || b.literature || typeof b.cross_price_elasticity === "number";
@@ -1209,9 +1240,9 @@
 
   function renderEvidence() {
     var est = currentEstimate();
-    if (!est) return;
-    var ev = est.evidence;
     var host = $("#evidence-list");
+    if (!est || !host) return;
+    var ev = est.evidence;
     clear(host);
 
     var precisionScore = { "very precise": 4, "precise": 3, "rough": 2, "very rough": 1 }[ev.precision] || 1;
@@ -1252,28 +1283,40 @@
   }
 
   function renderCompareNote() {
+    var note = $("#compare-note");
+    if (!note) return;
     var excluded = state.estimates.excluded_categories || [];
-    if (!excluded.length) { $("#compare-note").textContent = ""; return; }
-    $("#compare-note").textContent =
-      "Not shown: " + excluded.map(function (e) { return e.category; }).join(", ") +
-      ". Those products don't share enough in common to price as one group, so they fall back to the whole-range figure.";
+    if (!excluded.length) { note.textContent = ""; return; }
+    note.textContent = ACCOUNT
+      ? "Not shown: " + excluded.map(function (e) { return e.category; }).join(", ") +
+        ". Their products are priced with the whole-range figure — see below for why each was left out."
+      : "Not shown: " + excluded.map(function (e) { return e.category; }).join(", ") +
+        ". Those products don't share enough in common to price as one group, so they fall back to the whole-range figure.";
   }
 
   function renderMethod() {
     var m = state.estimates.methodology || {};
-    $("#method-categories").textContent =
-      "The source data ships no category field — only a free-text product description — so categories " +
-      "here are assigned by keyword rules against that description. A \"Retrospot Cake Case\" lands in Kitchen " +
-      "& Dining because of the word cake. It is a reasonable guess, not a merchandising hierarchy, and a " +
-      "handful of products certainly sit in the wrong bucket.";
+    var cats = $("#method-categories");
+    if (cats) {
+      cats.textContent = ACCOUNT
+        ? "Categories are " + (m.category_assignment || "taken from your upload") + ". Each product is " +
+          "filed under the category it was most often sold under, so a product that moved between " +
+          "categories counts once."
+        : "The source data ships no category field — only a free-text product description — so categories " +
+          "here are assigned by keyword rules against that description. A \"Retrospot Cake Case\" lands in Kitchen " +
+          "& Dining because of the word cake. It is a reasonable guess, not a merchandising hierarchy, and a " +
+          "handful of products certainly sit in the wrong bucket.";
+    }
 
     var excluded = state.estimates.excluded_categories || [];
-    $("#method-excluded").textContent = excluded.length
+    var excludedNote = $("#method-excluded");
+    if (excludedNote) excludedNote.textContent = excluded.length
       ? "A category is only reported once it clears 500 weekly observations across at least 15 products. " +
         excluded.map(function (e) { return e.category; }).join(", ") + " never clears that bar."
       : "";
 
     var spec = $("#method-spec");
+    if (!spec) return;
     clear(spec);
     var labels = {
       method: "Model", source_dataset: "Source", category_assignment: "Categories",
@@ -1290,6 +1333,7 @@
 
   function renderGlossary() {
     var host = $("#glossary-list");
+    if (!host) return;
     clear(host);
     GLOSSARY.forEach(function (g) {
       // dt and dd are wrapped so the grid lays out pairs, not loose cells.
@@ -1380,16 +1424,17 @@
   /* ======================================================================
      CONTROLS
      ====================================================================== */
-  function announce(msg) { $("#live-region").textContent = msg; }
+  function announce(msg) { var r = $("#live-region"); if (r) r.textContent = msg; }
 
   function setScope(scope) {
     state.scope = scope;
     $$("#controls [data-scope]").forEach(function (b) {
       b.setAttribute("aria-checked", String(b.dataset.scope === scope));
     });
-    $("#field-category").hidden = scope !== "category";
-    $("#field-product").hidden = scope !== "product";
-    $("#scope-hint").textContent = {
+    if (scope === "category" && !state.estimates.by_category.length) scope = state.scope = "all";
+    if ($("#field-category")) $("#field-category").hidden = scope !== "category";
+    if ($("#field-product")) $("#field-product").hidden = scope !== "product";
+    if ($("#scope-hint")) $("#scope-hint").textContent = {
       all: "Every product in the dataset, pooled into one estimate.",
       category: "One department at a time — shoppers behave differently across them.",
       product: "Products inherit their category's estimate; there isn't enough history to price each one alone."
@@ -1397,9 +1442,9 @@
 
     if (scope === "category") {
       if (!state.category) state.category = state.estimates.by_category[0].category;
-      $("#category-select").value = state.category;
+      if ($("#category-select")) $("#category-select").value = state.category;
       setPrice(state.price, true);
-    } else if (scope === "product") {
+    } else if (scope === "product" && state.products.length) {
       if (!state.product) selectProduct(defaultProduct(), true);
       else setPrice(state.product.price, true);
     }
@@ -1421,15 +1466,15 @@
 
   function setPrice(value, silent) {
     state.price = Math.max(0.01, value);
-    $("#price-input").value = state.price.toFixed(2);
+    if ($("#price-input")) $("#price-input").value = state.price.toFixed(2);
     validateCost();
     if (!silent) renderAll();
   }
 
   function setChange(value) {
     state.change = clamp(Math.round(value), -40, 40);
-    $("#change-slider").value = String(state.change);
-    $("#change-readout").textContent = signedPct(state.change, 0);
+    if ($("#change-slider")) $("#change-slider").value = String(state.change);
+    if ($("#change-readout")) $("#change-readout").textContent = signedPct(state.change, 0);
     $$(".quick-changes button").forEach(function (b) {
       b.setAttribute("aria-pressed", String(Number(b.dataset.change) === state.change));
     });
@@ -1441,6 +1486,7 @@
   function validateCost() {
     var input = $("#cost-input");
     var err = $("#cost-error");
+    if (!input || !err) return true;
     var raw = input.value.trim();
     if (raw === "") { state.cost = null; err.hidden = true; return true; }
     var v = parseFloat(raw);
@@ -1459,8 +1505,10 @@
   function selectProduct(product, silent) {
     if (!product) return;
     state.product = product;
-    $("#product-input").value = product.name;
-    $("#product-clear").hidden = false;
+    if ($("#product-input")) {
+      $("#product-input").value = product.name;
+      $("#product-clear").hidden = false;
+    }
     setPrice(product.price, true);
     if (!silent) { renderAll(); announce(product.name + " selected. " + currentEstimate().advice.headline); }
   }
@@ -1472,6 +1520,7 @@
     var clearBtn = $("#product-clear");
     var active = -1;
     var matches = [];
+    if (!input || !list) return;
 
     input.placeholder = "Search " + nfInt.format(state.products.length) + " products…";
 
@@ -1591,7 +1640,13 @@
       });
     });
 
+    // An upload with no category that clears the bar has nothing to pick.
+    if (!state.estimates.by_category.length) {
+      $$('#controls [data-scope="category"]').forEach(function (b) { b.disabled = true; b.title = "No category has enough history for its own estimate yet"; });
+    }
+
     var catSelect = $("#category-select");
+    if (!catSelect) { initTableToggles(); return; }
     state.estimates.by_category.forEach(function (r) {
       var opt = el("option", null, r.category);
       opt.value = r.category;
@@ -1628,7 +1683,10 @@
     });
 
     $("#cost-input").addEventListener("input", function () { validateCost(); renderScenario(); writeURL(); });
+    initTableToggles();
+  }
 
+  function initTableToggles() {
     $$("[data-table-toggle]").forEach(function (btn) {
       btn.addEventListener("click", function () {
         var target = document.getElementById(btn.dataset.tableToggle);
@@ -1662,27 +1720,45 @@
   /* ================================================================ boot -- */
   function showBootError(message) {
     var box = $("#boot-error");
-    $("#boot-error-detail").textContent = message;
-    box.hidden = false;
-    $("#layout").hidden = true;
+    if (box) {
+      $("#boot-error-detail").textContent = message;
+      box.hidden = false;
+    }
+    if ($("#layout")) $("#layout").hidden = true;
   }
 
-  function boot() {
-    initTheme();
-    initTerms();
-    $("#boot-retry").addEventListener("click", function () {
-      $("#boot-error").hidden = true;
-      boot();
-    });
+  var booted = false;
 
+  function boot() {
+    // A confirmation email that fell back to the site root lands here with
+    // the new session in the fragment; the sign-in page knows what to do with it.
+    if (!ACCOUNT && /[#&]access_token=/.test(location.hash)) {
+      location.replace("/login" + location.hash);
+      return;
+    }
+    if (!booted) {
+      booted = true;
+      initTheme();
+      initTerms();
+      if ($("#boot-retry")) {
+        $("#boot-retry").addEventListener("click", function () {
+          $("#boot-error").hidden = true;
+          load();
+        });
+      }
+    }
+    load();
+  }
+
+  function load() {
     var wanted = readURL();
 
-    Promise.all([fetchJSON("/estimates"), fetchJSON("/catalog")])
+    Promise.all([fetchJSON(URLS.estimates), fetchJSON(URLS.catalog)])
       .then(function (res) {
         state.estimates = res[0];
-        state.currencySymbol = CURRENCY_SYMBOLS[res[1].currency] || "";
-        $("#price-symbol").textContent = state.currencySymbol;
-        $("#cost-symbol").textContent = state.currencySymbol;
+        state.currencySymbol = CURRENCY_SYMBOLS[res[1].currency] || (res[1].currency ? res[1].currency + " " : "");
+        if ($("#price-symbol")) $("#price-symbol").textContent = state.currencySymbol;
+        if ($("#cost-symbol")) $("#cost-symbol").textContent = state.currencySymbol;
 
         var cats = res[1].categories;
         state.products = res[1].products.map(function (row) {
@@ -1711,7 +1787,7 @@
         renderGlossary();
         renderMethod();
 
-        if (state.cost != null) {
+        if (state.cost != null && $("#cost-input")) {
           $("#cost-input").value = String(state.cost);
           $("#cost-block").open = true;
         }
@@ -1720,7 +1796,11 @@
 
         // Context, not content: the page is already usable, so a missing or
         // slow benchmarks file leaves the section hidden and nothing else.
-        fetchJSON("/benchmarks")
+        var ready = hook("onReady");
+        if (ready) ready(state);
+
+        if (!$("#benchmark-card") && !$("#scale-chart")) return;
+        fetchJSON(URLS.benchmarks)
           .then(function (b) {
             if (!b || !b.available) return;
             state.benchmarks = b;
@@ -1729,6 +1809,8 @@
           .catch(function () { /* the rest of the page does not depend on it */ });
       })
       .catch(function (err) {
+        var onError = hook("onBootError");
+        if (onError && onError(err) === true) return;
         showBootError(err.message + " The API may still be starting up.");
       });
   }

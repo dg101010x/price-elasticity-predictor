@@ -13,18 +13,35 @@ died with an uncaught "Plotly is not defined" wherever that host was blocked.
 from __future__ import annotations
 
 import os
+import re
 from functools import lru_cache
 from pathlib import Path
 
 _WEB_DIR = Path(__file__).resolve().parent / "web"
+_PARTIAL_RE = re.compile(r"<!--@partial ([a-z0-9-]+)-->")
 
 # Re-read the source files on every request during local development so edits
 # show up on refresh; cache them in production where they never change.
 _RELOAD = os.environ.get("PEP_DEV_RELOAD") == "1"
 
 
+def expand_partials(html: str) -> str:
+    """Inline src/web/partials/<name>.html wherever <!--@partial name--> appears.
+
+    The sections the public page and the signed-in dashboard share -- the
+    control rail, verdict, scenario, category comparison, other markets and
+    evidence cards -- live there once, so the two can't drift apart.
+    """
+    def one(match: re.Match) -> str:
+        path = _WEB_DIR / "partials" / f"{match.group(1)}.html"
+        if not path.is_file():
+            raise RuntimeError(f"missing partial: {path}")
+        return path.read_text(encoding="utf-8")
+    return _PARTIAL_RE.sub(one, html)
+
+
 def _build() -> str:
-    html = (_WEB_DIR / "index.html").read_text(encoding="utf-8")
+    html = expand_partials((_WEB_DIR / "index.html").read_text(encoding="utf-8"))
     css = (_WEB_DIR / "app.css").read_text(encoding="utf-8")
     js = (_WEB_DIR / "app.js").read_text(encoding="utf-8")
 

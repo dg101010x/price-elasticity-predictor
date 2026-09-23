@@ -1,0 +1,48 @@
+<!--@partial boot-states-->
+
+<div class="overview" id="layout" hidden>
+  <!--@partial verdict-->
+
+  <div class="overview-row">
+    <section class="card" id="insight-card" aria-labelledby="insight-heading">
+      <div class="card-head">
+        <h2 class="card-title" id="insight-heading">What to do about it</h2>
+        <p class="card-sub">The first recommendations from your latest upload. Select a number to see where it came from.</p>
+      </div>
+      <ol class="insight-list" id="overview-insights" aria-busy="true"></ol>
+      <p class="hint" id="overview-insights-status"></p>
+      <a class="text-link" href="/dashboard/insights">All recommendations, and the numbers behind them</a>
+    </section>
+
+    <section class="card card-quiet" aria-labelledby="facts-heading">
+      <div class="card-head">
+        <h2 class="card-title" id="facts-heading">Built from</h2>
+      </div>
+      <dl class="facts" id="data-facts"></dl>
+      <a class="text-link" href="/dashboard/data">Upload newer sales</a>
+    </section>
+  </div>
+
+  <!--@partial evidence-->
+
+  <section class="card" id="since-card" aria-labelledby="since-heading" hidden>
+    <div class="card-head">
+      <h2 class="card-title" id="since-heading">Did the last estimate hold?</h2>
+      <p class="card-sub" id="since-sub"></p>
+    </div>
+    <div class="table-view" id="since-table"></div>
+  </section>
+
+  <details class="card card-quiet method-disclosure">
+    <summary>
+      <span class="method-summary">
+        <span class="card-title">How this works, and what it isn't</span>
+        <span class="card-sub">What the likely range and the explained-variation figure mean, and three things this can't tell you.</span>
+      </span>
+      <span class="summary-chevron" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+      </span>
+    </summary>
+    <!--@partial method-account-->
+  </details>
+</div>

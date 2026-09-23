@@ -1,0 +1,27 @@
+<!-- SCENARIO ------------------------------------------------ -->
+    <section class="card" aria-labelledby="scenario-heading">
+      <div class="card-head">
+        <h2 class="card-title" id="scenario-heading">If you make that change</h2>
+        <p class="card-sub" id="scenario-sub"></p>
+      </div>
+
+      <div class="tiles" id="scenario-tiles"></div>
+
+      <p class="notice notice-info" id="profit-note" hidden>
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6h.01"/></svg>
+        <span id="profit-note-text"></span>
+      </p>
+
+      <figure class="chart-figure">
+        <figcaption class="figure-head">
+          <h3 class="figure-title">Units and revenue across the price range</h3>
+          <div class="figure-actions">
+            <div class="legend" id="scenario-legend"></div>
+            <button type="button" class="btn btn-quiet btn-table" data-table-toggle="scenario-table"
+                    aria-expanded="false" aria-controls="scenario-table">Table</button>
+          </div>
+        </figcaption>
+        <div class="chart-host" id="scenario-chart"></div>
+        <div class="table-view" id="scenario-table" hidden></div>
+      </figure>
+    </section>

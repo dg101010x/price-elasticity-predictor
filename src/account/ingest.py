@@ -109,6 +109,16 @@ class IngestError(ValueError):
     """A problem with the file the user can fix -- shown to them verbatim."""
 
 
+AMBIGUOUS_DATES = ("The dates in that column could be read either way round — 03/04 as 3 April or as "
+                   "4 March — and nothing in the file settles it. Say which way they're written.")
+
+
+def check_dates(frame: pd.DataFrame, column: str, date_order: str | None) -> None:
+    """Refuse, before anything is stored, to guess which way round dates go."""
+    if date_order is None and not detect_date_order(frame[column])[1]:
+        raise IngestError(AMBIGUOUS_DATES)
+
+
 def _norm(header: str) -> str:
     return re.sub(r"[^0-9a-z]+", "_", str(header).strip().lower()).strip("_")
 
@@ -355,11 +365,17 @@ def prepare(raw: bytes, mapping: dict, date_order: str | None = None, currency: 
             dropped[reason] = dropped.get(reason, 0) + count
             work = work[~mask]
 
+    if date_order is None:
+        detected, certain = detect_date_order(frame[m["date"]])
+        if not certain:
+            raise IngestError(AMBIGUOUS_DATES)
+        date_order = detected
+
     work = pd.DataFrame({
         "product": frame[m["product_key"]].astype(str).str.strip(),
         "description": frame[m["description"]].astype(str).str.strip() if m["description"] else "",
         "category": frame[m["category"]].astype(str).str.strip() if m["category"] else "",
-        "date": parse_dates(frame[m["date"]], date_order or detect_date_order(frame[m["date"]])[0]),
+        "date": parse_dates(frame[m["date"]], date_order),
         "quantity": parse_numbers(frame[m["units"]], decimal_comma),
     })
     if m["price"]:

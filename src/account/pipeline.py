@@ -65,8 +65,9 @@ def process_upload(sb: Supabase, settings: Settings, session: Session, member: M
     # 1. Cheap checks before anything is stored.
     try:
         text = ingest.decode(raw)
-        header, _ = ingest.read_frame(text, nrows=5)
-        ingest.validate_mapping(mapping, list(header.columns))
+        head, _ = ingest.read_frame(text, nrows=5000)
+        chosen = ingest.validate_mapping(mapping, list(head.columns))
+        ingest.check_dates(head, chosen["date"], date_order)
     except ingest.IngestError as exc:
         raise UploadRefused(422, str(exc)) from exc
 

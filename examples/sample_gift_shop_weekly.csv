@@ -1,0 +1,2601 @@
+Week,SKU,Product Name,Category,Unit Price,Units Sold
+2024-01-01,C-001,Candles item 1,Candles,16.00,65
+2024-01-08,C-001,Candles item 1,Candles,16.00,68
+2024-01-15,C-001,Candles item 1,Candles,16.00,55
+2024-01-22,C-001,Candles item 1,Candles,16.00,64
+2024-01-29,C-001,Candles item 1,Candles,16.00,48
+2024-02-05,C-001,Candles item 1,Candles,14.30,63
+2024-02-12,C-001,Candles item 1,Candles,16.00,64
+2024-02-19,C-001,Candles item 1,Candles,16.00,50
+2024-02-26,C-001,Candles item 1,Candles,16.00,51
+2024-03-04,C-001,Candles item 1,Candles,16.00,61
+2024-03-11,C-001,Candles item 1,Candles,16.00,78
+2024-03-18,C-001,Candles item 1,Candles,13.27,90
+2024-03-25,C-001,Candles item 1,Candles,16.00,88
+2024-04-01,C-001,Candles item 1,Candles,16.00,56
+2024-04-08,C-001,Candles item 1,Candles,16.00,60
+2024-04-15,C-001,Candles item 1,Candles,16.00,57
+2024-04-22,C-001,Candles item 1,Candles,12.40,117
+2024-04-29,C-001,Candles item 1,Candles,12.04,110
+2024-05-06,C-001,Candles item 1,Candles,16.00,61
+2024-05-13,C-001,Candles item 1,Candles,16.00,70
+2024-05-20,C-001,Candles item 1,Candles,16.00,45
+2024-05-27,C-001,Candles item 1,Candles,16.00,57
+2024-06-03,C-001,Candles item 1,Candles,16.00,74
+2024-06-10,C-001,Candles item 1,Candles,16.00,68
+2024-06-17,C-001,Candles item 1,Candles,16.00,63
+2024-06-24,C-001,Candles item 1,Candles,16.00,62
+2024-07-01,C-001,Candles item 1,Candles,16.00,60
+2024-07-08,C-001,Candles item 1,Candles,16.00,59
+2024-07-15,C-001,Candles item 1,Candles,16.00,65
+2024-07-22,C-001,Candles item 1,Candles,16.00,51
+2024-07-29,C-001,Candles item 1,Candles,16.00,64
+2024-08-05,C-001,Candles item 1,Candles,16.00,72
+2024-08-12,C-001,Candles item 1,Candles,16.00,61
+2024-08-19,C-001,Candles item 1,Candles,16.00,62
+2024-08-26,C-001,Candles item 1,Candles,16.00,55
+2024-09-02,C-001,Candles item 1,Candles,16.00,57
+2024-09-09,C-001,Candles item 1,Candles,18.19,25
+2024-09-16,C-001,Candles item 1,Candles,18.19,50
+2024-09-23,C-001,Candles item 1,Candles,18.19,53
+2024-09-30,C-001,Candles item 1,Candles,18.19,46
+2024-10-07,C-001,Candles item 1,Candles,13.41,89
+2024-10-14,C-001,Candles item 1,Candles,14.59,76
+2024-10-21,C-001,Candles item 1,Candles,13.37,77
+2024-10-28,C-001,Candles item 1,Candles,18.19,51
+2024-11-04,C-001,Candles item 1,Candles,13.16,85
+2024-11-11,C-001,Candles item 1,Candles,18.19,36
+2024-11-18,C-001,Candles item 1,Candles,18.19,47
+2024-11-25,C-001,Candles item 1,Candles,18.19,35
+2024-12-02,C-001,Candles item 1,Candles,18.19,42
+2024-12-09,C-001,Candles item 1,Candles,13.07,90
+2024-12-16,C-001,Candles item 1,Candles,18.19,60
+2024-12-23,C-001,Candles item 1,Candles,18.19,25
+2024-01-01,C-002,Candles item 2,Candles,9.35,74
+2024-01-08,C-002,Candles item 2,Candles,9.35,47
+2024-01-15,C-002,Candles item 2,Candles,9.35,76
+2024-01-22,C-002,Candles item 2,Candles,6.86,127
+2024-01-29,C-002,Candles item 2,Candles,9.35,66
+2024-02-05,C-002,Candles item 2,Candles,9.35,66
+2024-02-12,C-002,Candles item 2,Candles,9.35,56
+2024-02-19,C-002,Candles item 2,Candles,8.38,74
+2024-02-26,C-002,Candles item 2,Candles,6.67,115
+2024-03-04,C-002,Candles item 2,Candles,9.35,66
+2024-03-11,C-002,Candles item 2,Candles,9.35,44
+2024-03-18,C-002,Candles item 2,Candles,9.35,47
+2024-03-25,C-002,Candles item 2,Candles,9.35,53
+2024-04-01,C-002,Candles item 2,Candles,9.35,57
+2024-04-08,C-002,Candles item 2,Candles,9.35,73
+2024-04-15,C-002,Candles item 2,Candles,9.35,70
+2024-04-22,C-002,Candles item 2,Candles,9.35,58
+2024-04-29,C-002,Candles item 2,Candles,9.35,63
+2024-05-06,C-002,Candles item 2,Candles,9.35,68
+2024-05-13,C-002,Candles item 2,Candles,9.35,56
+2024-05-20,C-002,Candles item 2,Candles,9.35,68
+2024-05-27,C-002,Candles item 2,Candles,9.35,61
+2024-06-03,C-002,Candles item 2,Candles,9.35,63
+2024-06-10,C-002,Candles item 2,Candles,9.35,53
+2024-06-17,C-002,Candles item 2,Candles,9.35,68
+2024-06-24,C-002,Candles item 2,Candles,9.35,51
+2024-07-01,C-002,Candles item 2,Candles,9.35,68
+2024-07-08,C-002,Candles item 2,Candles,9.35,58
+2024-07-15,C-002,Candles item 2,Candles,9.35,58
+2024-07-22,C-002,Candles item 2,Candles,9.35,65
+2024-07-29,C-002,Candles item 2,Candles,7.58,91
+2024-08-05,C-002,Candles item 2,Candles,9.35,66
+2024-08-12,C-002,Candles item 2,Candles,9.35,64
+2024-08-19,C-002,Candles item 2,Candles,9.35,64
+2024-08-26,C-002,Candles item 2,Candles,9.35,68
+2024-09-02,C-002,Candles item 2,Candles,9.35,66
+2024-09-09,C-002,Candles item 2,Candles,9.35,52
+2024-09-16,C-002,Candles item 2,Candles,9.35,60
+2024-09-23,C-002,Candles item 2,Candles,9.35,51
+2024-09-30,C-002,Candles item 2,Candles,9.35,53
+2024-10-07,C-002,Candles item 2,Candles,9.35,44
+2024-10-14,C-002,Candles item 2,Candles,9.35,50
+2024-10-21,C-002,Candles item 2,Candles,9.35,67
+2024-10-28,C-002,Candles item 2,Candles,9.35,58
+2024-11-04,C-002,Candles item 2,Candles,9.35,69
+2024-11-11,C-002,Candles item 2,Candles,9.35,46
+2024-11-18,C-002,Candles item 2,Candles,9.35,54
+2024-11-25,C-002,Candles item 2,Candles,9.35,87
+2024-12-02,C-002,Candles item 2,Candles,9.35,59
+2024-12-09,C-002,Candles item 2,Candles,9.35,79
+2024-12-16,C-002,Candles item 2,Candles,8.24,71
+2024-12-23,C-002,Candles item 2,Candles,9.35,63
+2024-01-01,C-003,Candles item 3,Candles,7.95,15
+2024-01-08,C-003,Candles item 3,Candles,9.17,16
+2024-01-15,C-003,Candles item 3,Candles,9.17,11
+2024-01-22,C-003,Candles item 3,Candles,9.17,12
+2024-01-29,C-003,Candles item 3,Candles,9.17,14
+2024-02-05,C-003,Candles item 3,Candles,9.17,19
+2024-02-12,C-003,Candles item 3,Candles,9.17,17
+2024-02-19,C-003,Candles item 3,Candles,9.17,19
+2024-02-26,C-003,Candles item 3,Candles,9.17,20
+2024-03-04,C-003,Candles item 3,Candles,8.44,22
+2024-03-11,C-003,Candles item 3,Candles,8.44,15
+2024-03-18,C-003,Candles item 3,Candles,8.44,23
+2024-03-25,C-003,Candles item 3,Candles,8.44,15
+2024-04-01,C-003,Candles item 3,Candles,8.44,15
+2024-04-08,C-003,Candles item 3,Candles,6.79,29
+2024-04-15,C-003,Candles item 3,Candles,8.44,12
+2024-04-22,C-003,Candles item 3,Candles,8.44,22
+2024-04-29,C-003,Candles item 3,Candles,8.44,11
+2024-05-06,C-003,Candles item 3,Candles,8.44,14
+2024-05-13,C-003,Candles item 3,Candles,8.44,17
+2024-05-20,C-003,Candles item 3,Candles,8.44,25
+2024-05-27,C-003,Candles item 3,Candles,8.44,14
+2024-06-03,C-003,Candles item 3,Candles,8.44,12
+2024-06-10,C-003,Candles item 3,Candles,5.97,43
+2024-06-17,C-003,Candles item 3,Candles,8.44,20
+2024-06-24,C-003,Candles item 3,Candles,8.44,22
+2024-07-01,C-003,Candles item 3,Candles,8.44,21
+2024-07-08,C-003,Candles item 3,Candles,7.17,22
+2024-07-15,C-003,Candles item 3,Candles,8.44,10
+2024-07-22,C-003,Candles item 3,Candles,8.44,22
+2024-07-29,C-003,Candles item 3,Candles,8.44,12
+2024-08-05,C-003,Candles item 3,Candles,8.44,12
+2024-08-12,C-003,Candles item 3,Candles,7.29,31
+2024-08-19,C-003,Candles item 3,Candles,8.44,22
+2024-08-26,C-003,Candles item 3,Candles,8.44,14
+2024-09-02,C-003,Candles item 3,Candles,5.92,46
+2024-09-09,C-003,Candles item 3,Candles,8.44,14
+2024-09-16,C-003,Candles item 3,Candles,8.44,14
+2024-09-23,C-003,Candles item 3,Candles,8.44,20
+2024-09-30,C-003,Candles item 3,Candles,8.44,21
+2024-10-07,C-003,Candles item 3,Candles,7.48,20
+2024-10-14,C-003,Candles item 3,Candles,8.44,18
+2024-10-21,C-003,Candles item 3,Candles,8.44,13
+2024-10-28,C-003,Candles item 3,Candles,8.44,10
+2024-11-04,C-003,Candles item 3,Candles,6.77,30
+2024-11-11,C-003,Candles item 3,Candles,8.44,18
+2024-11-18,C-003,Candles item 3,Candles,8.44,11
+2024-11-25,C-003,Candles item 3,Candles,8.44,14
+2024-12-02,C-003,Candles item 3,Candles,6.25,29
+2024-12-09,C-003,Candles item 3,Candles,6.65,28
+2024-12-16,C-003,Candles item 3,Candles,6.70,35
+2024-12-23,C-003,Candles item 3,Candles,8.74,17
+2024-01-01,C-004,Candles item 4,Candles,13.22,33
+2024-01-08,C-004,Candles item 4,Candles,13.22,49
+2024-01-15,C-004,Candles item 4,Candles,13.22,29
+2024-01-22,C-004,Candles item 4,Candles,13.22,24
+2024-01-29,C-004,Candles item 4,Candles,13.22,31
+2024-02-05,C-004,Candles item 4,Candles,13.22,26
+2024-02-12,C-004,Candles item 4,Candles,13.22,19
+2024-02-19,C-004,Candles item 4,Candles,13.22,26
+2024-02-26,C-004,Candles item 4,Candles,13.22,32
+2024-03-04,C-004,Candles item 4,Candles,13.22,29
+2024-03-11,C-004,Candles item 4,Candles,13.22,39
+2024-03-18,C-004,Candles item 4,Candles,13.22,33
+2024-03-25,C-004,Candles item 4,Candles,13.22,31
+2024-04-01,C-004,Candles item 4,Candles,13.22,28
+2024-04-08,C-004,Candles item 4,Candles,13.22,42
+2024-04-15,C-004,Candles item 4,Candles,13.22,30
+2024-04-22,C-004,Candles item 4,Candles,13.22,47
+2024-04-29,C-004,Candles item 4,Candles,10.24,31
+2024-05-06,C-004,Candles item 4,Candles,13.22,30
+2024-05-13,C-004,Candles item 4,Candles,13.22,20
+2024-05-20,C-004,Candles item 4,Candles,13.22,33
+2024-05-27,C-004,Candles item 4,Candles,13.22,23
+2024-06-03,C-004,Candles item 4,Candles,13.22,26
+2024-06-10,C-004,Candles item 4,Candles,10.90,42
+2024-06-17,C-004,Candles item 4,Candles,14.57,23
+2024-06-24,C-004,Candles item 4,Candles,14.57,20
+2024-07-01,C-004,Candles item 4,Candles,14.57,22
+2024-07-08,C-004,Candles item 4,Candles,14.57,30
+2024-07-15,C-004,Candles item 4,Candles,14.57,20
+2024-07-22,C-004,Candles item 4,Candles,14.57,25
+2024-07-29,C-004,Candles item 4,Candles,14.57,20
+2024-08-05,C-004,Candles item 4,Candles,14.57,24
+2024-08-12,C-004,Candles item 4,Candles,10.30,47
+2024-08-19,C-004,Candles item 4,Candles,14.57,19
+2024-08-26,C-004,Candles item 4,Candles,11.60,37
+2024-09-02,C-004,Candles item 4,Candles,14.57,19
+2024-09-09,C-004,Candles item 4,Candles,14.57,22
+2024-09-16,C-004,Candles item 4,Candles,11.28,56
+2024-09-23,C-004,Candles item 4,Candles,14.57,21
+2024-09-30,C-004,Candles item 4,Candles,14.57,23
+2024-10-07,C-004,Candles item 4,Candles,14.57,25
+2024-10-14,C-004,Candles item 4,Candles,14.57,20
+2024-10-21,C-004,Candles item 4,Candles,14.57,30
+2024-10-28,C-004,Candles item 4,Candles,14.57,30
+2024-11-04,C-004,Candles item 4,Candles,14.57,31
+2024-11-11,C-004,Candles item 4,Candles,14.57,29
+2024-11-18,C-004,Candles item 4,Candles,14.57,15
+2024-11-25,C-004,Candles item 4,Candles,14.57,22
+2024-12-02,C-004,Candles item 4,Candles,14.57,13
+2024-12-09,C-004,Candles item 4,Candles,12.96,29
+2024-12-16,C-004,Candles item 4,Candles,12.18,41
+2024-12-23,C-004,Candles item 4,Candles,15.32,22
+2024-01-01,C-005,Candles item 5,Candles,9.19,12
+2024-01-08,C-005,Candles item 5,Candles,9.45,9
+2024-01-15,C-005,Candles item 5,Candles,9.45,9
+2024-01-22,C-005,Candles item 5,Candles,9.45,12
+2024-01-29,C-005,Candles item 5,Candles,9.45,11
+2024-02-05,C-005,Candles item 5,Candles,9.45,9
+2024-02-12,C-005,Candles item 5,Candles,10.95,8
+2024-02-19,C-005,Candles item 5,Candles,10.95,4
+2024-02-26,C-005,Candles item 5,Candles,10.95,6
+2024-03-04,C-005,Candles item 5,Candles,10.95,2
+2024-03-11,C-005,Candles item 5,Candles,10.95,14
+2024-03-18,C-005,Candles item 5,Candles,10.95,5
+2024-03-25,C-005,Candles item 5,Candles,10.95,12
+2024-04-01,C-005,Candles item 5,Candles,10.98,4
+2024-04-08,C-005,Candles item 5,Candles,10.98,6
+2024-04-15,C-005,Candles item 5,Candles,10.98,4
+2024-04-22,C-005,Candles item 5,Candles,8.03,23
+2024-04-29,C-005,Candles item 5,Candles,10.98,4
+2024-05-06,C-005,Candles item 5,Candles,10.98,5
+2024-05-13,C-005,Candles item 5,Candles,8.50,13
+2024-05-20,C-005,Candles item 5,Candles,7.82,9
+2024-05-27,C-005,Candles item 5,Candles,8.70,12
+2024-06-03,C-005,Candles item 5,Candles,10.98,12
+2024-06-10,C-005,Candles item 5,Candles,10.98,5
+2024-06-17,C-005,Candles item 5,Candles,10.98,7
+2024-06-24,C-005,Candles item 5,Candles,10.98,7
+2024-07-01,C-005,Candles item 5,Candles,10.98,3
+2024-07-08,C-005,Candles item 5,Candles,10.98,4
+2024-07-15,C-005,Candles item 5,Candles,10.98,12
+2024-07-22,C-005,Candles item 5,Candles,10.98,9
+2024-07-29,C-005,Candles item 5,Candles,10.98,14
+2024-08-05,C-005,Candles item 5,Candles,7.92,7
+2024-08-12,C-005,Candles item 5,Candles,10.98,2
+2024-08-19,C-005,Candles item 5,Candles,10.98,7
+2024-08-26,C-005,Candles item 5,Candles,10.98,8
+2024-09-02,C-005,Candles item 5,Candles,10.98,6
+2024-09-09,C-005,Candles item 5,Candles,10.98,8
+2024-09-16,C-005,Candles item 5,Candles,10.98,5
+2024-09-23,C-005,Candles item 5,Candles,10.98,13
+2024-09-30,C-005,Candles item 5,Candles,10.98,6
+2024-10-07,C-005,Candles item 5,Candles,8.59,15
+2024-10-14,C-005,Candles item 5,Candles,10.98,7
+2024-10-21,C-005,Candles item 5,Candles,10.98,4
+2024-10-28,C-005,Candles item 5,Candles,9.63,12
+2024-11-04,C-005,Candles item 5,Candles,10.98,10
+2024-11-11,C-005,Candles item 5,Candles,10.98,7
+2024-11-18,C-005,Candles item 5,Candles,10.98,9
+2024-11-25,C-005,Candles item 5,Candles,10.98,8
+2024-12-02,C-005,Candles item 5,Candles,12.40,3
+2024-12-09,C-005,Candles item 5,Candles,12.40,5
+2024-12-16,C-005,Candles item 5,Candles,12.40,3
+2024-12-23,C-005,Candles item 5,Candles,12.40,3
+2024-01-01,C-006,Candles item 6,Candles,14.94,121
+2024-01-08,C-006,Candles item 6,Candles,19.16,68
+2024-01-15,C-006,Candles item 6,Candles,19.16,68
+2024-01-22,C-006,Candles item 6,Candles,19.16,87
+2024-01-29,C-006,Candles item 6,Candles,19.16,70
+2024-02-05,C-006,Candles item 6,Candles,19.16,89
+2024-02-12,C-006,Candles item 6,Candles,19.16,69
+2024-02-19,C-006,Candles item 6,Candles,19.16,72
+2024-02-26,C-006,Candles item 6,Candles,19.16,73
+2024-03-04,C-006,Candles item 6,Candles,19.16,75
+2024-03-11,C-006,Candles item 6,Candles,19.16,70
+2024-03-18,C-006,Candles item 6,Candles,19.16,80
+2024-03-25,C-006,Candles item 6,Candles,15.11,141
+2024-04-01,C-006,Candles item 6,Candles,19.16,85
+2024-04-08,C-006,Candles item 6,Candles,15.04,107
+2024-04-15,C-006,Candles item 6,Candles,14.22,136
+2024-04-22,C-006,Candles item 6,Candles,19.16,87
+2024-04-29,C-006,Candles item 6,Candles,19.16,81
+2024-05-06,C-006,Candles item 6,Candles,14.54,120
+2024-05-13,C-006,Candles item 6,Candles,19.16,85
+2024-05-20,C-006,Candles item 6,Candles,15.97,120
+2024-05-27,C-006,Candles item 6,Candles,19.16,74
+2024-06-03,C-006,Candles item 6,Candles,19.16,61
+2024-06-10,C-006,Candles item 6,Candles,19.16,94
+2024-06-17,C-006,Candles item 6,Candles,19.16,77
+2024-06-24,C-006,Candles item 6,Candles,15.27,167
+2024-07-01,C-006,Candles item 6,Candles,19.16,81
+2024-07-08,C-006,Candles item 6,Candles,15.37,138
+2024-07-15,C-006,Candles item 6,Candles,19.16,89
+2024-07-22,C-006,Candles item 6,Candles,19.16,81
+2024-07-29,C-006,Candles item 6,Candles,19.16,80
+2024-08-05,C-006,Candles item 6,Candles,16.60,108
+2024-08-12,C-006,Candles item 6,Candles,19.16,84
+2024-08-19,C-006,Candles item 6,Candles,19.16,63
+2024-08-26,C-006,Candles item 6,Candles,19.16,110
+2024-09-02,C-006,Candles item 6,Candles,19.16,73
+2024-09-09,C-006,Candles item 6,Candles,19.16,82
+2024-09-16,C-006,Candles item 6,Candles,19.16,64
+2024-09-23,C-006,Candles item 6,Candles,19.16,75
+2024-09-30,C-006,Candles item 6,Candles,19.16,79
+2024-10-07,C-006,Candles item 6,Candles,16.81,75
+2024-10-14,C-006,Candles item 6,Candles,12.96,135
+2024-10-21,C-006,Candles item 6,Candles,15.90,116
+2024-10-28,C-006,Candles item 6,Candles,15.90,124
+2024-11-04,C-006,Candles item 6,Candles,15.90,125
+2024-11-11,C-006,Candles item 6,Candles,15.90,114
+2024-11-18,C-006,Candles item 6,Candles,15.90,132
+2024-11-25,C-006,Candles item 6,Candles,15.90,150
+2024-12-02,C-006,Candles item 6,Candles,15.90,106
+2024-12-09,C-006,Candles item 6,Candles,15.90,115
+2024-12-16,C-006,Candles item 6,Candles,14.61,141
+2024-12-23,C-006,Candles item 6,Candles,18.58,69
+2024-01-01,C-007,Candles item 7,Candles,25.31,38
+2024-01-08,C-007,Candles item 7,Candles,18.38,62
+2024-01-15,C-007,Candles item 7,Candles,25.31,25
+2024-01-22,C-007,Candles item 7,Candles,25.31,38
+2024-01-29,C-007,Candles item 7,Candles,25.31,43
+2024-02-05,C-007,Candles item 7,Candles,20.70,57
+2024-02-12,C-007,Candles item 7,Candles,25.31,24
+2024-02-19,C-007,Candles item 7,Candles,25.31,30
+2024-02-26,C-007,Candles item 7,Candles,25.31,28
+2024-03-04,C-007,Candles item 7,Candles,25.31,44
+2024-03-11,C-007,Candles item 7,Candles,25.31,31
+2024-03-18,C-007,Candles item 7,Candles,25.31,27
+2024-03-25,C-007,Candles item 7,Candles,25.31,26
+2024-04-01,C-007,Candles item 7,Candles,25.31,26
+2024-04-08,C-007,Candles item 7,Candles,25.31,40
+2024-04-15,C-007,Candles item 7,Candles,25.31,24
+2024-04-22,C-007,Candles item 7,Candles,25.31,39
+2024-04-29,C-007,Candles item 7,Candles,18.98,48
+2024-05-06,C-007,Candles item 7,Candles,25.31,25
+2024-05-13,C-007,Candles item 7,Candles,25.31,39
+2024-05-20,C-007,Candles item 7,Candles,25.31,33
+2024-05-27,C-007,Candles item 7,Candles,25.31,31
+2024-06-03,C-007,Candles item 7,Candles,19.64,68
+2024-06-10,C-007,Candles item 7,Candles,18.29,66
+2024-06-17,C-007,Candles item 7,Candles,25.31,20
+2024-06-24,C-007,Candles item 7,Candles,25.31,45
+2024-07-01,C-007,Candles item 7,Candles,18.21,71
+2024-07-08,C-007,Candles item 7,Candles,25.31,31
+2024-07-15,C-007,Candles item 7,Candles,25.31,36
+2024-07-22,C-007,Candles item 7,Candles,25.31,36
+2024-07-29,C-007,Candles item 7,Candles,17.85,32
+2024-08-05,C-007,Candles item 7,Candles,25.31,29
+2024-08-12,C-007,Candles item 7,Candles,25.31,33
+2024-08-19,C-007,Candles item 7,Candles,21.00,45
+2024-08-26,C-007,Candles item 7,Candles,21.45,58
+2024-09-02,C-007,Candles item 7,Candles,25.31,31
+2024-09-09,C-007,Candles item 7,Candles,25.31,23
+2024-09-16,C-007,Candles item 7,Candles,25.31,28
+2024-09-23,C-007,Candles item 7,Candles,25.31,34
+2024-09-30,C-007,Candles item 7,Candles,22.55,36
+2024-10-07,C-007,Candles item 7,Candles,25.31,31
+2024-10-14,C-007,Candles item 7,Candles,19.28,49
+2024-10-21,C-007,Candles item 7,Candles,25.31,44
+2024-10-28,C-007,Candles item 7,Candles,25.31,34
+2024-11-04,C-007,Candles item 7,Candles,25.31,40
+2024-11-11,C-007,Candles item 7,Candles,20.36,41
+2024-11-18,C-007,Candles item 7,Candles,25.31,38
+2024-11-25,C-007,Candles item 7,Candles,25.31,33
+2024-12-02,C-007,Candles item 7,Candles,25.31,30
+2024-12-09,C-007,Candles item 7,Candles,21.26,50
+2024-12-16,C-007,Candles item 7,Candles,25.31,27
+2024-12-23,C-007,Candles item 7,Candles,19.93,65
+2024-01-01,C-008,Candles item 8,Candles,11.01,19
+2024-01-08,C-008,Candles item 8,Candles,11.01,29
+2024-01-15,C-008,Candles item 8,Candles,11.01,42
+2024-01-22,C-008,Candles item 8,Candles,11.01,22
+2024-01-29,C-008,Candles item 8,Candles,11.01,29
+2024-02-05,C-008,Candles item 8,Candles,8.60,66
+2024-02-12,C-008,Candles item 8,Candles,11.01,25
+2024-02-19,C-008,Candles item 8,Candles,11.67,20
+2024-02-26,C-008,Candles item 8,Candles,9.45,33
+2024-03-04,C-008,Candles item 8,Candles,11.67,24
+2024-03-11,C-008,Candles item 8,Candles,11.67,29
+2024-03-18,C-008,Candles item 8,Candles,11.89,18
+2024-03-25,C-008,Candles item 8,Candles,11.89,25
+2024-04-01,C-008,Candles item 8,Candles,11.89,23
+2024-04-08,C-008,Candles item 8,Candles,11.89,31
+2024-04-15,C-008,Candles item 8,Candles,11.89,31
+2024-04-22,C-008,Candles item 8,Candles,11.89,23
+2024-04-29,C-008,Candles item 8,Candles,11.89,38
+2024-05-06,C-008,Candles item 8,Candles,11.89,41
+2024-05-13,C-008,Candles item 8,Candles,11.89,21
+2024-05-20,C-008,Candles item 8,Candles,11.89,23
+2024-05-27,C-008,Candles item 8,Candles,11.89,34
+2024-06-03,C-008,Candles item 8,Candles,11.89,28
+2024-06-10,C-008,Candles item 8,Candles,11.89,22
+2024-06-17,C-008,Candles item 8,Candles,11.89,25
+2024-06-24,C-008,Candles item 8,Candles,11.89,28
+2024-07-01,C-008,Candles item 8,Candles,11.89,24
+2024-07-08,C-008,Candles item 8,Candles,11.89,24
+2024-07-15,C-008,Candles item 8,Candles,11.89,28
+2024-07-22,C-008,Candles item 8,Candles,8.48,57
+2024-07-29,C-008,Candles item 8,Candles,11.89,29
+2024-08-05,C-008,Candles item 8,Candles,11.89,18
+2024-08-12,C-008,Candles item 8,Candles,8.46,47
+2024-08-19,C-008,Candles item 8,Candles,11.89,21
+2024-08-26,C-008,Candles item 8,Candles,11.89,20
+2024-09-02,C-008,Candles item 8,Candles,11.89,27
+2024-09-09,C-008,Candles item 8,Candles,11.89,29
+2024-09-16,C-008,Candles item 8,Candles,11.89,35
+2024-09-23,C-008,Candles item 8,Candles,11.85,27
+2024-09-30,C-008,Candles item 8,Candles,11.85,36
+2024-10-07,C-008,Candles item 8,Candles,11.85,29
+2024-10-14,C-008,Candles item 8,Candles,11.85,26
+2024-10-21,C-008,Candles item 8,Candles,11.85,28
+2024-10-28,C-008,Candles item 8,Candles,9.07,44
+2024-11-04,C-008,Candles item 8,Candles,10.21,33
+2024-11-11,C-008,Candles item 8,Candles,9.12,49
+2024-11-18,C-008,Candles item 8,Candles,11.85,36
+2024-11-25,C-008,Candles item 8,Candles,11.85,25
+2024-12-02,C-008,Candles item 8,Candles,11.85,25
+2024-12-09,C-008,Candles item 8,Candles,11.85,20
+2024-12-16,C-008,Candles item 8,Candles,11.85,26
+2024-12-23,C-008,Candles item 8,Candles,11.85,20
+2024-01-01,C-009,Candles item 9,Candles,14.01,83
+2024-01-08,C-009,Candles item 9,Candles,10.37,111
+2024-01-15,C-009,Candles item 9,Candles,14.01,79
+2024-01-22,C-009,Candles item 9,Candles,14.37,63
+2024-01-29,C-009,Candles item 9,Candles,14.37,89
+2024-02-05,C-009,Candles item 9,Candles,14.37,78
+2024-02-12,C-009,Candles item 9,Candles,10.63,124
+2024-02-19,C-009,Candles item 9,Candles,14.37,58
+2024-02-26,C-009,Candles item 9,Candles,11.85,97
+2024-03-04,C-009,Candles item 9,Candles,14.37,87
+2024-03-11,C-009,Candles item 9,Candles,14.37,77
+2024-03-18,C-009,Candles item 9,Candles,14.37,72
+2024-03-25,C-009,Candles item 9,Candles,14.37,70
+2024-04-01,C-009,Candles item 9,Candles,14.37,72
+2024-04-08,C-009,Candles item 9,Candles,14.37,73
+2024-04-15,C-009,Candles item 9,Candles,14.37,76
+2024-04-22,C-009,Candles item 9,Candles,11.55,100
+2024-04-29,C-009,Candles item 9,Candles,10.09,181
+2024-05-06,C-009,Candles item 9,Candles,14.37,91
+2024-05-13,C-009,Candles item 9,Candles,14.37,63
+2024-05-20,C-009,Candles item 9,Candles,11.75,117
+2024-05-27,C-009,Candles item 9,Candles,14.37,66
+2024-06-03,C-009,Candles item 9,Candles,14.37,78
+2024-06-10,C-009,Candles item 9,Candles,14.37,86
+2024-06-17,C-009,Candles item 9,Candles,14.37,76
+2024-06-24,C-009,Candles item 9,Candles,14.37,69
+2024-07-01,C-009,Candles item 9,Candles,14.37,79
+2024-07-08,C-009,Candles item 9,Candles,13.93,66
+2024-07-15,C-009,Candles item 9,Candles,10.40,107
+2024-07-22,C-009,Candles item 9,Candles,13.93,72
+2024-07-29,C-009,Candles item 9,Candles,9.89,162
+2024-08-05,C-009,Candles item 9,Candles,15.72,65
+2024-08-12,C-009,Candles item 9,Candles,15.72,59
+2024-08-19,C-009,Candles item 9,Candles,15.72,70
+2024-08-26,C-009,Candles item 9,Candles,15.72,43
+2024-09-02,C-009,Candles item 9,Candles,15.72,53
+2024-09-09,C-009,Candles item 9,Candles,11.29,121
+2024-09-16,C-009,Candles item 9,Candles,15.72,49
+2024-09-23,C-009,Candles item 9,Candles,15.57,67
+2024-09-30,C-009,Candles item 9,Candles,15.57,61
+2024-10-07,C-009,Candles item 9,Candles,15.57,64
+2024-10-14,C-009,Candles item 9,Candles,15.57,58
+2024-10-21,C-009,Candles item 9,Candles,12.67,100
+2024-10-28,C-009,Candles item 9,Candles,15.57,83
+2024-11-04,C-009,Candles item 9,Candles,15.57,44
+2024-11-11,C-009,Candles item 9,Candles,15.57,65
+2024-11-18,C-009,Candles item 9,Candles,15.84,57
+2024-11-25,C-009,Candles item 9,Candles,15.84,51
+2024-12-02,C-009,Candles item 9,Candles,15.84,66
+2024-12-09,C-009,Candles item 9,Candles,15.84,59
+2024-12-16,C-009,Candles item 9,Candles,15.84,69
+2024-12-23,C-009,Candles item 9,Candles,15.84,72
+2024-01-01,C-010,Candles item 10,Candles,15.54,26
+2024-01-08,C-010,Candles item 10,Candles,19.00,23
+2024-01-15,C-010,Candles item 10,Candles,19.00,13
+2024-01-22,C-010,Candles item 10,Candles,19.00,28
+2024-01-29,C-010,Candles item 10,Candles,15.43,29
+2024-02-05,C-010,Candles item 10,Candles,16.00,30
+2024-02-12,C-010,Candles item 10,Candles,19.00,28
+2024-02-19,C-010,Candles item 10,Candles,19.00,21
+2024-02-26,C-010,Candles item 10,Candles,21.28,23
+2024-03-04,C-010,Candles item 10,Candles,16.69,34
+2024-03-11,C-010,Candles item 10,Candles,18.30,19
+2024-03-18,C-010,Candles item 10,Candles,21.28,23
+2024-03-25,C-010,Candles item 10,Candles,21.28,20
+2024-04-01,C-010,Candles item 10,Candles,21.28,5
+2024-04-08,C-010,Candles item 10,Candles,21.28,18
+2024-04-15,C-010,Candles item 10,Candles,21.28,20
+2024-04-22,C-010,Candles item 10,Candles,18.73,25
+2024-04-29,C-010,Candles item 10,Candles,21.28,21
+2024-05-06,C-010,Candles item 10,Candles,18.95,27
+2024-05-13,C-010,Candles item 10,Candles,21.28,11
+2024-05-20,C-010,Candles item 10,Candles,21.28,21
+2024-05-27,C-010,Candles item 10,Candles,21.28,21
+2024-06-03,C-010,Candles item 10,Candles,21.28,16
+2024-06-10,C-010,Candles item 10,Candles,15.55,28
+2024-06-17,C-010,Candles item 10,Candles,21.28,13
+2024-06-24,C-010,Candles item 10,Candles,21.28,12
+2024-07-01,C-010,Candles item 10,Candles,21.28,15
+2024-07-08,C-010,Candles item 10,Candles,21.28,21
+2024-07-15,C-010,Candles item 10,Candles,21.28,10
+2024-07-22,C-010,Candles item 10,Candles,22.85,17
+2024-07-29,C-010,Candles item 10,Candles,22.85,16
+2024-08-05,C-010,Candles item 10,Candles,22.85,11
+2024-08-12,C-010,Candles item 10,Candles,22.85,16
+2024-08-19,C-010,Candles item 10,Candles,22.85,19
+2024-08-26,C-010,Candles item 10,Candles,22.85,16
+2024-09-02,C-010,Candles item 10,Candles,22.85,9
+2024-09-09,C-010,Candles item 10,Candles,22.85,14
+2024-09-16,C-010,Candles item 10,Candles,22.85,12
+2024-09-23,C-010,Candles item 10,Candles,22.85,18
+2024-09-30,C-010,Candles item 10,Candles,22.85,11
+2024-10-07,C-010,Candles item 10,Candles,22.85,10
+2024-10-14,C-010,Candles item 10,Candles,16.29,18
+2024-10-21,C-010,Candles item 10,Candles,17.66,16
+2024-10-28,C-010,Candles item 10,Candles,22.85,15
+2024-11-04,C-010,Candles item 10,Candles,22.85,8
+2024-11-11,C-010,Candles item 10,Candles,22.85,14
+2024-11-18,C-010,Candles item 10,Candles,22.85,9
+2024-11-25,C-010,Candles item 10,Candles,22.85,9
+2024-12-02,C-010,Candles item 10,Candles,22.85,22
+2024-12-09,C-010,Candles item 10,Candles,22.85,19
+2024-12-16,C-010,Candles item 10,Candles,22.85,12
+2024-12-23,C-010,Candles item 10,Candles,22.85,15
+2024-01-01,C-011,Candles item 11,Candles,13.89,88
+2024-01-08,C-011,Candles item 11,Candles,10.03,111
+2024-01-15,C-011,Candles item 11,Candles,13.89,80
+2024-01-22,C-011,Candles item 11,Candles,13.89,68
+2024-01-29,C-011,Candles item 11,Candles,13.89,89
+2024-02-05,C-011,Candles item 11,Candles,13.89,80
+2024-02-12,C-011,Candles item 11,Candles,13.89,57
+2024-02-19,C-011,Candles item 11,Candles,13.89,82
+2024-02-26,C-011,Candles item 11,Candles,13.89,68
+2024-03-04,C-011,Candles item 11,Candles,13.89,68
+2024-03-11,C-011,Candles item 11,Candles,13.89,80
+2024-03-18,C-011,Candles item 11,Candles,13.89,74
+2024-03-25,C-011,Candles item 11,Candles,13.89,82
+2024-04-01,C-011,Candles item 11,Candles,13.89,81
+2024-04-08,C-011,Candles item 11,Candles,9.86,144
+2024-04-15,C-011,Candles item 11,Candles,13.89,53
+2024-04-22,C-011,Candles item 11,Candles,11.01,90
+2024-04-29,C-011,Candles item 11,Candles,13.89,94
+2024-05-06,C-011,Candles item 11,Candles,13.89,75
+2024-05-13,C-011,Candles item 11,Candles,11.51,117
+2024-05-20,C-011,Candles item 11,Candles,13.89,70
+2024-05-27,C-011,Candles item 11,Candles,13.89,60
+2024-06-03,C-011,Candles item 11,Candles,13.89,101
+2024-06-10,C-011,Candles item 11,Candles,13.89,110
+2024-06-17,C-011,Candles item 11,Candles,13.89,54
+2024-06-24,C-011,Candles item 11,Candles,13.89,67
+2024-07-01,C-011,Candles item 11,Candles,13.89,52
+2024-07-08,C-011,Candles item 11,Candles,13.89,81
+2024-07-15,C-011,Candles item 11,Candles,12.10,98
+2024-07-22,C-011,Candles item 11,Candles,13.89,72
+2024-07-29,C-011,Candles item 11,Candles,13.89,85
+2024-08-05,C-011,Candles item 11,Candles,10.25,128
+2024-08-12,C-011,Candles item 11,Candles,13.89,84
+2024-08-19,C-011,Candles item 11,Candles,13.89,82
+2024-08-26,C-011,Candles item 11,Candles,13.89,80
+2024-09-02,C-011,Candles item 11,Candles,11.75,141
+2024-09-09,C-011,Candles item 11,Candles,13.89,61
+2024-09-16,C-011,Candles item 11,Candles,12.21,101
+2024-09-23,C-011,Candles item 11,Candles,13.89,60
+2024-09-30,C-011,Candles item 11,Candles,13.89,52
+2024-10-07,C-011,Candles item 11,Candles,13.89,77
+2024-10-14,C-011,Candles item 11,Candles,13.89,66
+2024-10-21,C-011,Candles item 11,Candles,13.89,84
+2024-10-28,C-011,Candles item 11,Candles,13.89,87
+2024-11-04,C-011,Candles item 11,Candles,13.89,85
+2024-11-11,C-011,Candles item 11,Candles,13.89,73
+2024-11-18,C-011,Candles item 11,Candles,13.89,77
+2024-11-25,C-011,Candles item 11,Candles,13.89,80
+2024-12-02,C-011,Candles item 11,Candles,13.89,93
+2024-12-09,C-011,Candles item 11,Candles,13.89,55
+2024-12-16,C-011,Candles item 11,Candles,13.89,76
+2024-12-23,C-011,Candles item 11,Candles,13.89,78
+2024-01-01,C-012,Candles item 12,Candles,15.37,93
+2024-01-08,C-012,Candles item 12,Candles,21.00,26
+2024-01-15,C-012,Candles item 12,Candles,21.00,50
+2024-01-22,C-012,Candles item 12,Candles,17.30,71
+2024-01-29,C-012,Candles item 12,Candles,21.00,70
+2024-02-05,C-012,Candles item 12,Candles,21.00,60
+2024-02-12,C-012,Candles item 12,Candles,21.00,42
+2024-02-19,C-012,Candles item 12,Candles,21.00,50
+2024-02-26,C-012,Candles item 12,Candles,21.00,52
+2024-03-04,C-012,Candles item 12,Candles,21.00,34
+2024-03-11,C-012,Candles item 12,Candles,21.00,51
+2024-03-18,C-012,Candles item 12,Candles,16.77,68
+2024-03-25,C-012,Candles item 12,Candles,21.00,56
+2024-04-01,C-012,Candles item 12,Candles,21.00,58
+2024-04-08,C-012,Candles item 12,Candles,21.00,42
+2024-04-15,C-012,Candles item 12,Candles,20.17,51
+2024-04-22,C-012,Candles item 12,Candles,20.17,56
+2024-04-29,C-012,Candles item 12,Candles,20.17,76
+2024-05-06,C-012,Candles item 12,Candles,20.17,62
+2024-05-13,C-012,Candles item 12,Candles,20.17,58
+2024-05-20,C-012,Candles item 12,Candles,20.17,45
+2024-05-27,C-012,Candles item 12,Candles,15.29,101
+2024-06-03,C-012,Candles item 12,Candles,20.17,48
+2024-06-10,C-012,Candles item 12,Candles,20.17,75
+2024-06-17,C-012,Candles item 12,Candles,20.17,51
+2024-06-24,C-012,Candles item 12,Candles,18.95,47
+2024-07-01,C-012,Candles item 12,Candles,16.19,107
+2024-07-08,C-012,Candles item 12,Candles,18.95,55
+2024-07-15,C-012,Candles item 12,Candles,18.95,60
+2024-07-22,C-012,Candles item 12,Candles,14.55,98
+2024-07-29,C-012,Candles item 12,Candles,18.95,68
+2024-08-05,C-012,Candles item 12,Candles,18.95,67
+2024-08-12,C-012,Candles item 12,Candles,18.95,68
+2024-08-19,C-012,Candles item 12,Candles,18.95,44
+2024-08-26,C-012,Candles item 12,Candles,18.95,74
+2024-09-02,C-012,Candles item 12,Candles,18.95,66
+2024-09-09,C-012,Candles item 12,Candles,18.95,73
+2024-09-16,C-012,Candles item 12,Candles,18.95,74
+2024-09-23,C-012,Candles item 12,Candles,18.95,50
+2024-09-30,C-012,Candles item 12,Candles,16.98,99
+2024-10-07,C-012,Candles item 12,Candles,18.95,74
+2024-10-14,C-012,Candles item 12,Candles,18.95,57
+2024-10-21,C-012,Candles item 12,Candles,14.18,98
+2024-10-28,C-012,Candles item 12,Candles,18.95,59
+2024-11-04,C-012,Candles item 12,Candles,18.95,53
+2024-11-11,C-012,Candles item 12,Candles,18.95,47
+2024-11-18,C-012,Candles item 12,Candles,18.95,46
+2024-11-25,C-012,Candles item 12,Candles,18.95,57
+2024-12-02,C-012,Candles item 12,Candles,18.95,57
+2024-12-09,C-012,Candles item 12,Candles,18.95,40
+2024-12-16,C-012,Candles item 12,Candles,15.51,106
+2024-12-23,C-012,Candles item 12,Candles,15.98,102
+2024-01-01,C-013,Candles item 13,Candles,9.06,36
+2024-01-08,C-013,Candles item 13,Candles,9.06,38
+2024-01-15,C-013,Candles item 13,Candles,9.06,47
+2024-01-22,C-013,Candles item 13,Candles,7.20,69
+2024-01-29,C-013,Candles item 13,Candles,9.06,34
+2024-02-05,C-013,Candles item 13,Candles,9.06,52
+2024-02-12,C-013,Candles item 13,Candles,9.06,49
+2024-02-19,C-013,Candles item 13,Candles,9.06,31
+2024-02-26,C-013,Candles item 13,Candles,9.06,48
+2024-03-04,C-013,Candles item 13,Candles,9.06,35
+2024-03-11,C-013,Candles item 13,Candles,7.62,54
+2024-03-18,C-013,Candles item 13,Candles,9.06,41
+2024-03-25,C-013,Candles item 13,Candles,9.06,35
+2024-04-01,C-013,Candles item 13,Candles,9.06,51
+2024-04-08,C-013,Candles item 13,Candles,9.06,33
+2024-04-15,C-013,Candles item 13,Candles,11.35,20
+2024-04-22,C-013,Candles item 13,Candles,11.35,17
+2024-04-29,C-013,Candles item 13,Candles,11.35,24
+2024-05-06,C-013,Candles item 13,Candles,11.35,27
+2024-05-13,C-013,Candles item 13,Candles,11.35,16
+2024-05-20,C-013,Candles item 13,Candles,11.35,23
+2024-05-27,C-013,Candles item 13,Candles,9.93,30
+2024-06-03,C-013,Candles item 13,Candles,9.10,39
+2024-06-10,C-013,Candles item 13,Candles,11.35,28
+2024-06-17,C-013,Candles item 13,Candles,11.35,28
+2024-06-24,C-013,Candles item 13,Candles,11.35,23
+2024-07-01,C-013,Candles item 13,Candles,11.35,16
+2024-07-08,C-013,Candles item 13,Candles,11.35,27
+2024-07-15,C-013,Candles item 13,Candles,9.70,35
+2024-07-22,C-013,Candles item 13,Candles,11.35,20
+2024-07-29,C-013,Candles item 13,Candles,11.35,28
+2024-08-05,C-013,Candles item 13,Candles,11.88,28
+2024-08-12,C-013,Candles item 13,Candles,11.88,25
+2024-08-19,C-013,Candles item 13,Candles,11.88,29
+2024-08-26,C-013,Candles item 13,Candles,9.38,35
+2024-09-02,C-013,Candles item 13,Candles,11.88,15
+2024-09-09,C-013,Candles item 13,Candles,11.88,20
+2024-09-16,C-013,Candles item 13,Candles,9.81,43
+2024-09-23,C-013,Candles item 13,Candles,11.88,25
+2024-09-30,C-013,Candles item 13,Candles,11.88,16
+2024-10-07,C-013,Candles item 13,Candles,11.88,15
+2024-10-14,C-013,Candles item 13,Candles,11.88,22
+2024-10-21,C-013,Candles item 13,Candles,11.88,21
+2024-10-28,C-013,Candles item 13,Candles,11.88,28
+2024-11-04,C-013,Candles item 13,Candles,11.88,33
+2024-11-11,C-013,Candles item 13,Candles,11.88,34
+2024-11-18,C-013,Candles item 13,Candles,11.88,29
+2024-11-25,C-013,Candles item 13,Candles,11.98,24
+2024-12-02,C-013,Candles item 13,Candles,11.98,27
+2024-12-09,C-013,Candles item 13,Candles,11.98,19
+2024-12-16,C-013,Candles item 13,Candles,11.98,21
+2024-12-23,C-013,Candles item 13,Candles,11.98,26
+2024-01-01,C-014,Candles item 14,Candles,7.62,14
+2024-01-08,C-014,Candles item 14,Candles,7.62,17
+2024-01-15,C-014,Candles item 14,Candles,7.62,10
+2024-01-22,C-014,Candles item 14,Candles,7.62,27
+2024-01-29,C-014,Candles item 14,Candles,7.62,13
+2024-02-05,C-014,Candles item 14,Candles,7.62,19
+2024-02-12,C-014,Candles item 14,Candles,7.62,14
+2024-02-19,C-014,Candles item 14,Candles,7.62,11
+2024-02-26,C-014,Candles item 14,Candles,6.78,18
+2024-03-04,C-014,Candles item 14,Candles,7.62,19
+2024-03-11,C-014,Candles item 14,Candles,9.62,13
+2024-03-18,C-014,Candles item 14,Candles,9.62,14
+2024-03-25,C-014,Candles item 14,Candles,9.62,15
+2024-04-01,C-014,Candles item 14,Candles,9.62,10
+2024-04-08,C-014,Candles item 14,Candles,9.62,7
+2024-04-15,C-014,Candles item 14,Candles,9.62,8
+2024-04-22,C-014,Candles item 14,Candles,9.62,6
+2024-04-29,C-014,Candles item 14,Candles,9.62,9
+2024-05-06,C-014,Candles item 14,Candles,9.62,8
+2024-05-13,C-014,Candles item 14,Candles,9.62,8
+2024-05-20,C-014,Candles item 14,Candles,7.97,14
+2024-05-27,C-014,Candles item 14,Candles,9.62,10
+2024-06-03,C-014,Candles item 14,Candles,9.62,8
+2024-06-10,C-014,Candles item 14,Candles,6.97,22
+2024-06-17,C-014,Candles item 14,Candles,9.62,8
+2024-06-24,C-014,Candles item 14,Candles,9.62,14
+2024-07-01,C-014,Candles item 14,Candles,8.57,10
+2024-07-08,C-014,Candles item 14,Candles,9.62,9
+2024-07-15,C-014,Candles item 14,Candles,9.62,10
+2024-07-22,C-014,Candles item 14,Candles,7.35,18
+2024-07-29,C-014,Candles item 14,Candles,9.62,11
+2024-08-05,C-014,Candles item 14,Candles,9.62,16
+2024-08-12,C-014,Candles item 14,Candles,9.62,13
+2024-08-19,C-014,Candles item 14,Candles,9.62,9
+2024-08-26,C-014,Candles item 14,Candles,8.30,16
+2024-09-02,C-014,Candles item 14,Candles,9.62,9
+2024-09-09,C-014,Candles item 14,Candles,9.62,15
+2024-09-16,C-014,Candles item 14,Candles,9.62,11
+2024-09-23,C-014,Candles item 14,Candles,9.62,8
+2024-09-30,C-014,Candles item 14,Candles,7.55,7
+2024-10-07,C-014,Candles item 14,Candles,9.51,9
+2024-10-14,C-014,Candles item 14,Candles,9.51,6
+2024-10-21,C-014,Candles item 14,Candles,9.51,14
+2024-10-28,C-014,Candles item 14,Candles,9.51,9
+2024-11-04,C-014,Candles item 14,Candles,9.51,14
+2024-11-11,C-014,Candles item 14,Candles,9.51,10
+2024-11-18,C-014,Candles item 14,Candles,9.51,11
+2024-11-25,C-014,Candles item 14,Candles,7.19,10
+2024-12-02,C-014,Candles item 14,Candles,9.51,6
+2024-12-09,C-014,Candles item 14,Candles,9.51,10
+2024-12-16,C-014,Candles item 14,Candles,9.51,11
+2024-12-23,C-014,Candles item 14,Candles,9.51,13
+2024-01-01,C-015,Candles item 15,Candles,8.02,15
+2024-01-08,C-015,Candles item 15,Candles,6.84,49
+2024-01-15,C-015,Candles item 15,Candles,8.02,29
+2024-01-22,C-015,Candles item 15,Candles,5.65,56
+2024-01-29,C-015,Candles item 15,Candles,8.02,40
+2024-02-05,C-015,Candles item 15,Candles,8.02,16
+2024-02-12,C-015,Candles item 15,Candles,8.02,21
+2024-02-19,C-015,Candles item 15,Candles,8.02,20
+2024-02-26,C-015,Candles item 15,Candles,8.02,15
+2024-03-04,C-015,Candles item 15,Candles,8.02,13
+2024-03-11,C-015,Candles item 15,Candles,6.84,30
+2024-03-18,C-015,Candles item 15,Candles,8.02,19
+2024-03-25,C-015,Candles item 15,Candles,6.89,22
+2024-04-01,C-015,Candles item 15,Candles,8.02,24
+2024-04-08,C-015,Candles item 15,Candles,8.02,22
+2024-04-15,C-015,Candles item 15,Candles,8.02,24
+2024-04-22,C-015,Candles item 15,Candles,8.02,28
+2024-04-29,C-015,Candles item 15,Candles,8.02,20
+2024-05-06,C-015,Candles item 15,Candles,8.02,22
+2024-05-13,C-015,Candles item 15,Candles,8.30,18
+2024-05-20,C-015,Candles item 15,Candles,8.30,22
+2024-05-27,C-015,Candles item 15,Candles,6.36,31
+2024-06-03,C-015,Candles item 15,Candles,8.30,15
+2024-06-10,C-015,Candles item 15,Candles,8.30,12
+2024-06-17,C-015,Candles item 15,Candles,8.30,26
+2024-06-24,C-015,Candles item 15,Candles,8.30,24
+2024-07-01,C-015,Candles item 15,Candles,8.30,22
+2024-07-08,C-015,Candles item 15,Candles,8.30,23
+2024-07-15,C-015,Candles item 15,Candles,8.30,23
+2024-07-22,C-015,Candles item 15,Candles,8.30,15
+2024-07-29,C-015,Candles item 15,Candles,8.30,30
+2024-08-05,C-015,Candles item 15,Candles,8.30,20
+2024-08-12,C-015,Candles item 15,Candles,8.30,17
+2024-08-19,C-015,Candles item 15,Candles,8.30,19
+2024-08-26,C-015,Candles item 15,Candles,8.30,26
+2024-09-02,C-015,Candles item 15,Candles,8.30,20
+2024-09-09,C-015,Candles item 15,Candles,8.30,18
+2024-09-16,C-015,Candles item 15,Candles,8.30,16
+2024-09-23,C-015,Candles item 15,Candles,8.30,13
+2024-09-30,C-015,Candles item 15,Candles,8.30,19
+2024-10-07,C-015,Candles item 15,Candles,8.30,25
+2024-10-14,C-015,Candles item 15,Candles,8.30,25
+2024-10-21,C-015,Candles item 15,Candles,8.30,22
+2024-10-28,C-015,Candles item 15,Candles,8.30,23
+2024-11-04,C-015,Candles item 15,Candles,8.30,22
+2024-11-11,C-015,Candles item 15,Candles,8.30,11
+2024-11-18,C-015,Candles item 15,Candles,8.30,23
+2024-11-25,C-015,Candles item 15,Candles,8.30,13
+2024-12-02,C-015,Candles item 15,Candles,6.89,31
+2024-12-09,C-015,Candles item 15,Candles,8.30,12
+2024-12-16,C-015,Candles item 15,Candles,5.78,37
+2024-12-23,C-015,Candles item 15,Candles,7.22,26
+2024-01-01,C-016,Candles item 16,Candles,15.64,17
+2024-01-08,C-016,Candles item 16,Candles,15.64,13
+2024-01-15,C-016,Candles item 16,Candles,15.64,18
+2024-01-22,C-016,Candles item 16,Candles,15.64,23
+2024-01-29,C-016,Candles item 16,Candles,11.78,28
+2024-02-05,C-016,Candles item 16,Candles,15.64,18
+2024-02-12,C-016,Candles item 16,Candles,15.64,20
+2024-02-19,C-016,Candles item 16,Candles,15.64,21
+2024-02-26,C-016,Candles item 16,Candles,15.64,18
+2024-03-04,C-016,Candles item 16,Candles,11.30,33
+2024-03-11,C-016,Candles item 16,Candles,15.64,16
+2024-03-18,C-016,Candles item 16,Candles,15.64,23
+2024-03-25,C-016,Candles item 16,Candles,15.64,14
+2024-04-01,C-016,Candles item 16,Candles,12.13,37
+2024-04-08,C-016,Candles item 16,Candles,15.64,26
+2024-04-15,C-016,Candles item 16,Candles,15.64,21
+2024-04-22,C-016,Candles item 16,Candles,15.64,19
+2024-04-29,C-016,Candles item 16,Candles,15.64,21
+2024-05-06,C-016,Candles item 16,Candles,15.64,13
+2024-05-13,C-016,Candles item 16,Candles,15.64,16
+2024-05-20,C-016,Candles item 16,Candles,15.64,19
+2024-05-27,C-016,Candles item 16,Candles,11.14,35
+2024-06-03,C-016,Candles item 16,Candles,13.90,34
+2024-06-10,C-016,Candles item 16,Candles,11.84,26
+2024-06-17,C-016,Candles item 16,Candles,15.64,16
+2024-06-24,C-016,Candles item 16,Candles,15.64,10
+2024-07-01,C-016,Candles item 16,Candles,15.64,18
+2024-07-08,C-016,Candles item 16,Candles,15.64,17
+2024-07-15,C-016,Candles item 16,Candles,15.64,20
+2024-07-22,C-016,Candles item 16,Candles,15.64,20
+2024-07-29,C-016,Candles item 16,Candles,15.64,19
+2024-08-05,C-016,Candles item 16,Candles,15.64,11
+2024-08-12,C-016,Candles item 16,Candles,15.64,19
+2024-08-19,C-016,Candles item 16,Candles,15.64,14
+2024-08-26,C-016,Candles item 16,Candles,12.92,21
+2024-09-02,C-016,Candles item 16,Candles,15.64,20
+2024-09-09,C-016,Candles item 16,Candles,15.64,22
+2024-09-16,C-016,Candles item 16,Candles,15.64,23
+2024-09-23,C-016,Candles item 16,Candles,15.64,13
+2024-09-30,C-016,Candles item 16,Candles,15.64,18
+2024-10-07,C-016,Candles item 16,Candles,13.55,30
+2024-10-14,C-016,Candles item 16,Candles,15.64,17
+2024-10-21,C-016,Candles item 16,Candles,15.64,21
+2024-10-28,C-016,Candles item 16,Candles,15.64,21
+2024-11-04,C-016,Candles item 16,Candles,15.64,20
+2024-11-11,C-016,Candles item 16,Candles,15.64,13
+2024-11-18,C-016,Candles item 16,Candles,15.64,18
+2024-11-25,C-016,Candles item 16,Candles,15.64,14
+2024-12-02,C-016,Candles item 16,Candles,15.64,21
+2024-12-09,C-016,Candles item 16,Candles,15.64,14
+2024-12-16,C-016,Candles item 16,Candles,15.64,17
+2024-12-23,C-016,Candles item 16,Candles,15.64,11
+2024-01-01,C-017,Candles item 17,Candles,3.63,42
+2024-01-08,C-017,Candles item 17,Candles,3.41,41
+2024-01-15,C-017,Candles item 17,Candles,4.42,25
+2024-01-22,C-017,Candles item 17,Candles,4.42,28
+2024-01-29,C-017,Candles item 17,Candles,4.42,23
+2024-02-05,C-017,Candles item 17,Candles,4.42,28
+2024-02-12,C-017,Candles item 17,Candles,4.42,24
+2024-02-19,C-017,Candles item 17,Candles,4.42,29
+2024-02-26,C-017,Candles item 17,Candles,4.42,20
+2024-03-04,C-017,Candles item 17,Candles,4.42,17
+2024-03-11,C-017,Candles item 17,Candles,3.23,57
+2024-03-18,C-017,Candles item 17,Candles,4.42,26
+2024-03-25,C-017,Candles item 17,Candles,3.54,28
+2024-04-01,C-017,Candles item 17,Candles,4.42,21
+2024-04-08,C-017,Candles item 17,Candles,3.11,39
+2024-04-15,C-017,Candles item 17,Candles,3.59,55
+2024-04-22,C-017,Candles item 17,Candles,4.42,30
+2024-04-29,C-017,Candles item 17,Candles,4.42,23
+2024-05-06,C-017,Candles item 17,Candles,4.42,29
+2024-05-13,C-017,Candles item 17,Candles,4.42,16
+2024-05-20,C-017,Candles item 17,Candles,4.42,21
+2024-05-27,C-017,Candles item 17,Candles,4.42,28
+2024-06-03,C-017,Candles item 17,Candles,4.42,14
+2024-06-10,C-017,Candles item 17,Candles,4.42,23
+2024-06-17,C-017,Candles item 17,Candles,4.42,26
+2024-06-24,C-017,Candles item 17,Candles,4.42,25
+2024-07-01,C-017,Candles item 17,Candles,4.42,19
+2024-07-08,C-017,Candles item 17,Candles,4.42,34
+2024-07-15,C-017,Candles item 17,Candles,4.42,36
+2024-07-22,C-017,Candles item 17,Candles,4.42,26
+2024-07-29,C-017,Candles item 17,Candles,4.42,18
+2024-08-05,C-017,Candles item 17,Candles,4.42,26
+2024-08-12,C-017,Candles item 17,Candles,4.42,29
+2024-08-19,C-017,Candles item 17,Candles,4.42,22
+2024-08-26,C-017,Candles item 17,Candles,4.42,19
+2024-09-02,C-017,Candles item 17,Candles,4.42,32
+2024-09-09,C-017,Candles item 17,Candles,4.42,23
+2024-09-16,C-017,Candles item 17,Candles,4.42,14
+2024-09-23,C-017,Candles item 17,Candles,4.42,20
+2024-09-30,C-017,Candles item 17,Candles,4.42,17
+2024-10-07,C-017,Candles item 17,Candles,4.42,26
+2024-10-14,C-017,Candles item 17,Candles,4.42,30
+2024-10-21,C-017,Candles item 17,Candles,4.42,24
+2024-10-28,C-017,Candles item 17,Candles,4.42,25
+2024-11-04,C-017,Candles item 17,Candles,4.42,29
+2024-11-11,C-017,Candles item 17,Candles,4.42,27
+2024-11-18,C-017,Candles item 17,Candles,4.42,29
+2024-11-25,C-017,Candles item 17,Candles,4.42,18
+2024-12-02,C-017,Candles item 17,Candles,4.42,14
+2024-12-09,C-017,Candles item 17,Candles,4.42,17
+2024-12-16,C-017,Candles item 17,Candles,4.42,29
+2024-12-23,C-017,Candles item 17,Candles,4.42,32
+2024-01-01,C-018,Candles item 18,Candles,6.74,36
+2024-01-08,C-018,Candles item 18,Candles,8.36,16
+2024-01-15,C-018,Candles item 18,Candles,8.36,14
+2024-01-22,C-018,Candles item 18,Candles,8.36,23
+2024-01-29,C-018,Candles item 18,Candles,8.36,25
+2024-02-05,C-018,Candles item 18,Candles,7.04,21
+2024-02-12,C-018,Candles item 18,Candles,6.41,39
+2024-02-19,C-018,Candles item 18,Candles,9.30,13
+2024-02-26,C-018,Candles item 18,Candles,9.30,17
+2024-03-04,C-018,Candles item 18,Candles,9.30,15
+2024-03-11,C-018,Candles item 18,Candles,9.30,16
+2024-03-18,C-018,Candles item 18,Candles,9.30,8
+2024-03-25,C-018,Candles item 18,Candles,9.30,15
+2024-04-01,C-018,Candles item 18,Candles,9.30,13
+2024-04-08,C-018,Candles item 18,Candles,9.30,16
+2024-04-15,C-018,Candles item 18,Candles,9.30,18
+2024-04-22,C-018,Candles item 18,Candles,6.89,20
+2024-04-29,C-018,Candles item 18,Candles,9.30,15
+2024-05-06,C-018,Candles item 18,Candles,7.15,31
+2024-05-13,C-018,Candles item 18,Candles,9.30,13
+2024-05-20,C-018,Candles item 18,Candles,9.30,14
+2024-05-27,C-018,Candles item 18,Candles,9.30,15
+2024-06-03,C-018,Candles item 18,Candles,9.30,29
+2024-06-10,C-018,Candles item 18,Candles,9.10,15
+2024-06-17,C-018,Candles item 18,Candles,7.96,20
+2024-06-24,C-018,Candles item 18,Candles,9.10,24
+2024-07-01,C-018,Candles item 18,Candles,9.10,13
+2024-07-08,C-018,Candles item 18,Candles,9.10,19
+2024-07-15,C-018,Candles item 18,Candles,9.10,20
+2024-07-22,C-018,Candles item 18,Candles,9.10,21
+2024-07-29,C-018,Candles item 18,Candles,9.10,5
+2024-08-05,C-018,Candles item 18,Candles,6.61,35
+2024-08-12,C-018,Candles item 18,Candles,8.01,17
+2024-08-19,C-018,Candles item 18,Candles,9.10,17
+2024-08-26,C-018,Candles item 18,Candles,9.10,21
+2024-09-02,C-018,Candles item 18,Candles,7.47,36
+2024-09-09,C-018,Candles item 18,Candles,9.10,19
+2024-09-16,C-018,Candles item 18,Candles,9.10,20
+2024-09-23,C-018,Candles item 18,Candles,9.10,11
+2024-09-30,C-018,Candles item 18,Candles,9.10,23
+2024-10-07,C-018,Candles item 18,Candles,9.10,18
+2024-10-14,C-018,Candles item 18,Candles,9.10,15
+2024-10-21,C-018,Candles item 18,Candles,9.10,24
+2024-10-28,C-018,Candles item 18,Candles,9.10,21
+2024-11-04,C-018,Candles item 18,Candles,9.10,19
+2024-11-11,C-018,Candles item 18,Candles,9.10,25
+2024-11-18,C-018,Candles item 18,Candles,9.10,21
+2024-11-25,C-018,Candles item 18,Candles,9.10,13
+2024-12-02,C-018,Candles item 18,Candles,9.10,17
+2024-12-09,C-018,Candles item 18,Candles,9.10,15
+2024-12-16,C-018,Candles item 18,Candles,9.10,15
+2024-12-23,C-018,Candles item 18,Candles,9.10,12
+2024-01-01,C-019,Candles item 19,Candles,3.55,63
+2024-01-08,C-019,Candles item 19,Candles,2.66,75
+2024-01-15,C-019,Candles item 19,Candles,3.55,47
+2024-01-22,C-019,Candles item 19,Candles,3.55,63
+2024-01-29,C-019,Candles item 19,Candles,3.55,39
+2024-02-05,C-019,Candles item 19,Candles,3.55,45
+2024-02-12,C-019,Candles item 19,Candles,3.55,57
+2024-02-19,C-019,Candles item 19,Candles,3.55,53
+2024-02-26,C-019,Candles item 19,Candles,3.55,42
+2024-03-04,C-019,Candles item 19,Candles,3.55,41
+2024-03-11,C-019,Candles item 19,Candles,3.55,68
+2024-03-18,C-019,Candles item 19,Candles,3.55,50
+2024-03-25,C-019,Candles item 19,Candles,2.88,80
+2024-04-01,C-019,Candles item 19,Candles,3.55,52
+2024-04-08,C-019,Candles item 19,Candles,3.55,53
+2024-04-15,C-019,Candles item 19,Candles,3.55,80
+2024-04-22,C-019,Candles item 19,Candles,3.55,56
+2024-04-29,C-019,Candles item 19,Candles,3.55,71
+2024-05-06,C-019,Candles item 19,Candles,3.55,50
+2024-05-13,C-019,Candles item 19,Candles,3.55,59
+2024-05-20,C-019,Candles item 19,Candles,2.87,99
+2024-05-27,C-019,Candles item 19,Candles,3.55,68
+2024-06-03,C-019,Candles item 19,Candles,2.73,85
+2024-06-10,C-019,Candles item 19,Candles,3.55,57
+2024-06-17,C-019,Candles item 19,Candles,3.55,52
+2024-06-24,C-019,Candles item 19,Candles,3.55,42
+2024-07-01,C-019,Candles item 19,Candles,3.55,52
+2024-07-08,C-019,Candles item 19,Candles,3.55,43
+2024-07-15,C-019,Candles item 19,Candles,3.55,54
+2024-07-22,C-019,Candles item 19,Candles,3.55,41
+2024-07-29,C-019,Candles item 19,Candles,3.55,50
+2024-08-05,C-019,Candles item 19,Candles,3.55,44
+2024-08-12,C-019,Candles item 19,Candles,3.55,48
+2024-08-19,C-019,Candles item 19,Candles,3.15,49
+2024-08-26,C-019,Candles item 19,Candles,2.75,106
+2024-09-02,C-019,Candles item 19,Candles,3.55,58
+2024-09-09,C-019,Candles item 19,Candles,3.55,44
+2024-09-16,C-019,Candles item 19,Candles,3.55,58
+2024-09-23,C-019,Candles item 19,Candles,3.55,43
+2024-09-30,C-019,Candles item 19,Candles,3.55,60
+2024-10-07,C-019,Candles item 19,Candles,3.55,63
+2024-10-14,C-019,Candles item 19,Candles,3.55,66
+2024-10-21,C-019,Candles item 19,Candles,3.55,51
+2024-10-28,C-019,Candles item 19,Candles,3.55,48
+2024-11-04,C-019,Candles item 19,Candles,2.69,108
+2024-11-11,C-019,Candles item 19,Candles,3.55,66
+2024-11-18,C-019,Candles item 19,Candles,3.55,53
+2024-11-25,C-019,Candles item 19,Candles,3.55,47
+2024-12-02,C-019,Candles item 19,Candles,3.75,53
+2024-12-09,C-019,Candles item 19,Candles,3.27,59
+2024-12-16,C-019,Candles item 19,Candles,3.75,45
+2024-12-23,C-019,Candles item 19,Candles,3.75,40
+2024-01-01,C-020,Candles item 20,Candles,12.05,15
+2024-01-08,C-020,Candles item 20,Candles,12.05,21
+2024-01-15,C-020,Candles item 20,Candles,12.05,20
+2024-01-22,C-020,Candles item 20,Candles,12.05,20
+2024-01-29,C-020,Candles item 20,Candles,12.05,8
+2024-02-05,C-020,Candles item 20,Candles,12.05,21
+2024-02-12,C-020,Candles item 20,Candles,11.72,19
+2024-02-19,C-020,Candles item 20,Candles,11.72,20
+2024-02-26,C-020,Candles item 20,Candles,11.72,14
+2024-03-04,C-020,Candles item 20,Candles,11.72,13
+2024-03-11,C-020,Candles item 20,Candles,11.72,23
+2024-03-18,C-020,Candles item 20,Candles,11.72,28
+2024-03-25,C-020,Candles item 20,Candles,8.95,39
+2024-04-01,C-020,Candles item 20,Candles,10.29,21
+2024-04-08,C-020,Candles item 20,Candles,11.72,21
+2024-04-15,C-020,Candles item 20,Candles,11.72,15
+2024-04-22,C-020,Candles item 20,Candles,10.43,13
+2024-04-29,C-020,Candles item 20,Candles,11.72,29
+2024-05-06,C-020,Candles item 20,Candles,8.66,38
+2024-05-13,C-020,Candles item 20,Candles,8.27,46
+2024-05-20,C-020,Candles item 20,Candles,11.72,24
+2024-05-27,C-020,Candles item 20,Candles,11.72,20
+2024-06-03,C-020,Candles item 20,Candles,11.72,18
+2024-06-10,C-020,Candles item 20,Candles,11.72,24
+2024-06-17,C-020,Candles item 20,Candles,11.72,21
+2024-06-24,C-020,Candles item 20,Candles,11.72,12
+2024-07-01,C-020,Candles item 20,Candles,11.72,18
+2024-07-08,C-020,Candles item 20,Candles,11.72,22
+2024-07-15,C-020,Candles item 20,Candles,10.42,31
+2024-07-22,C-020,Candles item 20,Candles,11.72,10
+2024-07-29,C-020,Candles item 20,Candles,13.80,9
+2024-08-05,C-020,Candles item 20,Candles,13.80,13
+2024-08-12,C-020,Candles item 20,Candles,13.80,12
+2024-08-19,C-020,Candles item 20,Candles,13.80,18
+2024-08-26,C-020,Candles item 20,Candles,13.80,14
+2024-09-02,C-020,Candles item 20,Candles,13.80,12
+2024-09-09,C-020,Candles item 20,Candles,13.80,23
+2024-09-16,C-020,Candles item 20,Candles,13.80,10
+2024-09-23,C-020,Candles item 20,Candles,13.80,14
+2024-09-30,C-020,Candles item 20,Candles,13.80,15
+2024-10-07,C-020,Candles item 20,Candles,13.80,13
+2024-10-14,C-020,Candles item 20,Candles,13.80,15
+2024-10-21,C-020,Candles item 20,Candles,13.80,10
+2024-10-28,C-020,Candles item 20,Candles,10.02,31
+2024-11-04,C-020,Candles item 20,Candles,13.65,15
+2024-11-11,C-020,Candles item 20,Candles,13.65,14
+2024-11-18,C-020,Candles item 20,Candles,13.65,10
+2024-11-25,C-020,Candles item 20,Candles,13.65,20
+2024-12-02,C-020,Candles item 20,Candles,11.06,20
+2024-12-09,C-020,Candles item 20,Candles,13.65,9
+2024-12-16,C-020,Candles item 20,Candles,13.65,10
+2024-12-23,C-020,Candles item 20,Candles,10.57,28
+2024-01-01,C-021,Candles item 21,Candles,11.77,20
+2024-01-08,C-021,Candles item 21,Candles,11.77,19
+2024-01-15,C-021,Candles item 21,Candles,11.77,27
+2024-01-22,C-021,Candles item 21,Candles,11.77,32
+2024-01-29,C-021,Candles item 21,Candles,11.77,14
+2024-02-05,C-021,Candles item 21,Candles,8.69,55
+2024-02-12,C-021,Candles item 21,Candles,11.77,33
+2024-02-19,C-021,Candles item 21,Candles,11.77,24
+2024-02-26,C-021,Candles item 21,Candles,11.77,30
+2024-03-04,C-021,Candles item 21,Candles,11.77,31
+2024-03-11,C-021,Candles item 21,Candles,10.19,46
+2024-03-18,C-021,Candles item 21,Candles,11.77,25
+2024-03-25,C-021,Candles item 21,Candles,8.42,31
+2024-04-01,C-021,Candles item 21,Candles,11.77,22
+2024-04-08,C-021,Candles item 21,Candles,11.77,36
+2024-04-15,C-021,Candles item 21,Candles,11.77,25
+2024-04-22,C-021,Candles item 21,Candles,11.77,17
+2024-04-29,C-021,Candles item 21,Candles,11.77,14
+2024-05-06,C-021,Candles item 21,Candles,8.95,34
+2024-05-13,C-021,Candles item 21,Candles,11.77,19
+2024-05-20,C-021,Candles item 21,Candles,11.77,27
+2024-05-27,C-021,Candles item 21,Candles,11.77,14
+2024-06-03,C-021,Candles item 21,Candles,11.77,35
+2024-06-10,C-021,Candles item 21,Candles,11.77,27
+2024-06-17,C-021,Candles item 21,Candles,8.32,54
+2024-06-24,C-021,Candles item 21,Candles,11.77,23
+2024-07-01,C-021,Candles item 21,Candles,11.77,11
+2024-07-08,C-021,Candles item 21,Candles,11.77,26
+2024-07-15,C-021,Candles item 21,Candles,11.77,22
+2024-07-22,C-021,Candles item 21,Candles,11.77,32
+2024-07-29,C-021,Candles item 21,Candles,11.77,34
+2024-08-05,C-021,Candles item 21,Candles,11.77,25
+2024-08-12,C-021,Candles item 21,Candles,11.77,25
+2024-08-19,C-021,Candles item 21,Candles,11.77,12
+2024-08-26,C-021,Candles item 21,Candles,11.77,36
+2024-09-02,C-021,Candles item 21,Candles,10.09,35
+2024-09-09,C-021,Candles item 21,Candles,11.77,34
+2024-09-16,C-021,Candles item 21,Candles,11.77,23
+2024-09-23,C-021,Candles item 21,Candles,11.77,22
+2024-09-30,C-021,Candles item 21,Candles,12.65,21
+2024-10-07,C-021,Candles item 21,Candles,12.90,22
+2024-10-14,C-021,Candles item 21,Candles,12.90,20
+2024-10-21,C-021,Candles item 21,Candles,10.80,40
+2024-10-28,C-021,Candles item 21,Candles,12.90,16
+2024-11-04,C-021,Candles item 21,Candles,12.90,21
+2024-11-11,C-021,Candles item 21,Candles,12.90,18
+2024-11-18,C-021,Candles item 21,Candles,12.90,15
+2024-11-25,C-021,Candles item 21,Candles,12.90,20
+2024-12-02,C-021,Candles item 21,Candles,12.90,20
+2024-12-09,C-021,Candles item 21,Candles,12.90,18
+2024-12-16,C-021,Candles item 21,Candles,12.90,23
+2024-12-23,C-021,Candles item 21,Candles,12.90,15
+2024-01-01,C-022,Candles item 22,Candles,20.06,41
+2024-01-08,C-022,Candles item 22,Candles,21.76,73
+2024-01-15,C-022,Candles item 22,Candles,25.51,31
+2024-01-22,C-022,Candles item 22,Candles,25.51,26
+2024-01-29,C-022,Candles item 22,Candles,25.51,31
+2024-02-05,C-022,Candles item 22,Candles,25.51,30
+2024-02-12,C-022,Candles item 22,Candles,25.51,37
+2024-02-19,C-022,Candles item 22,Candles,25.51,38
+2024-02-26,C-022,Candles item 22,Candles,21.13,39
+2024-03-04,C-022,Candles item 22,Candles,25.51,31
+2024-03-11,C-022,Candles item 22,Candles,25.51,35
+2024-03-18,C-022,Candles item 22,Candles,25.51,25
+2024-03-25,C-022,Candles item 22,Candles,25.51,37
+2024-04-01,C-022,Candles item 22,Candles,25.51,33
+2024-04-08,C-022,Candles item 22,Candles,25.51,32
+2024-04-15,C-022,Candles item 22,Candles,25.51,33
+2024-04-22,C-022,Candles item 22,Candles,20.22,45
+2024-04-29,C-022,Candles item 22,Candles,18.96,56
+2024-05-06,C-022,Candles item 22,Candles,25.51,30
+2024-05-13,C-022,Candles item 22,Candles,26.35,30
+2024-05-20,C-022,Candles item 22,Candles,26.35,17
+2024-05-27,C-022,Candles item 22,Candles,23.44,31
+2024-06-03,C-022,Candles item 22,Candles,26.35,21
+2024-06-10,C-022,Candles item 22,Candles,26.35,39
+2024-06-17,C-022,Candles item 22,Candles,20.34,40
+2024-06-24,C-022,Candles item 22,Candles,18.59,56
+2024-07-01,C-022,Candles item 22,Candles,20.44,61
+2024-07-08,C-022,Candles item 22,Candles,19.27,47
+2024-07-15,C-022,Candles item 22,Candles,26.35,42
+2024-07-22,C-022,Candles item 22,Candles,26.35,29
+2024-07-29,C-022,Candles item 22,Candles,26.35,24
+2024-08-05,C-022,Candles item 22,Candles,26.35,26
+2024-08-12,C-022,Candles item 22,Candles,26.35,25
+2024-08-19,C-022,Candles item 22,Candles,26.35,36
+2024-08-26,C-022,Candles item 22,Candles,26.35,32
+2024-09-02,C-022,Candles item 22,Candles,26.35,29
+2024-09-09,C-022,Candles item 22,Candles,21.76,42
+2024-09-16,C-022,Candles item 22,Candles,26.35,29
+2024-09-23,C-022,Candles item 22,Candles,26.35,22
+2024-09-30,C-022,Candles item 22,Candles,26.35,43
+2024-10-07,C-022,Candles item 22,Candles,22.00,59
+2024-10-14,C-022,Candles item 22,Candles,26.35,32
+2024-10-21,C-022,Candles item 22,Candles,26.35,21
+2024-10-28,C-022,Candles item 22,Candles,26.35,29
+2024-11-04,C-022,Candles item 22,Candles,22.23,31
+2024-11-11,C-022,Candles item 22,Candles,26.35,53
+2024-11-18,C-022,Candles item 22,Candles,26.35,19
+2024-11-25,C-022,Candles item 22,Candles,26.35,36
+2024-12-02,C-022,Candles item 22,Candles,26.35,29
+2024-12-09,C-022,Candles item 22,Candles,26.35,31
+2024-12-16,C-022,Candles item 22,Candles,22.65,37
+2024-12-23,C-022,Candles item 22,Candles,20.97,56
+2024-01-01,M-001,Mugs item 1,Mugs,15.61,29
+2024-01-08,M-001,Mugs item 1,Mugs,15.61,24
+2024-01-15,M-001,Mugs item 1,Mugs,12.42,35
+2024-01-22,M-001,Mugs item 1,Mugs,15.61,11
+2024-01-29,M-001,Mugs item 1,Mugs,15.61,27
+2024-02-05,M-001,Mugs item 1,Mugs,15.61,26
+2024-02-12,M-001,Mugs item 1,Mugs,15.61,30
+2024-02-19,M-001,Mugs item 1,Mugs,18.57,14
+2024-02-26,M-001,Mugs item 1,Mugs,16.36,26
+2024-03-04,M-001,Mugs item 1,Mugs,18.57,20
+2024-03-11,M-001,Mugs item 1,Mugs,13.50,34
+2024-03-18,M-001,Mugs item 1,Mugs,18.57,18
+2024-03-25,M-001,Mugs item 1,Mugs,13.48,25
+2024-04-01,M-001,Mugs item 1,Mugs,18.57,21
+2024-04-08,M-001,Mugs item 1,Mugs,18.57,24
+2024-04-15,M-001,Mugs item 1,Mugs,18.57,18
+2024-04-22,M-001,Mugs item 1,Mugs,15.48,26
+2024-04-29,M-001,Mugs item 1,Mugs,18.57,17
+2024-05-06,M-001,Mugs item 1,Mugs,18.57,18
+2024-05-13,M-001,Mugs item 1,Mugs,13.81,34
+2024-05-20,M-001,Mugs item 1,Mugs,18.57,16
+2024-05-27,M-001,Mugs item 1,Mugs,18.57,22
+2024-06-03,M-001,Mugs item 1,Mugs,18.57,22
+2024-06-10,M-001,Mugs item 1,Mugs,14.29,21
+2024-06-17,M-001,Mugs item 1,Mugs,18.57,22
+2024-06-24,M-001,Mugs item 1,Mugs,18.57,19
+2024-07-01,M-001,Mugs item 1,Mugs,18.57,22
+2024-07-08,M-001,Mugs item 1,Mugs,18.57,18
+2024-07-15,M-001,Mugs item 1,Mugs,16.68,20
+2024-07-22,M-001,Mugs item 1,Mugs,18.57,17
+2024-07-29,M-001,Mugs item 1,Mugs,14.63,19
+2024-08-05,M-001,Mugs item 1,Mugs,16.32,23
+2024-08-12,M-001,Mugs item 1,Mugs,15.27,24
+2024-08-19,M-001,Mugs item 1,Mugs,18.44,17
+2024-08-26,M-001,Mugs item 1,Mugs,18.44,20
+2024-09-02,M-001,Mugs item 1,Mugs,15.62,19
+2024-09-09,M-001,Mugs item 1,Mugs,18.44,15
+2024-09-16,M-001,Mugs item 1,Mugs,18.44,18
+2024-09-23,M-001,Mugs item 1,Mugs,15.08,34
+2024-09-30,M-001,Mugs item 1,Mugs,13.91,34
+2024-10-07,M-001,Mugs item 1,Mugs,18.44,17
+2024-10-14,M-001,Mugs item 1,Mugs,18.44,25
+2024-10-21,M-001,Mugs item 1,Mugs,18.44,17
+2024-10-28,M-001,Mugs item 1,Mugs,18.44,16
+2024-11-04,M-001,Mugs item 1,Mugs,18.44,22
+2024-11-11,M-001,Mugs item 1,Mugs,18.44,19
+2024-11-18,M-001,Mugs item 1,Mugs,18.44,18
+2024-11-25,M-001,Mugs item 1,Mugs,14.48,21
+2024-12-02,M-001,Mugs item 1,Mugs,18.44,22
+2024-12-09,M-001,Mugs item 1,Mugs,18.44,18
+2024-12-16,M-001,Mugs item 1,Mugs,18.44,24
+2024-12-23,M-001,Mugs item 1,Mugs,18.44,20
+2024-01-01,M-002,Mugs item 2,Mugs,14.55,54
+2024-01-08,M-002,Mugs item 2,Mugs,14.55,54
+2024-01-15,M-002,Mugs item 2,Mugs,14.55,51
+2024-01-22,M-002,Mugs item 2,Mugs,14.55,54
+2024-01-29,M-002,Mugs item 2,Mugs,14.55,60
+2024-02-05,M-002,Mugs item 2,Mugs,14.55,57
+2024-02-12,M-002,Mugs item 2,Mugs,14.55,69
+2024-02-19,M-002,Mugs item 2,Mugs,14.55,53
+2024-02-26,M-002,Mugs item 2,Mugs,14.55,49
+2024-03-04,M-002,Mugs item 2,Mugs,14.55,57
+2024-03-11,M-002,Mugs item 2,Mugs,14.55,73
+2024-03-18,M-002,Mugs item 2,Mugs,14.55,50
+2024-03-25,M-002,Mugs item 2,Mugs,14.47,63
+2024-04-01,M-002,Mugs item 2,Mugs,14.47,27
+2024-04-08,M-002,Mugs item 2,Mugs,14.47,64
+2024-04-15,M-002,Mugs item 2,Mugs,14.47,51
+2024-04-22,M-002,Mugs item 2,Mugs,14.47,51
+2024-04-29,M-002,Mugs item 2,Mugs,14.47,65
+2024-05-06,M-002,Mugs item 2,Mugs,14.47,63
+2024-05-13,M-002,Mugs item 2,Mugs,14.47,52
+2024-05-20,M-002,Mugs item 2,Mugs,12.75,66
+2024-05-27,M-002,Mugs item 2,Mugs,14.47,48
+2024-06-03,M-002,Mugs item 2,Mugs,14.47,59
+2024-06-10,M-002,Mugs item 2,Mugs,14.47,54
+2024-06-17,M-002,Mugs item 2,Mugs,9.95,116
+2024-06-24,M-002,Mugs item 2,Mugs,9.55,130
+2024-07-01,M-002,Mugs item 2,Mugs,12.42,74
+2024-07-08,M-002,Mugs item 2,Mugs,12.42,57
+2024-07-15,M-002,Mugs item 2,Mugs,12.42,61
+2024-07-22,M-002,Mugs item 2,Mugs,12.42,64
+2024-07-29,M-002,Mugs item 2,Mugs,12.42,63
+2024-08-05,M-002,Mugs item 2,Mugs,12.42,103
+2024-08-12,M-002,Mugs item 2,Mugs,12.42,102
+2024-08-19,M-002,Mugs item 2,Mugs,12.42,69
+2024-08-26,M-002,Mugs item 2,Mugs,12.42,91
+2024-09-02,M-002,Mugs item 2,Mugs,12.42,82
+2024-09-09,M-002,Mugs item 2,Mugs,14.68,49
+2024-09-16,M-002,Mugs item 2,Mugs,14.68,53
+2024-09-23,M-002,Mugs item 2,Mugs,14.68,47
+2024-09-30,M-002,Mugs item 2,Mugs,14.68,57
+2024-10-07,M-002,Mugs item 2,Mugs,14.68,66
+2024-10-14,M-002,Mugs item 2,Mugs,14.68,62
+2024-10-21,M-002,Mugs item 2,Mugs,14.68,65
+2024-10-28,M-002,Mugs item 2,Mugs,14.68,59
+2024-11-04,M-002,Mugs item 2,Mugs,12.42,86
+2024-11-11,M-002,Mugs item 2,Mugs,15.54,40
+2024-11-18,M-002,Mugs item 2,Mugs,15.54,38
+2024-11-25,M-002,Mugs item 2,Mugs,15.54,52
+2024-12-02,M-002,Mugs item 2,Mugs,15.54,47
+2024-12-09,M-002,Mugs item 2,Mugs,15.54,65
+2024-12-16,M-002,Mugs item 2,Mugs,15.54,52
+2024-12-23,M-002,Mugs item 2,Mugs,15.54,55
+2024-01-01,M-003,Mugs item 3,Mugs,24.56,29
+2024-01-08,M-003,Mugs item 3,Mugs,27.72,19
+2024-01-15,M-003,Mugs item 3,Mugs,27.72,25
+2024-01-22,M-003,Mugs item 3,Mugs,27.72,27
+2024-01-29,M-003,Mugs item 3,Mugs,27.72,23
+2024-02-05,M-003,Mugs item 3,Mugs,27.72,33
+2024-02-12,M-003,Mugs item 3,Mugs,27.72,23
+2024-02-19,M-003,Mugs item 3,Mugs,23.73,34
+2024-02-26,M-003,Mugs item 3,Mugs,23.94,29
+2024-03-04,M-003,Mugs item 3,Mugs,23.90,29
+2024-03-11,M-003,Mugs item 3,Mugs,27.72,23
+2024-03-18,M-003,Mugs item 3,Mugs,27.72,30
+2024-03-25,M-003,Mugs item 3,Mugs,27.72,18
+2024-04-01,M-003,Mugs item 3,Mugs,27.72,22
+2024-04-08,M-003,Mugs item 3,Mugs,22.13,40
+2024-04-15,M-003,Mugs item 3,Mugs,24.65,43
+2024-04-22,M-003,Mugs item 3,Mugs,27.72,18
+2024-04-29,M-003,Mugs item 3,Mugs,27.72,26
+2024-05-06,M-003,Mugs item 3,Mugs,27.72,10
+2024-05-13,M-003,Mugs item 3,Mugs,27.72,18
+2024-05-20,M-003,Mugs item 3,Mugs,27.72,25
+2024-05-27,M-003,Mugs item 3,Mugs,23.25,34
+2024-06-03,M-003,Mugs item 3,Mugs,27.72,30
+2024-06-10,M-003,Mugs item 3,Mugs,27.72,28
+2024-06-17,M-003,Mugs item 3,Mugs,27.72,31
+2024-06-24,M-003,Mugs item 3,Mugs,22.78,30
+2024-07-01,M-003,Mugs item 3,Mugs,20.37,48
+2024-07-08,M-003,Mugs item 3,Mugs,27.72,26
+2024-07-15,M-003,Mugs item 3,Mugs,22.75,26
+2024-07-22,M-003,Mugs item 3,Mugs,27.72,26
+2024-07-29,M-003,Mugs item 3,Mugs,27.72,24
+2024-08-05,M-003,Mugs item 3,Mugs,27.72,28
+2024-08-12,M-003,Mugs item 3,Mugs,20.61,23
+2024-08-19,M-003,Mugs item 3,Mugs,27.72,28
+2024-08-26,M-003,Mugs item 3,Mugs,27.72,30
+2024-09-02,M-003,Mugs item 3,Mugs,27.72,34
+2024-09-09,M-003,Mugs item 3,Mugs,27.72,26
+2024-09-16,M-003,Mugs item 3,Mugs,27.72,24
+2024-09-23,M-003,Mugs item 3,Mugs,27.72,22
+2024-09-30,M-003,Mugs item 3,Mugs,22.32,25
+2024-10-07,M-003,Mugs item 3,Mugs,18.82,51
+2024-10-14,M-003,Mugs item 3,Mugs,21.49,44
+2024-10-21,M-003,Mugs item 3,Mugs,26.06,30
+2024-10-28,M-003,Mugs item 3,Mugs,26.06,24
+2024-11-04,M-003,Mugs item 3,Mugs,26.06,29
+2024-11-11,M-003,Mugs item 3,Mugs,26.06,28
+2024-11-18,M-003,Mugs item 3,Mugs,26.06,26
+2024-11-25,M-003,Mugs item 3,Mugs,26.06,24
+2024-12-02,M-003,Mugs item 3,Mugs,26.06,27
+2024-12-09,M-003,Mugs item 3,Mugs,21.85,42
+2024-12-16,M-003,Mugs item 3,Mugs,26.06,28
+2024-12-23,M-003,Mugs item 3,Mugs,26.06,22
+2024-01-01,M-004,Mugs item 4,Mugs,29.51,60
+2024-01-08,M-004,Mugs item 4,Mugs,29.51,51
+2024-01-15,M-004,Mugs item 4,Mugs,29.51,54
+2024-01-22,M-004,Mugs item 4,Mugs,21.69,94
+2024-01-29,M-004,Mugs item 4,Mugs,29.51,44
+2024-02-05,M-004,Mugs item 4,Mugs,29.51,39
+2024-02-12,M-004,Mugs item 4,Mugs,29.51,41
+2024-02-19,M-004,Mugs item 4,Mugs,29.51,54
+2024-02-26,M-004,Mugs item 4,Mugs,29.51,48
+2024-03-04,M-004,Mugs item 4,Mugs,29.51,53
+2024-03-11,M-004,Mugs item 4,Mugs,29.51,54
+2024-03-18,M-004,Mugs item 4,Mugs,29.51,49
+2024-03-25,M-004,Mugs item 4,Mugs,29.51,61
+2024-04-01,M-004,Mugs item 4,Mugs,21.33,82
+2024-04-08,M-004,Mugs item 4,Mugs,27.88,73
+2024-04-15,M-004,Mugs item 4,Mugs,21.17,92
+2024-04-22,M-004,Mugs item 4,Mugs,27.88,58
+2024-04-29,M-004,Mugs item 4,Mugs,27.88,66
+2024-05-06,M-004,Mugs item 4,Mugs,21.92,85
+2024-05-13,M-004,Mugs item 4,Mugs,20.06,122
+2024-05-20,M-004,Mugs item 4,Mugs,26.58,54
+2024-05-27,M-004,Mugs item 4,Mugs,21.24,65
+2024-06-03,M-004,Mugs item 4,Mugs,26.58,47
+2024-06-10,M-004,Mugs item 4,Mugs,26.58,52
+2024-06-17,M-004,Mugs item 4,Mugs,26.58,47
+2024-06-24,M-004,Mugs item 4,Mugs,26.58,48
+2024-07-01,M-004,Mugs item 4,Mugs,26.58,58
+2024-07-08,M-004,Mugs item 4,Mugs,20.39,95
+2024-07-15,M-004,Mugs item 4,Mugs,21.06,78
+2024-07-22,M-004,Mugs item 4,Mugs,26.58,55
+2024-07-29,M-004,Mugs item 4,Mugs,26.58,70
+2024-08-05,M-004,Mugs item 4,Mugs,26.58,51
+2024-08-12,M-004,Mugs item 4,Mugs,26.58,62
+2024-08-19,M-004,Mugs item 4,Mugs,26.58,61
+2024-08-26,M-004,Mugs item 4,Mugs,26.58,78
+2024-09-02,M-004,Mugs item 4,Mugs,22.13,71
+2024-09-09,M-004,Mugs item 4,Mugs,26.58,58
+2024-09-16,M-004,Mugs item 4,Mugs,26.58,45
+2024-09-23,M-004,Mugs item 4,Mugs,20.26,108
+2024-09-30,M-004,Mugs item 4,Mugs,26.58,61
+2024-10-07,M-004,Mugs item 4,Mugs,26.58,43
+2024-10-14,M-004,Mugs item 4,Mugs,26.58,61
+2024-10-21,M-004,Mugs item 4,Mugs,21.87,68
+2024-10-28,M-004,Mugs item 4,Mugs,24.47,74
+2024-11-04,M-004,Mugs item 4,Mugs,21.26,64
+2024-11-11,M-004,Mugs item 4,Mugs,24.47,51
+2024-11-18,M-004,Mugs item 4,Mugs,24.47,76
+2024-11-25,M-004,Mugs item 4,Mugs,24.47,61
+2024-12-02,M-004,Mugs item 4,Mugs,24.47,75
+2024-12-09,M-004,Mugs item 4,Mugs,24.47,75
+2024-12-16,M-004,Mugs item 4,Mugs,24.47,56
+2024-12-23,M-004,Mugs item 4,Mugs,21.70,80
+2024-01-01,M-005,Mugs item 5,Mugs,7.07,80
+2024-01-08,M-005,Mugs item 5,Mugs,7.07,72
+2024-01-15,M-005,Mugs item 5,Mugs,6.96,68
+2024-01-22,M-005,Mugs item 5,Mugs,6.96,86
+2024-01-29,M-005,Mugs item 5,Mugs,6.96,72
+2024-02-05,M-005,Mugs item 5,Mugs,6.96,68
+2024-02-12,M-005,Mugs item 5,Mugs,6.96,68
+2024-02-19,M-005,Mugs item 5,Mugs,6.96,71
+2024-02-26,M-005,Mugs item 5,Mugs,6.96,62
+2024-03-04,M-005,Mugs item 5,Mugs,6.96,86
+2024-03-11,M-005,Mugs item 5,Mugs,5.22,138
+2024-03-18,M-005,Mugs item 5,Mugs,6.96,68
+2024-03-25,M-005,Mugs item 5,Mugs,6.96,90
+2024-04-01,M-005,Mugs item 5,Mugs,6.96,90
+2024-04-08,M-005,Mugs item 5,Mugs,6.96,65
+2024-04-15,M-005,Mugs item 5,Mugs,6.96,88
+2024-04-22,M-005,Mugs item 5,Mugs,6.96,82
+2024-04-29,M-005,Mugs item 5,Mugs,6.96,82
+2024-05-06,M-005,Mugs item 5,Mugs,6.96,91
+2024-05-13,M-005,Mugs item 5,Mugs,6.96,83
+2024-05-20,M-005,Mugs item 5,Mugs,6.96,66
+2024-05-27,M-005,Mugs item 5,Mugs,6.11,100
+2024-06-03,M-005,Mugs item 5,Mugs,7.91,72
+2024-06-10,M-005,Mugs item 5,Mugs,7.91,64
+2024-06-17,M-005,Mugs item 5,Mugs,7.91,57
+2024-06-24,M-005,Mugs item 5,Mugs,7.91,72
+2024-07-01,M-005,Mugs item 5,Mugs,7.91,67
+2024-07-08,M-005,Mugs item 5,Mugs,7.91,52
+2024-07-15,M-005,Mugs item 5,Mugs,7.91,61
+2024-07-22,M-005,Mugs item 5,Mugs,7.91,74
+2024-07-29,M-005,Mugs item 5,Mugs,7.91,65
+2024-08-05,M-005,Mugs item 5,Mugs,6.45,98
+2024-08-12,M-005,Mugs item 5,Mugs,5.93,104
+2024-08-19,M-005,Mugs item 5,Mugs,7.91,58
+2024-08-26,M-005,Mugs item 5,Mugs,7.91,80
+2024-09-02,M-005,Mugs item 5,Mugs,7.91,60
+2024-09-09,M-005,Mugs item 5,Mugs,7.91,47
+2024-09-16,M-005,Mugs item 5,Mugs,7.91,68
+2024-09-23,M-005,Mugs item 5,Mugs,7.91,80
+2024-09-30,M-005,Mugs item 5,Mugs,7.91,56
+2024-10-07,M-005,Mugs item 5,Mugs,7.91,60
+2024-10-14,M-005,Mugs item 5,Mugs,7.91,61
+2024-10-21,M-005,Mugs item 5,Mugs,7.91,63
+2024-10-28,M-005,Mugs item 5,Mugs,7.91,79
+2024-11-04,M-005,Mugs item 5,Mugs,5.90,78
+2024-11-11,M-005,Mugs item 5,Mugs,6.21,107
+2024-11-18,M-005,Mugs item 5,Mugs,6.76,62
+2024-11-25,M-005,Mugs item 5,Mugs,7.91,64
+2024-12-02,M-005,Mugs item 5,Mugs,7.91,71
+2024-12-09,M-005,Mugs item 5,Mugs,6.41,96
+2024-12-16,M-005,Mugs item 5,Mugs,7.91,55
+2024-12-23,M-005,Mugs item 5,Mugs,7.91,65
+2024-01-01,M-006,Mugs item 6,Mugs,21.75,22
+2024-01-08,M-006,Mugs item 6,Mugs,21.75,25
+2024-01-15,M-006,Mugs item 6,Mugs,21.75,27
+2024-01-22,M-006,Mugs item 6,Mugs,21.75,24
+2024-01-29,M-006,Mugs item 6,Mugs,21.75,23
+2024-02-05,M-006,Mugs item 6,Mugs,20.65,27
+2024-02-12,M-006,Mugs item 6,Mugs,20.65,25
+2024-02-19,M-006,Mugs item 6,Mugs,20.65,37
+2024-02-26,M-006,Mugs item 6,Mugs,20.65,26
+2024-03-04,M-006,Mugs item 6,Mugs,20.65,31
+2024-03-11,M-006,Mugs item 6,Mugs,20.65,35
+2024-03-18,M-006,Mugs item 6,Mugs,14.61,47
+2024-03-25,M-006,Mugs item 6,Mugs,17.25,34
+2024-04-01,M-006,Mugs item 6,Mugs,17.15,32
+2024-04-08,M-006,Mugs item 6,Mugs,16.52,39
+2024-04-15,M-006,Mugs item 6,Mugs,17.08,34
+2024-04-22,M-006,Mugs item 6,Mugs,20.65,19
+2024-04-29,M-006,Mugs item 6,Mugs,20.65,20
+2024-05-06,M-006,Mugs item 6,Mugs,20.65,43
+2024-05-13,M-006,Mugs item 6,Mugs,20.54,26
+2024-05-20,M-006,Mugs item 6,Mugs,20.54,29
+2024-05-27,M-006,Mugs item 6,Mugs,20.54,29
+2024-06-03,M-006,Mugs item 6,Mugs,20.54,26
+2024-06-10,M-006,Mugs item 6,Mugs,15.99,37
+2024-06-17,M-006,Mugs item 6,Mugs,20.54,27
+2024-06-24,M-006,Mugs item 6,Mugs,20.54,23
+2024-07-01,M-006,Mugs item 6,Mugs,20.54,35
+2024-07-08,M-006,Mugs item 6,Mugs,20.54,35
+2024-07-15,M-006,Mugs item 6,Mugs,20.54,37
+2024-07-22,M-006,Mugs item 6,Mugs,20.54,36
+2024-07-29,M-006,Mugs item 6,Mugs,20.54,25
+2024-08-05,M-006,Mugs item 6,Mugs,20.54,20
+2024-08-12,M-006,Mugs item 6,Mugs,20.54,29
+2024-08-19,M-006,Mugs item 6,Mugs,20.54,33
+2024-08-26,M-006,Mugs item 6,Mugs,20.54,33
+2024-09-02,M-006,Mugs item 6,Mugs,16.49,45
+2024-09-09,M-006,Mugs item 6,Mugs,20.54,31
+2024-09-16,M-006,Mugs item 6,Mugs,16.84,43
+2024-09-23,M-006,Mugs item 6,Mugs,20.54,25
+2024-09-30,M-006,Mugs item 6,Mugs,20.54,17
+2024-10-07,M-006,Mugs item 6,Mugs,20.54,20
+2024-10-14,M-006,Mugs item 6,Mugs,20.54,27
+2024-10-21,M-006,Mugs item 6,Mugs,20.54,18
+2024-10-28,M-006,Mugs item 6,Mugs,20.54,25
+2024-11-04,M-006,Mugs item 6,Mugs,20.54,23
+2024-11-11,M-006,Mugs item 6,Mugs,20.54,21
+2024-11-18,M-006,Mugs item 6,Mugs,18.13,35
+2024-11-25,M-006,Mugs item 6,Mugs,20.54,37
+2024-12-02,M-006,Mugs item 6,Mugs,16.93,38
+2024-12-09,M-006,Mugs item 6,Mugs,20.76,23
+2024-12-16,M-006,Mugs item 6,Mugs,20.76,26
+2024-12-23,M-006,Mugs item 6,Mugs,20.76,15
+2024-01-01,M-007,Mugs item 7,Mugs,16.24,35
+2024-01-08,M-007,Mugs item 7,Mugs,16.24,18
+2024-01-15,M-007,Mugs item 7,Mugs,16.24,29
+2024-01-22,M-007,Mugs item 7,Mugs,16.24,38
+2024-01-29,M-007,Mugs item 7,Mugs,16.24,21
+2024-02-05,M-007,Mugs item 7,Mugs,16.24,32
+2024-02-12,M-007,Mugs item 7,Mugs,16.24,19
+2024-02-19,M-007,Mugs item 7,Mugs,16.24,30
+2024-02-26,M-007,Mugs item 7,Mugs,16.24,14
+2024-03-04,M-007,Mugs item 7,Mugs,16.24,38
+2024-03-11,M-007,Mugs item 7,Mugs,13.22,43
+2024-03-18,M-007,Mugs item 7,Mugs,16.24,35
+2024-03-25,M-007,Mugs item 7,Mugs,16.24,24
+2024-04-01,M-007,Mugs item 7,Mugs,16.24,34
+2024-04-08,M-007,Mugs item 7,Mugs,16.24,25
+2024-04-15,M-007,Mugs item 7,Mugs,16.24,26
+2024-04-22,M-007,Mugs item 7,Mugs,16.24,29
+2024-04-29,M-007,Mugs item 7,Mugs,16.24,27
+2024-05-06,M-007,Mugs item 7,Mugs,16.24,36
+2024-05-13,M-007,Mugs item 7,Mugs,16.24,22
+2024-05-20,M-007,Mugs item 7,Mugs,11.68,56
+2024-05-27,M-007,Mugs item 7,Mugs,16.24,18
+2024-06-03,M-007,Mugs item 7,Mugs,16.24,28
+2024-06-10,M-007,Mugs item 7,Mugs,16.24,41
+2024-06-17,M-007,Mugs item 7,Mugs,16.24,31
+2024-06-24,M-007,Mugs item 7,Mugs,16.24,32
+2024-07-01,M-007,Mugs item 7,Mugs,11.84,41
+2024-07-08,M-007,Mugs item 7,Mugs,16.24,20
+2024-07-15,M-007,Mugs item 7,Mugs,14.29,53
+2024-07-22,M-007,Mugs item 7,Mugs,16.24,29
+2024-07-29,M-007,Mugs item 7,Mugs,16.24,24
+2024-08-05,M-007,Mugs item 7,Mugs,16.24,30
+2024-08-12,M-007,Mugs item 7,Mugs,16.24,28
+2024-08-19,M-007,Mugs item 7,Mugs,16.24,28
+2024-08-26,M-007,Mugs item 7,Mugs,16.24,43
+2024-09-02,M-007,Mugs item 7,Mugs,16.24,24
+2024-09-09,M-007,Mugs item 7,Mugs,12.84,39
+2024-09-16,M-007,Mugs item 7,Mugs,16.24,36
+2024-09-23,M-007,Mugs item 7,Mugs,16.24,31
+2024-09-30,M-007,Mugs item 7,Mugs,16.24,29
+2024-10-07,M-007,Mugs item 7,Mugs,16.24,14
+2024-10-14,M-007,Mugs item 7,Mugs,16.24,24
+2024-10-21,M-007,Mugs item 7,Mugs,16.24,25
+2024-10-28,M-007,Mugs item 7,Mugs,16.24,33
+2024-11-04,M-007,Mugs item 7,Mugs,16.24,29
+2024-11-11,M-007,Mugs item 7,Mugs,16.24,28
+2024-11-18,M-007,Mugs item 7,Mugs,16.24,20
+2024-11-25,M-007,Mugs item 7,Mugs,16.24,47
+2024-12-02,M-007,Mugs item 7,Mugs,16.24,27
+2024-12-09,M-007,Mugs item 7,Mugs,16.24,40
+2024-12-16,M-007,Mugs item 7,Mugs,16.24,27
+2024-12-23,M-007,Mugs item 7,Mugs,12.14,39
+2024-01-01,M-008,Mugs item 8,Mugs,7.90,42
+2024-01-08,M-008,Mugs item 8,Mugs,7.90,41
+2024-01-15,M-008,Mugs item 8,Mugs,7.90,30
+2024-01-22,M-008,Mugs item 8,Mugs,8.05,49
+2024-01-29,M-008,Mugs item 8,Mugs,8.05,52
+2024-02-05,M-008,Mugs item 8,Mugs,8.05,47
+2024-02-12,M-008,Mugs item 8,Mugs,6.42,68
+2024-02-19,M-008,Mugs item 8,Mugs,8.05,49
+2024-02-26,M-008,Mugs item 8,Mugs,8.05,49
+2024-03-04,M-008,Mugs item 8,Mugs,6.67,55
+2024-03-11,M-008,Mugs item 8,Mugs,6.27,53
+2024-03-18,M-008,Mugs item 8,Mugs,8.05,54
+2024-03-25,M-008,Mugs item 8,Mugs,8.05,23
+2024-04-01,M-008,Mugs item 8,Mugs,7.19,34
+2024-04-08,M-008,Mugs item 8,Mugs,8.05,58
+2024-04-15,M-008,Mugs item 8,Mugs,5.83,74
+2024-04-22,M-008,Mugs item 8,Mugs,6.87,37
+2024-04-29,M-008,Mugs item 8,Mugs,8.05,37
+2024-05-06,M-008,Mugs item 8,Mugs,8.05,50
+2024-05-13,M-008,Mugs item 8,Mugs,7.19,59
+2024-05-20,M-008,Mugs item 8,Mugs,7.03,58
+2024-05-27,M-008,Mugs item 8,Mugs,9.57,36
+2024-06-03,M-008,Mugs item 8,Mugs,7.77,48
+2024-06-10,M-008,Mugs item 8,Mugs,6.96,68
+2024-06-17,M-008,Mugs item 8,Mugs,9.57,41
+2024-06-24,M-008,Mugs item 8,Mugs,7.40,55
+2024-07-01,M-008,Mugs item 8,Mugs,9.57,30
+2024-07-08,M-008,Mugs item 8,Mugs,9.57,38
+2024-07-15,M-008,Mugs item 8,Mugs,6.97,47
+2024-07-22,M-008,Mugs item 8,Mugs,9.57,46
+2024-07-29,M-008,Mugs item 8,Mugs,9.57,44
+2024-08-05,M-008,Mugs item 8,Mugs,9.57,46
+2024-08-12,M-008,Mugs item 8,Mugs,9.57,38
+2024-08-19,M-008,Mugs item 8,Mugs,9.70,44
+2024-08-26,M-008,Mugs item 8,Mugs,9.70,38
+2024-09-02,M-008,Mugs item 8,Mugs,9.70,28
+2024-09-09,M-008,Mugs item 8,Mugs,9.70,29
+2024-09-16,M-008,Mugs item 8,Mugs,9.70,27
+2024-09-23,M-008,Mugs item 8,Mugs,9.70,18
+2024-09-30,M-008,Mugs item 8,Mugs,9.70,28
+2024-10-07,M-008,Mugs item 8,Mugs,9.70,33
+2024-10-14,M-008,Mugs item 8,Mugs,9.70,29
+2024-10-21,M-008,Mugs item 8,Mugs,9.70,27
+2024-10-28,M-008,Mugs item 8,Mugs,9.70,26
+2024-11-04,M-008,Mugs item 8,Mugs,8.63,37
+2024-11-11,M-008,Mugs item 8,Mugs,9.70,33
+2024-11-18,M-008,Mugs item 8,Mugs,9.70,30
+2024-11-25,M-008,Mugs item 8,Mugs,9.70,42
+2024-12-02,M-008,Mugs item 8,Mugs,9.70,35
+2024-12-09,M-008,Mugs item 8,Mugs,7.27,48
+2024-12-16,M-008,Mugs item 8,Mugs,7.30,47
+2024-12-23,M-008,Mugs item 8,Mugs,9.70,37
+2024-01-01,M-009,Mugs item 9,Mugs,5.85,14
+2024-01-08,M-009,Mugs item 9,Mugs,7.62,20
+2024-01-15,M-009,Mugs item 9,Mugs,7.62,13
+2024-01-22,M-009,Mugs item 9,Mugs,6.47,28
+2024-01-29,M-009,Mugs item 9,Mugs,7.62,20
+2024-02-05,M-009,Mugs item 9,Mugs,6.38,31
+2024-02-12,M-009,Mugs item 9,Mugs,6.49,20
+2024-02-19,M-009,Mugs item 9,Mugs,7.62,22
+2024-02-26,M-009,Mugs item 9,Mugs,7.62,10
+2024-03-04,M-009,Mugs item 9,Mugs,7.62,25
+2024-03-11,M-009,Mugs item 9,Mugs,7.62,14
+2024-03-18,M-009,Mugs item 9,Mugs,7.62,14
+2024-03-25,M-009,Mugs item 9,Mugs,7.62,10
+2024-04-01,M-009,Mugs item 9,Mugs,7.62,15
+2024-04-08,M-009,Mugs item 9,Mugs,5.35,30
+2024-04-15,M-009,Mugs item 9,Mugs,7.62,14
+2024-04-22,M-009,Mugs item 9,Mugs,7.62,19
+2024-04-29,M-009,Mugs item 9,Mugs,7.62,9
+2024-05-06,M-009,Mugs item 9,Mugs,7.62,18
+2024-05-13,M-009,Mugs item 9,Mugs,7.62,16
+2024-05-20,M-009,Mugs item 9,Mugs,7.62,17
+2024-05-27,M-009,Mugs item 9,Mugs,5.34,41
+2024-06-03,M-009,Mugs item 9,Mugs,7.62,12
+2024-06-10,M-009,Mugs item 9,Mugs,7.62,17
+2024-06-17,M-009,Mugs item 9,Mugs,7.62,17
+2024-06-24,M-009,Mugs item 9,Mugs,7.62,16
+2024-07-01,M-009,Mugs item 9,Mugs,7.62,16
+2024-07-08,M-009,Mugs item 9,Mugs,7.62,13
+2024-07-15,M-009,Mugs item 9,Mugs,7.62,13
+2024-07-22,M-009,Mugs item 9,Mugs,7.62,19
+2024-07-29,M-009,Mugs item 9,Mugs,7.62,13
+2024-08-05,M-009,Mugs item 9,Mugs,7.62,22
+2024-08-12,M-009,Mugs item 9,Mugs,7.62,21
+2024-08-19,M-009,Mugs item 9,Mugs,7.62,24
+2024-08-26,M-009,Mugs item 9,Mugs,7.62,21
+2024-09-02,M-009,Mugs item 9,Mugs,7.62,14
+2024-09-09,M-009,Mugs item 9,Mugs,7.62,14
+2024-09-16,M-009,Mugs item 9,Mugs,7.62,24
+2024-09-23,M-009,Mugs item 9,Mugs,7.62,22
+2024-09-30,M-009,Mugs item 9,Mugs,7.62,8
+2024-10-07,M-009,Mugs item 9,Mugs,6.78,18
+2024-10-14,M-009,Mugs item 9,Mugs,8.64,13
+2024-10-21,M-009,Mugs item 9,Mugs,8.64,13
+2024-10-28,M-009,Mugs item 9,Mugs,8.64,15
+2024-11-04,M-009,Mugs item 9,Mugs,8.64,16
+2024-11-11,M-009,Mugs item 9,Mugs,8.64,13
+2024-11-18,M-009,Mugs item 9,Mugs,8.64,19
+2024-11-25,M-009,Mugs item 9,Mugs,8.64,17
+2024-12-02,M-009,Mugs item 9,Mugs,8.64,9
+2024-12-09,M-009,Mugs item 9,Mugs,8.64,10
+2024-12-16,M-009,Mugs item 9,Mugs,8.64,12
+2024-12-23,M-009,Mugs item 9,Mugs,8.64,12
+2024-01-01,M-010,Mugs item 10,Mugs,8.79,68
+2024-01-08,M-010,Mugs item 10,Mugs,8.79,63
+2024-01-15,M-010,Mugs item 10,Mugs,9.76,34
+2024-01-22,M-010,Mugs item 10,Mugs,9.76,35
+2024-01-29,M-010,Mugs item 10,Mugs,9.76,45
+2024-02-05,M-010,Mugs item 10,Mugs,7.12,59
+2024-02-12,M-010,Mugs item 10,Mugs,9.76,44
+2024-02-19,M-010,Mugs item 10,Mugs,9.76,44
+2024-02-26,M-010,Mugs item 10,Mugs,9.76,58
+2024-03-04,M-010,Mugs item 10,Mugs,9.76,40
+2024-03-11,M-010,Mugs item 10,Mugs,7.37,75
+2024-03-18,M-010,Mugs item 10,Mugs,9.76,45
+2024-03-25,M-010,Mugs item 10,Mugs,9.76,45
+2024-04-01,M-010,Mugs item 10,Mugs,10.12,33
+2024-04-08,M-010,Mugs item 10,Mugs,10.12,48
+2024-04-15,M-010,Mugs item 10,Mugs,8.35,65
+2024-04-22,M-010,Mugs item 10,Mugs,10.12,34
+2024-04-29,M-010,Mugs item 10,Mugs,8.07,59
+2024-05-06,M-010,Mugs item 10,Mugs,10.12,43
+2024-05-13,M-010,Mugs item 10,Mugs,7.22,74
+2024-05-20,M-010,Mugs item 10,Mugs,10.12,50
+2024-05-27,M-010,Mugs item 10,Mugs,10.12,43
+2024-06-03,M-010,Mugs item 10,Mugs,8.96,64
+2024-06-10,M-010,Mugs item 10,Mugs,8.51,43
+2024-06-17,M-010,Mugs item 10,Mugs,10.12,48
+2024-06-24,M-010,Mugs item 10,Mugs,9.58,67
+2024-07-01,M-010,Mugs item 10,Mugs,9.58,34
+2024-07-08,M-010,Mugs item 10,Mugs,9.58,54
+2024-07-15,M-010,Mugs item 10,Mugs,9.58,39
+2024-07-22,M-010,Mugs item 10,Mugs,9.58,44
+2024-07-29,M-010,Mugs item 10,Mugs,9.58,57
+2024-08-05,M-010,Mugs item 10,Mugs,8.13,64
+2024-08-12,M-010,Mugs item 10,Mugs,9.58,39
+2024-08-19,M-010,Mugs item 10,Mugs,9.58,63
+2024-08-26,M-010,Mugs item 10,Mugs,9.13,51
+2024-09-02,M-010,Mugs item 10,Mugs,9.13,49
+2024-09-09,M-010,Mugs item 10,Mugs,7.84,48
+2024-09-16,M-010,Mugs item 10,Mugs,9.13,53
+2024-09-23,M-010,Mugs item 10,Mugs,9.13,40
+2024-09-30,M-010,Mugs item 10,Mugs,8.77,63
+2024-10-07,M-010,Mugs item 10,Mugs,8.77,55
+2024-10-14,M-010,Mugs item 10,Mugs,7.10,62
+2024-10-21,M-010,Mugs item 10,Mugs,8.77,33
+2024-10-28,M-010,Mugs item 10,Mugs,8.77,55
+2024-11-04,M-010,Mugs item 10,Mugs,8.77,47
+2024-11-11,M-010,Mugs item 10,Mugs,8.77,52
+2024-11-18,M-010,Mugs item 10,Mugs,8.77,49
+2024-11-25,M-010,Mugs item 10,Mugs,8.77,47
+2024-12-02,M-010,Mugs item 10,Mugs,8.77,46
+2024-12-09,M-010,Mugs item 10,Mugs,8.77,60
+2024-12-16,M-010,Mugs item 10,Mugs,8.77,67
+2024-12-23,M-010,Mugs item 10,Mugs,8.77,38
+2024-01-01,M-011,Mugs item 11,Mugs,10.69,66
+2024-01-08,M-011,Mugs item 11,Mugs,14.46,44
+2024-01-15,M-011,Mugs item 11,Mugs,14.46,33
+2024-01-22,M-011,Mugs item 11,Mugs,14.46,47
+2024-01-29,M-011,Mugs item 11,Mugs,14.46,25
+2024-02-05,M-011,Mugs item 11,Mugs,14.46,27
+2024-02-12,M-011,Mugs item 11,Mugs,12.47,33
+2024-02-19,M-011,Mugs item 11,Mugs,14.46,33
+2024-02-26,M-011,Mugs item 11,Mugs,14.46,44
+2024-03-04,M-011,Mugs item 11,Mugs,14.46,23
+2024-03-11,M-011,Mugs item 11,Mugs,14.46,22
+2024-03-18,M-011,Mugs item 11,Mugs,12.37,41
+2024-03-25,M-011,Mugs item 11,Mugs,14.46,22
+2024-04-01,M-011,Mugs item 11,Mugs,11.88,53
+2024-04-08,M-011,Mugs item 11,Mugs,14.46,39
+2024-04-15,M-011,Mugs item 11,Mugs,11.24,38
+2024-04-22,M-011,Mugs item 11,Mugs,14.46,20
+2024-04-29,M-011,Mugs item 11,Mugs,14.46,37
+2024-05-06,M-011,Mugs item 11,Mugs,14.46,42
+2024-05-13,M-011,Mugs item 11,Mugs,14.46,31
+2024-05-20,M-011,Mugs item 11,Mugs,14.46,37
+2024-05-27,M-011,Mugs item 11,Mugs,10.54,64
+2024-06-03,M-011,Mugs item 11,Mugs,10.60,54
+2024-06-10,M-011,Mugs item 11,Mugs,12.19,46
+2024-06-17,M-011,Mugs item 11,Mugs,14.46,32
+2024-06-24,M-011,Mugs item 11,Mugs,14.46,38
+2024-07-01,M-011,Mugs item 11,Mugs,14.46,24
+2024-07-08,M-011,Mugs item 11,Mugs,14.46,44
+2024-07-15,M-011,Mugs item 11,Mugs,12.56,43
+2024-07-22,M-011,Mugs item 11,Mugs,14.46,43
+2024-07-29,M-011,Mugs item 11,Mugs,15.25,43
+2024-08-05,M-011,Mugs item 11,Mugs,15.25,36
+2024-08-12,M-011,Mugs item 11,Mugs,15.25,43
+2024-08-19,M-011,Mugs item 11,Mugs,15.25,39
+2024-08-26,M-011,Mugs item 11,Mugs,15.25,28
+2024-09-02,M-011,Mugs item 11,Mugs,15.25,31
+2024-09-09,M-011,Mugs item 11,Mugs,15.25,42
+2024-09-16,M-011,Mugs item 11,Mugs,15.25,25
+2024-09-23,M-011,Mugs item 11,Mugs,15.25,40
+2024-09-30,M-011,Mugs item 11,Mugs,15.25,37
+2024-10-07,M-011,Mugs item 11,Mugs,15.25,53
+2024-10-14,M-011,Mugs item 11,Mugs,15.25,35
+2024-10-21,M-011,Mugs item 11,Mugs,12.73,65
+2024-10-28,M-011,Mugs item 11,Mugs,15.25,32
+2024-11-04,M-011,Mugs item 11,Mugs,15.25,29
+2024-11-11,M-011,Mugs item 11,Mugs,15.25,33
+2024-11-18,M-011,Mugs item 11,Mugs,15.25,28
+2024-11-25,M-011,Mugs item 11,Mugs,15.25,26
+2024-12-02,M-011,Mugs item 11,Mugs,15.25,45
+2024-12-09,M-011,Mugs item 11,Mugs,15.25,46
+2024-12-16,M-011,Mugs item 11,Mugs,15.25,26
+2024-12-23,M-011,Mugs item 11,Mugs,15.25,34
+2024-01-01,M-012,Mugs item 12,Mugs,16.54,30
+2024-01-08,M-012,Mugs item 12,Mugs,13.73,51
+2024-01-15,M-012,Mugs item 12,Mugs,15.58,28
+2024-01-22,M-012,Mugs item 12,Mugs,15.58,54
+2024-01-29,M-012,Mugs item 12,Mugs,15.58,48
+2024-02-05,M-012,Mugs item 12,Mugs,15.58,38
+2024-02-12,M-012,Mugs item 12,Mugs,15.58,43
+2024-02-19,M-012,Mugs item 12,Mugs,13.27,43
+2024-02-26,M-012,Mugs item 12,Mugs,15.58,32
+2024-03-04,M-012,Mugs item 12,Mugs,15.58,38
+2024-03-11,M-012,Mugs item 12,Mugs,11.26,63
+2024-03-18,M-012,Mugs item 12,Mugs,11.42,61
+2024-03-25,M-012,Mugs item 12,Mugs,15.58,40
+2024-04-01,M-012,Mugs item 12,Mugs,15.58,33
+2024-04-08,M-012,Mugs item 12,Mugs,15.58,43
+2024-04-15,M-012,Mugs item 12,Mugs,11.87,58
+2024-04-22,M-012,Mugs item 12,Mugs,15.58,43
+2024-04-29,M-012,Mugs item 12,Mugs,15.58,46
+2024-05-06,M-012,Mugs item 12,Mugs,15.58,40
+2024-05-13,M-012,Mugs item 12,Mugs,15.58,42
+2024-05-20,M-012,Mugs item 12,Mugs,15.58,42
+2024-05-27,M-012,Mugs item 12,Mugs,15.58,45
+2024-06-03,M-012,Mugs item 12,Mugs,15.58,37
+2024-06-10,M-012,Mugs item 12,Mugs,15.58,37
+2024-06-17,M-012,Mugs item 12,Mugs,15.58,43
+2024-06-24,M-012,Mugs item 12,Mugs,15.58,40
+2024-07-01,M-012,Mugs item 12,Mugs,15.58,29
+2024-07-08,M-012,Mugs item 12,Mugs,15.58,47
+2024-07-15,M-012,Mugs item 12,Mugs,13.78,44
+2024-07-22,M-012,Mugs item 12,Mugs,13.36,43
+2024-07-29,M-012,Mugs item 12,Mugs,15.58,35
+2024-08-05,M-012,Mugs item 12,Mugs,15.58,28
+2024-08-12,M-012,Mugs item 12,Mugs,15.58,30
+2024-08-19,M-012,Mugs item 12,Mugs,15.58,35
+2024-08-26,M-012,Mugs item 12,Mugs,15.58,36
+2024-09-02,M-012,Mugs item 12,Mugs,15.58,59
+2024-09-09,M-012,Mugs item 12,Mugs,15.58,39
+2024-09-16,M-012,Mugs item 12,Mugs,15.58,48
+2024-09-23,M-012,Mugs item 12,Mugs,11.45,52
+2024-09-30,M-012,Mugs item 12,Mugs,15.58,35
+2024-10-07,M-012,Mugs item 12,Mugs,15.58,49
+2024-10-14,M-012,Mugs item 12,Mugs,15.58,43
+2024-10-21,M-012,Mugs item 12,Mugs,11.36,81
+2024-10-28,M-012,Mugs item 12,Mugs,15.58,27
+2024-11-04,M-012,Mugs item 12,Mugs,12.50,54
+2024-11-11,M-012,Mugs item 12,Mugs,15.58,52
+2024-11-18,M-012,Mugs item 12,Mugs,15.58,33
+2024-11-25,M-012,Mugs item 12,Mugs,15.58,31
+2024-12-02,M-012,Mugs item 12,Mugs,15.58,39
+2024-12-09,M-012,Mugs item 12,Mugs,15.58,44
+2024-12-16,M-012,Mugs item 12,Mugs,15.58,29
+2024-12-23,M-012,Mugs item 12,Mugs,15.58,39
+2024-01-01,M-013,Mugs item 13,Mugs,9.05,37
+2024-01-08,M-013,Mugs item 13,Mugs,9.05,25
+2024-01-15,M-013,Mugs item 13,Mugs,9.05,21
+2024-01-22,M-013,Mugs item 13,Mugs,9.05,32
+2024-01-29,M-013,Mugs item 13,Mugs,9.05,17
+2024-02-05,M-013,Mugs item 13,Mugs,9.05,23
+2024-02-12,M-013,Mugs item 13,Mugs,9.05,25
+2024-02-19,M-013,Mugs item 13,Mugs,9.05,26
+2024-02-26,M-013,Mugs item 13,Mugs,9.48,23
+2024-03-04,M-013,Mugs item 13,Mugs,8.40,26
+2024-03-11,M-013,Mugs item 13,Mugs,9.48,20
+2024-03-18,M-013,Mugs item 13,Mugs,9.48,27
+2024-03-25,M-013,Mugs item 13,Mugs,9.48,36
+2024-04-01,M-013,Mugs item 13,Mugs,9.48,18
+2024-04-08,M-013,Mugs item 13,Mugs,9.48,24
+2024-04-15,M-013,Mugs item 13,Mugs,9.48,19
+2024-04-22,M-013,Mugs item 13,Mugs,9.48,14
+2024-04-29,M-013,Mugs item 13,Mugs,7.80,29
+2024-05-06,M-013,Mugs item 13,Mugs,9.48,14
+2024-05-13,M-013,Mugs item 13,Mugs,9.48,16
+2024-05-20,M-013,Mugs item 13,Mugs,9.48,16
+2024-05-27,M-013,Mugs item 13,Mugs,7.13,32
+2024-06-03,M-013,Mugs item 13,Mugs,7.93,38
+2024-06-10,M-013,Mugs item 13,Mugs,9.48,16
+2024-06-17,M-013,Mugs item 13,Mugs,9.48,18
+2024-06-24,M-013,Mugs item 13,Mugs,9.48,13
+2024-07-01,M-013,Mugs item 13,Mugs,9.48,18
+2024-07-08,M-013,Mugs item 13,Mugs,9.48,21
+2024-07-15,M-013,Mugs item 13,Mugs,9.48,25
+2024-07-22,M-013,Mugs item 13,Mugs,9.48,25
+2024-07-29,M-013,Mugs item 13,Mugs,9.48,27
+2024-08-05,M-013,Mugs item 13,Mugs,9.48,15
+2024-08-12,M-013,Mugs item 13,Mugs,9.48,20
+2024-08-19,M-013,Mugs item 13,Mugs,7.94,40
+2024-08-26,M-013,Mugs item 13,Mugs,9.48,17
+2024-09-02,M-013,Mugs item 13,Mugs,9.48,18
+2024-09-09,M-013,Mugs item 13,Mugs,9.48,19
+2024-09-16,M-013,Mugs item 13,Mugs,9.48,11
+2024-09-23,M-013,Mugs item 13,Mugs,7.03,26
+2024-09-30,M-013,Mugs item 13,Mugs,9.48,24
+2024-10-07,M-013,Mugs item 13,Mugs,9.48,28
+2024-10-14,M-013,Mugs item 13,Mugs,9.48,29
+2024-10-21,M-013,Mugs item 13,Mugs,9.48,20
+2024-10-28,M-013,Mugs item 13,Mugs,9.48,20
+2024-11-04,M-013,Mugs item 13,Mugs,9.48,23
+2024-11-11,M-013,Mugs item 13,Mugs,8.02,33
+2024-11-18,M-013,Mugs item 13,Mugs,9.48,23
+2024-11-25,M-013,Mugs item 13,Mugs,9.48,27
+2024-12-02,M-013,Mugs item 13,Mugs,9.48,23
+2024-12-09,M-013,Mugs item 13,Mugs,7.15,28
+2024-12-16,M-013,Mugs item 13,Mugs,9.48,18
+2024-12-23,M-013,Mugs item 13,Mugs,9.48,22
+2024-01-01,M-014,Mugs item 14,Mugs,8.61,18
+2024-01-08,M-014,Mugs item 14,Mugs,8.61,5
+2024-01-15,M-014,Mugs item 14,Mugs,6.04,32
+2024-01-22,M-014,Mugs item 14,Mugs,8.61,19
+2024-01-29,M-014,Mugs item 14,Mugs,8.61,10
+2024-02-05,M-014,Mugs item 14,Mugs,8.61,14
+2024-02-12,M-014,Mugs item 14,Mugs,8.61,12
+2024-02-19,M-014,Mugs item 14,Mugs,8.61,6
+2024-02-26,M-014,Mugs item 14,Mugs,8.61,10
+2024-03-04,M-014,Mugs item 14,Mugs,7.29,13
+2024-03-11,M-014,Mugs item 14,Mugs,8.61,13
+2024-03-18,M-014,Mugs item 14,Mugs,8.61,10
+2024-03-25,M-014,Mugs item 14,Mugs,8.61,12
+2024-04-01,M-014,Mugs item 14,Mugs,8.54,10
+2024-04-08,M-014,Mugs item 14,Mugs,8.54,9
+2024-04-15,M-014,Mugs item 14,Mugs,8.10,12
+2024-04-22,M-014,Mugs item 14,Mugs,8.10,15
+2024-04-29,M-014,Mugs item 14,Mugs,6.09,20
+2024-05-06,M-014,Mugs item 14,Mugs,8.10,15
+2024-05-13,M-014,Mugs item 14,Mugs,8.10,12
+2024-05-20,M-014,Mugs item 14,Mugs,8.10,12
+2024-05-27,M-014,Mugs item 14,Mugs,8.10,13
+2024-06-03,M-014,Mugs item 14,Mugs,8.10,12
+2024-06-10,M-014,Mugs item 14,Mugs,8.10,8
+2024-06-17,M-014,Mugs item 14,Mugs,8.10,8
+2024-06-24,M-014,Mugs item 14,Mugs,8.10,7
+2024-07-01,M-014,Mugs item 14,Mugs,8.10,12
+2024-07-08,M-014,Mugs item 14,Mugs,8.10,12
+2024-07-15,M-014,Mugs item 14,Mugs,8.10,14
+2024-07-22,M-014,Mugs item 14,Mugs,6.45,12
+2024-07-29,M-014,Mugs item 14,Mugs,8.20,9
+2024-08-05,M-014,Mugs item 14,Mugs,6.12,21
+2024-08-12,M-014,Mugs item 14,Mugs,8.20,12
+2024-08-19,M-014,Mugs item 14,Mugs,8.20,17
+2024-08-26,M-014,Mugs item 14,Mugs,8.20,17
+2024-09-02,M-014,Mugs item 14,Mugs,8.20,28
+2024-09-09,M-014,Mugs item 14,Mugs,8.20,15
+2024-09-16,M-014,Mugs item 14,Mugs,8.20,8
+2024-09-23,M-014,Mugs item 14,Mugs,8.20,12
+2024-09-30,M-014,Mugs item 14,Mugs,8.20,12
+2024-10-07,M-014,Mugs item 14,Mugs,8.20,14
+2024-10-14,M-014,Mugs item 14,Mugs,8.20,5
+2024-10-21,M-014,Mugs item 14,Mugs,8.20,11
+2024-10-28,M-014,Mugs item 14,Mugs,8.20,5
+2024-11-04,M-014,Mugs item 14,Mugs,8.20,13
+2024-11-11,M-014,Mugs item 14,Mugs,8.20,11
+2024-11-18,M-014,Mugs item 14,Mugs,6.23,19
+2024-11-25,M-014,Mugs item 14,Mugs,8.20,11
+2024-12-02,M-014,Mugs item 14,Mugs,8.20,7
+2024-12-09,M-014,Mugs item 14,Mugs,8.20,15
+2024-12-16,M-014,Mugs item 14,Mugs,6.21,25
+2024-12-23,M-014,Mugs item 14,Mugs,8.20,10
+2024-01-01,M-015,Mugs item 15,Mugs,18.19,34
+2024-01-08,M-015,Mugs item 15,Mugs,18.19,40
+2024-01-15,M-015,Mugs item 15,Mugs,13.41,44
+2024-01-22,M-015,Mugs item 15,Mugs,15.65,55
+2024-01-29,M-015,Mugs item 15,Mugs,18.19,33
+2024-02-05,M-015,Mugs item 15,Mugs,15.81,38
+2024-02-12,M-015,Mugs item 15,Mugs,18.19,29
+2024-02-19,M-015,Mugs item 15,Mugs,18.19,36
+2024-02-26,M-015,Mugs item 15,Mugs,15.74,34
+2024-03-04,M-015,Mugs item 15,Mugs,18.19,40
+2024-03-11,M-015,Mugs item 15,Mugs,18.19,43
+2024-03-18,M-015,Mugs item 15,Mugs,18.19,48
+2024-03-25,M-015,Mugs item 15,Mugs,13.59,63
+2024-04-01,M-015,Mugs item 15,Mugs,18.19,48
+2024-04-08,M-015,Mugs item 15,Mugs,14.87,65
+2024-04-15,M-015,Mugs item 15,Mugs,15.11,47
+2024-04-22,M-015,Mugs item 15,Mugs,15.13,58
+2024-04-29,M-015,Mugs item 15,Mugs,18.19,36
+2024-05-06,M-015,Mugs item 15,Mugs,18.19,40
+2024-05-13,M-015,Mugs item 15,Mugs,18.19,37
+2024-05-20,M-015,Mugs item 15,Mugs,18.19,29
+2024-05-27,M-015,Mugs item 15,Mugs,15.27,51
+2024-06-03,M-015,Mugs item 15,Mugs,20.27,18
+2024-06-10,M-015,Mugs item 15,Mugs,20.27,39
+2024-06-17,M-015,Mugs item 15,Mugs,20.27,27
+2024-06-24,M-015,Mugs item 15,Mugs,20.27,38
+2024-07-01,M-015,Mugs item 15,Mugs,20.27,38
+2024-07-08,M-015,Mugs item 15,Mugs,20.27,37
+2024-07-15,M-015,Mugs item 15,Mugs,20.27,30
+2024-07-22,M-015,Mugs item 15,Mugs,20.27,28
+2024-07-29,M-015,Mugs item 15,Mugs,20.27,25
+2024-08-05,M-015,Mugs item 15,Mugs,16.18,45
+2024-08-12,M-015,Mugs item 15,Mugs,20.27,36
+2024-08-19,M-015,Mugs item 15,Mugs,20.27,48
+2024-08-26,M-015,Mugs item 15,Mugs,18.06,50
+2024-09-02,M-015,Mugs item 15,Mugs,20.27,25
+2024-09-09,M-015,Mugs item 15,Mugs,20.27,24
+2024-09-16,M-015,Mugs item 15,Mugs,15.97,32
+2024-09-23,M-015,Mugs item 15,Mugs,20.27,34
+2024-09-30,M-015,Mugs item 15,Mugs,20.27,16
+2024-10-07,M-015,Mugs item 15,Mugs,15.58,55
+2024-10-14,M-015,Mugs item 15,Mugs,20.27,34
+2024-10-21,M-015,Mugs item 15,Mugs,20.27,43
+2024-10-28,M-015,Mugs item 15,Mugs,20.27,42
+2024-11-04,M-015,Mugs item 15,Mugs,20.27,32
+2024-11-11,M-015,Mugs item 15,Mugs,20.27,37
+2024-11-18,M-015,Mugs item 15,Mugs,20.27,20
+2024-11-25,M-015,Mugs item 15,Mugs,20.27,28
+2024-12-02,M-015,Mugs item 15,Mugs,20.27,30
+2024-12-09,M-015,Mugs item 15,Mugs,20.27,33
+2024-12-16,M-015,Mugs item 15,Mugs,20.27,35
+2024-12-23,M-015,Mugs item 15,Mugs,20.27,43
+2024-01-01,M-016,Mugs item 16,Mugs,18.72,15
+2024-01-08,M-016,Mugs item 16,Mugs,18.72,11
+2024-01-15,M-016,Mugs item 16,Mugs,18.72,29
+2024-01-22,M-016,Mugs item 16,Mugs,15.22,20
+2024-01-29,M-016,Mugs item 16,Mugs,18.72,12
+2024-02-05,M-016,Mugs item 16,Mugs,18.72,12
+2024-02-12,M-016,Mugs item 16,Mugs,18.06,24
+2024-02-19,M-016,Mugs item 16,Mugs,18.06,12
+2024-02-26,M-016,Mugs item 16,Mugs,18.06,16
+2024-03-04,M-016,Mugs item 16,Mugs,18.06,14
+2024-03-11,M-016,Mugs item 16,Mugs,18.06,17
+2024-03-18,M-016,Mugs item 16,Mugs,18.06,18
+2024-03-25,M-016,Mugs item 16,Mugs,18.06,14
+2024-04-01,M-016,Mugs item 16,Mugs,18.06,9
+2024-04-08,M-016,Mugs item 16,Mugs,18.06,13
+2024-04-15,M-016,Mugs item 16,Mugs,18.06,17
+2024-04-22,M-016,Mugs item 16,Mugs,18.06,26
+2024-04-29,M-016,Mugs item 16,Mugs,18.06,16
+2024-05-06,M-016,Mugs item 16,Mugs,18.06,15
+2024-05-13,M-016,Mugs item 16,Mugs,14.13,35
+2024-05-20,M-016,Mugs item 16,Mugs,18.06,16
+2024-05-27,M-016,Mugs item 16,Mugs,18.06,10
+2024-06-03,M-016,Mugs item 16,Mugs,18.06,21
+2024-06-10,M-016,Mugs item 16,Mugs,18.06,15
+2024-06-17,M-016,Mugs item 16,Mugs,18.06,19
+2024-06-24,M-016,Mugs item 16,Mugs,15.99,22
+2024-07-01,M-016,Mugs item 16,Mugs,16.18,25
+2024-07-08,M-016,Mugs item 16,Mugs,18.06,21
+2024-07-15,M-016,Mugs item 16,Mugs,18.06,7
+2024-07-22,M-016,Mugs item 16,Mugs,18.06,21
+2024-07-29,M-016,Mugs item 16,Mugs,18.06,20
+2024-08-05,M-016,Mugs item 16,Mugs,18.06,21
+2024-08-12,M-016,Mugs item 16,Mugs,18.06,19
+2024-08-19,M-016,Mugs item 16,Mugs,12.85,28
+2024-08-26,M-016,Mugs item 16,Mugs,18.06,16
+2024-09-02,M-016,Mugs item 16,Mugs,18.06,23
+2024-09-09,M-016,Mugs item 16,Mugs,18.06,24
+2024-09-16,M-016,Mugs item 16,Mugs,18.06,15
+2024-09-23,M-016,Mugs item 16,Mugs,18.06,15
+2024-09-30,M-016,Mugs item 16,Mugs,18.06,22
+2024-10-07,M-016,Mugs item 16,Mugs,18.06,16
+2024-10-14,M-016,Mugs item 16,Mugs,18.06,19
+2024-10-21,M-016,Mugs item 16,Mugs,18.06,20
+2024-10-28,M-016,Mugs item 16,Mugs,13.63,31
+2024-11-04,M-016,Mugs item 16,Mugs,18.06,15
+2024-11-11,M-016,Mugs item 16,Mugs,13.34,26
+2024-11-18,M-016,Mugs item 16,Mugs,18.06,14
+2024-11-25,M-016,Mugs item 16,Mugs,18.83,17
+2024-12-02,M-016,Mugs item 16,Mugs,18.83,7
+2024-12-09,M-016,Mugs item 16,Mugs,13.92,27
+2024-12-16,M-016,Mugs item 16,Mugs,15.22,24
+2024-12-23,M-016,Mugs item 16,Mugs,18.83,9
+2024-01-01,M-017,Mugs item 17,Mugs,28.26,44
+2024-01-08,M-017,Mugs item 17,Mugs,20.73,80
+2024-01-15,M-017,Mugs item 17,Mugs,28.26,37
+2024-01-22,M-017,Mugs item 17,Mugs,28.26,50
+2024-01-29,M-017,Mugs item 17,Mugs,28.26,57
+2024-02-05,M-017,Mugs item 17,Mugs,28.26,41
+2024-02-12,M-017,Mugs item 17,Mugs,28.26,48
+2024-02-19,M-017,Mugs item 17,Mugs,29.19,46
+2024-02-26,M-017,Mugs item 17,Mugs,29.19,58
+2024-03-04,M-017,Mugs item 17,Mugs,29.19,31
+2024-03-11,M-017,Mugs item 17,Mugs,29.19,23
+2024-03-18,M-017,Mugs item 17,Mugs,29.19,35
+2024-03-25,M-017,Mugs item 17,Mugs,29.19,55
+2024-04-01,M-017,Mugs item 17,Mugs,29.19,35
+2024-04-08,M-017,Mugs item 17,Mugs,29.19,49
+2024-04-15,M-017,Mugs item 17,Mugs,29.19,42
+2024-04-22,M-017,Mugs item 17,Mugs,29.19,35
+2024-04-29,M-017,Mugs item 17,Mugs,25.22,63
+2024-05-06,M-017,Mugs item 17,Mugs,29.19,52
+2024-05-13,M-017,Mugs item 17,Mugs,29.19,38
+2024-05-20,M-017,Mugs item 17,Mugs,29.19,46
+2024-05-27,M-017,Mugs item 17,Mugs,29.19,48
+2024-06-03,M-017,Mugs item 17,Mugs,29.19,47
+2024-06-10,M-017,Mugs item 17,Mugs,29.19,42
+2024-06-17,M-017,Mugs item 17,Mugs,29.19,53
+2024-06-24,M-017,Mugs item 17,Mugs,29.19,62
+2024-07-01,M-017,Mugs item 17,Mugs,29.19,52
+2024-07-08,M-017,Mugs item 17,Mugs,26.09,63
+2024-07-15,M-017,Mugs item 17,Mugs,29.19,41
+2024-07-22,M-017,Mugs item 17,Mugs,25.93,46
+2024-07-29,M-017,Mugs item 17,Mugs,29.19,44
+2024-08-05,M-017,Mugs item 17,Mugs,29.19,44
+2024-08-12,M-017,Mugs item 17,Mugs,29.19,51
+2024-08-19,M-017,Mugs item 17,Mugs,29.19,40
+2024-08-26,M-017,Mugs item 17,Mugs,29.19,45
+2024-09-02,M-017,Mugs item 17,Mugs,24.07,61
+2024-09-09,M-017,Mugs item 17,Mugs,29.19,60
+2024-09-16,M-017,Mugs item 17,Mugs,29.19,45
+2024-09-23,M-017,Mugs item 17,Mugs,29.19,40
+2024-09-30,M-017,Mugs item 17,Mugs,29.19,43
+2024-10-07,M-017,Mugs item 17,Mugs,29.19,44
+2024-10-14,M-017,Mugs item 17,Mugs,29.19,34
+2024-10-21,M-017,Mugs item 17,Mugs,29.19,34
+2024-10-28,M-017,Mugs item 17,Mugs,29.19,49
+2024-11-04,M-017,Mugs item 17,Mugs,29.19,44
+2024-11-11,M-017,Mugs item 17,Mugs,29.19,46
+2024-11-18,M-017,Mugs item 17,Mugs,29.19,28
+2024-11-25,M-017,Mugs item 17,Mugs,29.19,44
+2024-12-02,M-017,Mugs item 17,Mugs,29.19,39
+2024-12-09,M-017,Mugs item 17,Mugs,29.19,34
+2024-12-16,M-017,Mugs item 17,Mugs,29.19,54
+2024-12-23,M-017,Mugs item 17,Mugs,29.19,34
+2024-01-01,M-018,Mugs item 18,Mugs,15.39,53
+2024-01-08,M-018,Mugs item 18,Mugs,15.39,67
+2024-01-15,M-018,Mugs item 18,Mugs,15.39,56
+2024-01-22,M-018,Mugs item 18,Mugs,15.39,79
+2024-01-29,M-018,Mugs item 18,Mugs,11.55,103
+2024-02-05,M-018,Mugs item 18,Mugs,15.39,39
+2024-02-12,M-018,Mugs item 18,Mugs,15.39,68
+2024-02-19,M-018,Mugs item 18,Mugs,15.39,56
+2024-02-26,M-018,Mugs item 18,Mugs,15.39,65
+2024-03-04,M-018,Mugs item 18,Mugs,15.39,52
+2024-03-11,M-018,Mugs item 18,Mugs,16.50,58
+2024-03-18,M-018,Mugs item 18,Mugs,16.50,87
+2024-03-25,M-018,Mugs item 18,Mugs,16.50,64
+2024-04-01,M-018,Mugs item 18,Mugs,13.44,94
+2024-04-08,M-018,Mugs item 18,Mugs,16.50,38
+2024-04-15,M-018,Mugs item 18,Mugs,16.50,35
+2024-04-22,M-018,Mugs item 18,Mugs,13.09,96
+2024-04-29,M-018,Mugs item 18,Mugs,13.91,61
+2024-05-06,M-018,Mugs item 18,Mugs,12.85,61
+2024-05-13,M-018,Mugs item 18,Mugs,16.50,43
+2024-05-20,M-018,Mugs item 18,Mugs,16.50,60
+2024-05-27,M-018,Mugs item 18,Mugs,11.99,91
+2024-06-03,M-018,Mugs item 18,Mugs,16.56,57
+2024-06-10,M-018,Mugs item 18,Mugs,16.56,42
+2024-06-17,M-018,Mugs item 18,Mugs,16.56,66
+2024-06-24,M-018,Mugs item 18,Mugs,16.56,53
+2024-07-01,M-018,Mugs item 18,Mugs,17.38,47
+2024-07-08,M-018,Mugs item 18,Mugs,17.38,45
+2024-07-15,M-018,Mugs item 18,Mugs,17.38,60
+2024-07-22,M-018,Mugs item 18,Mugs,16.20,73
+2024-07-29,M-018,Mugs item 18,Mugs,16.20,52
+2024-08-05,M-018,Mugs item 18,Mugs,13.62,60
+2024-08-12,M-018,Mugs item 18,Mugs,16.20,45
+2024-08-19,M-018,Mugs item 18,Mugs,14.57,53
+2024-08-26,M-018,Mugs item 18,Mugs,17.48,54
+2024-09-02,M-018,Mugs item 18,Mugs,12.76,92
+2024-09-09,M-018,Mugs item 18,Mugs,17.47,64
+2024-09-16,M-018,Mugs item 18,Mugs,15.49,61
+2024-09-23,M-018,Mugs item 18,Mugs,12.52,67
+2024-09-30,M-018,Mugs item 18,Mugs,17.47,45
+2024-10-07,M-018,Mugs item 18,Mugs,17.47,49
+2024-10-14,M-018,Mugs item 18,Mugs,15.30,62
+2024-10-21,M-018,Mugs item 18,Mugs,17.47,53
+2024-10-28,M-018,Mugs item 18,Mugs,17.47,47
+2024-11-04,M-018,Mugs item 18,Mugs,17.47,59
+2024-11-11,M-018,Mugs item 18,Mugs,17.47,27
+2024-11-18,M-018,Mugs item 18,Mugs,17.47,71
+2024-11-25,M-018,Mugs item 18,Mugs,17.47,49
+2024-12-02,M-018,Mugs item 18,Mugs,17.47,53
+2024-12-09,M-018,Mugs item 18,Mugs,14.86,79
+2024-12-16,M-018,Mugs item 18,Mugs,15.39,63
+2024-12-23,M-018,Mugs item 18,Mugs,17.47,47
+2024-01-01,M-019,Mugs item 19,Mugs,21.14,30
+2024-01-08,M-019,Mugs item 19,Mugs,21.14,27
+2024-01-15,M-019,Mugs item 19,Mugs,15.79,47
+2024-01-22,M-019,Mugs item 19,Mugs,21.14,14
+2024-01-29,M-019,Mugs item 19,Mugs,21.14,26
+2024-02-05,M-019,Mugs item 19,Mugs,15.46,41
+2024-02-12,M-019,Mugs item 19,Mugs,18.55,25
+2024-02-19,M-019,Mugs item 19,Mugs,15.76,46
+2024-02-26,M-019,Mugs item 19,Mugs,21.14,25
+2024-03-04,M-019,Mugs item 19,Mugs,21.14,24
+2024-03-11,M-019,Mugs item 19,Mugs,21.14,32
+2024-03-18,M-019,Mugs item 19,Mugs,21.14,26
+2024-03-25,M-019,Mugs item 19,Mugs,21.73,23
+2024-04-01,M-019,Mugs item 19,Mugs,21.73,22
+2024-04-08,M-019,Mugs item 19,Mugs,21.73,23
+2024-04-15,M-019,Mugs item 19,Mugs,22.50,15
+2024-04-22,M-019,Mugs item 19,Mugs,22.50,17
+2024-04-29,M-019,Mugs item 19,Mugs,22.50,25
+2024-05-06,M-019,Mugs item 19,Mugs,22.50,30
+2024-05-13,M-019,Mugs item 19,Mugs,22.50,21
+2024-05-20,M-019,Mugs item 19,Mugs,17.98,40
+2024-05-27,M-019,Mugs item 19,Mugs,22.50,22
+2024-06-03,M-019,Mugs item 19,Mugs,22.50,22
+2024-06-10,M-019,Mugs item 19,Mugs,22.50,19
+2024-06-17,M-019,Mugs item 19,Mugs,19.22,29
+2024-06-24,M-019,Mugs item 19,Mugs,18.44,40
+2024-07-01,M-019,Mugs item 19,Mugs,22.50,24
+2024-07-08,M-019,Mugs item 19,Mugs,22.50,13
+2024-07-15,M-019,Mugs item 19,Mugs,18.70,41
+2024-07-22,M-019,Mugs item 19,Mugs,22.50,19
+2024-07-29,M-019,Mugs item 19,Mugs,22.50,23
+2024-08-05,M-019,Mugs item 19,Mugs,22.50,27
+2024-08-12,M-019,Mugs item 19,Mugs,22.50,16
+2024-08-19,M-019,Mugs item 19,Mugs,22.67,30
+2024-08-26,M-019,Mugs item 19,Mugs,22.67,13
+2024-09-02,M-019,Mugs item 19,Mugs,22.67,22
+2024-09-09,M-019,Mugs item 19,Mugs,22.67,22
+2024-09-16,M-019,Mugs item 19,Mugs,22.67,23
+2024-09-23,M-019,Mugs item 19,Mugs,22.67,18
+2024-09-30,M-019,Mugs item 19,Mugs,19.64,23
+2024-10-07,M-019,Mugs item 19,Mugs,19.57,26
+2024-10-14,M-019,Mugs item 19,Mugs,22.67,25
+2024-10-21,M-019,Mugs item 19,Mugs,18.40,32
+2024-10-28,M-019,Mugs item 19,Mugs,22.67,27
+2024-11-04,M-019,Mugs item 19,Mugs,22.67,22
+2024-11-11,M-019,Mugs item 19,Mugs,18.49,32
+2024-11-18,M-019,Mugs item 19,Mugs,22.67,21
+2024-11-25,M-019,Mugs item 19,Mugs,22.67,21
+2024-12-02,M-019,Mugs item 19,Mugs,22.67,22
+2024-12-09,M-019,Mugs item 19,Mugs,17.79,23
+2024-12-16,M-019,Mugs item 19,Mugs,19.20,25
+2024-12-23,M-019,Mugs item 19,Mugs,22.67,18
+2024-01-01,M-020,Mugs item 20,Mugs,14.08,19
+2024-01-08,M-020,Mugs item 20,Mugs,14.08,4
+2024-01-15,M-020,Mugs item 20,Mugs,14.08,7
+2024-01-22,M-020,Mugs item 20,Mugs,14.08,6
+2024-01-29,M-020,Mugs item 20,Mugs,14.08,11
+2024-02-05,M-020,Mugs item 20,Mugs,14.08,9
+2024-02-12,M-020,Mugs item 20,Mugs,14.08,6
+2024-02-19,M-020,Mugs item 20,Mugs,14.08,19
+2024-02-26,M-020,Mugs item 20,Mugs,10.92,16
+2024-03-04,M-020,Mugs item 20,Mugs,14.08,13
+2024-03-11,M-020,Mugs item 20,Mugs,12.13,18
+2024-03-18,M-020,Mugs item 20,Mugs,14.08,8
+2024-03-25,M-020,Mugs item 20,Mugs,14.08,11
+2024-04-01,M-020,Mugs item 20,Mugs,14.08,17
+2024-04-08,M-020,Mugs item 20,Mugs,11.84,13
+2024-04-15,M-020,Mugs item 20,Mugs,14.08,9
+2024-04-22,M-020,Mugs item 20,Mugs,14.08,9
+2024-04-29,M-020,Mugs item 20,Mugs,14.08,16
+2024-05-06,M-020,Mugs item 20,Mugs,14.08,11
+2024-05-13,M-020,Mugs item 20,Mugs,14.08,12
+2024-05-20,M-020,Mugs item 20,Mugs,14.08,13
+2024-05-27,M-020,Mugs item 20,Mugs,14.08,17
+2024-06-03,M-020,Mugs item 20,Mugs,14.08,12
+2024-06-10,M-020,Mugs item 20,Mugs,14.08,14
+2024-06-17,M-020,Mugs item 20,Mugs,11.54,14
+2024-06-24,M-020,Mugs item 20,Mugs,12.11,18
+2024-07-01,M-020,Mugs item 20,Mugs,14.08,10
+2024-07-08,M-020,Mugs item 20,Mugs,14.08,13
+2024-07-15,M-020,Mugs item 20,Mugs,10.26,8
+2024-07-22,M-020,Mugs item 20,Mugs,14.08,10
+2024-07-29,M-020,Mugs item 20,Mugs,14.08,15
+2024-08-05,M-020,Mugs item 20,Mugs,14.08,7
+2024-08-12,M-020,Mugs item 20,Mugs,14.08,10
+2024-08-19,M-020,Mugs item 20,Mugs,14.08,10
+2024-08-26,M-020,Mugs item 20,Mugs,9.90,20
+2024-09-02,M-020,Mugs item 20,Mugs,14.08,12
+2024-09-09,M-020,Mugs item 20,Mugs,14.08,12
+2024-09-16,M-020,Mugs item 20,Mugs,14.08,18
+2024-09-23,M-020,Mugs item 20,Mugs,9.99,19
+2024-09-30,M-020,Mugs item 20,Mugs,14.08,11
+2024-10-07,M-020,Mugs item 20,Mugs,12.27,9
+2024-10-14,M-020,Mugs item 20,Mugs,14.08,15
+2024-10-21,M-020,Mugs item 20,Mugs,12.47,11
+2024-10-28,M-020,Mugs item 20,Mugs,10.24,18
+2024-11-04,M-020,Mugs item 20,Mugs,14.08,9
+2024-11-11,M-020,Mugs item 20,Mugs,14.08,10
+2024-11-18,M-020,Mugs item 20,Mugs,9.92,15
+2024-11-25,M-020,Mugs item 20,Mugs,14.08,13
+2024-12-02,M-020,Mugs item 20,Mugs,14.08,18
+2024-12-09,M-020,Mugs item 20,Mugs,12.03,16
+2024-12-16,M-020,Mugs item 20,Mugs,10.03,16
+2024-12-23,M-020,Mugs item 20,Mugs,12.32,11
+2024-01-01,GC-001,Greeting Cards item 1,Greeting Cards,11.28,49
+2024-01-08,GC-001,Greeting Cards item 1,Greeting Cards,8.10,58
+2024-01-15,GC-001,Greeting Cards item 1,Greeting Cards,11.28,49
+2024-01-22,GC-001,Greeting Cards item 1,Greeting Cards,11.28,34
+2024-01-29,GC-001,Greeting Cards item 1,Greeting Cards,11.28,30
+2024-02-05,GC-001,Greeting Cards item 1,Greeting Cards,11.28,32
+2024-02-12,GC-001,Greeting Cards item 1,Greeting Cards,11.28,35
+2024-02-19,GC-001,Greeting Cards item 1,Greeting Cards,11.28,28
+2024-02-26,GC-001,Greeting Cards item 1,Greeting Cards,11.28,44
+2024-03-04,GC-001,Greeting Cards item 1,Greeting Cards,11.28,35
+2024-03-11,GC-001,Greeting Cards item 1,Greeting Cards,11.28,46
+2024-03-18,GC-001,Greeting Cards item 1,Greeting Cards,11.28,52
+2024-03-25,GC-001,Greeting Cards item 1,Greeting Cards,11.28,38
+2024-04-01,GC-001,Greeting Cards item 1,Greeting Cards,8.68,49
+2024-04-08,GC-001,Greeting Cards item 1,Greeting Cards,11.28,20
+2024-04-15,GC-001,Greeting Cards item 1,Greeting Cards,11.28,40
+2024-04-22,GC-001,Greeting Cards item 1,Greeting Cards,11.28,42
+2024-04-29,GC-001,Greeting Cards item 1,Greeting Cards,11.28,45
+2024-05-06,GC-001,Greeting Cards item 1,Greeting Cards,11.28,37
+2024-05-13,GC-001,Greeting Cards item 1,Greeting Cards,11.28,36
+2024-05-20,GC-001,Greeting Cards item 1,Greeting Cards,11.28,44
+2024-05-27,GC-001,Greeting Cards item 1,Greeting Cards,11.28,35
+2024-06-03,GC-001,Greeting Cards item 1,Greeting Cards,11.28,31
+2024-06-10,GC-001,Greeting Cards item 1,Greeting Cards,11.28,44
+2024-06-17,GC-001,Greeting Cards item 1,Greeting Cards,9.68,59
+2024-06-24,GC-001,Greeting Cards item 1,Greeting Cards,11.28,27
+2024-07-01,GC-001,Greeting Cards item 1,Greeting Cards,11.28,43
+2024-07-08,GC-001,Greeting Cards item 1,Greeting Cards,11.28,33
+2024-07-15,GC-001,Greeting Cards item 1,Greeting Cards,11.28,32
+2024-07-22,GC-001,Greeting Cards item 1,Greeting Cards,11.28,53
+2024-07-29,GC-001,Greeting Cards item 1,Greeting Cards,11.28,39
+2024-08-05,GC-001,Greeting Cards item 1,Greeting Cards,11.28,35
+2024-08-12,GC-001,Greeting Cards item 1,Greeting Cards,11.28,43
+2024-08-19,GC-001,Greeting Cards item 1,Greeting Cards,11.28,30
+2024-08-26,GC-001,Greeting Cards item 1,Greeting Cards,8.09,60
+2024-09-02,GC-001,Greeting Cards item 1,Greeting Cards,11.28,41
+2024-09-09,GC-001,Greeting Cards item 1,Greeting Cards,7.98,52
+2024-09-16,GC-001,Greeting Cards item 1,Greeting Cards,7.94,36
+2024-09-23,GC-001,Greeting Cards item 1,Greeting Cards,11.28,45
+2024-09-30,GC-001,Greeting Cards item 1,Greeting Cards,11.28,33
+2024-10-07,GC-001,Greeting Cards item 1,Greeting Cards,11.28,20
+2024-10-14,GC-001,Greeting Cards item 1,Greeting Cards,11.28,42
+2024-10-21,GC-001,Greeting Cards item 1,Greeting Cards,11.28,39
+2024-10-28,GC-001,Greeting Cards item 1,Greeting Cards,11.28,39
+2024-11-04,GC-001,Greeting Cards item 1,Greeting Cards,11.28,29
+2024-11-11,GC-001,Greeting Cards item 1,Greeting Cards,11.28,45
+2024-11-18,GC-001,Greeting Cards item 1,Greeting Cards,11.28,34
+2024-11-25,GC-001,Greeting Cards item 1,Greeting Cards,11.28,36
+2024-12-02,GC-001,Greeting Cards item 1,Greeting Cards,11.28,37
+2024-12-09,GC-001,Greeting Cards item 1,Greeting Cards,11.28,27
+2024-12-16,GC-001,Greeting Cards item 1,Greeting Cards,11.28,36
+2024-12-23,GC-001,Greeting Cards item 1,Greeting Cards,11.28,44
+2024-01-01,GC-002,Greeting Cards item 2,Greeting Cards,10.04,49
+2024-01-08,GC-002,Greeting Cards item 2,Greeting Cards,10.04,55
+2024-01-15,GC-002,Greeting Cards item 2,Greeting Cards,10.04,51
+2024-01-22,GC-002,Greeting Cards item 2,Greeting Cards,10.04,70
+2024-01-29,GC-002,Greeting Cards item 2,Greeting Cards,10.04,66
+2024-02-05,GC-002,Greeting Cards item 2,Greeting Cards,7.25,76
+2024-02-12,GC-002,Greeting Cards item 2,Greeting Cards,7.55,61
+2024-02-19,GC-002,Greeting Cards item 2,Greeting Cards,10.04,57
+2024-02-26,GC-002,Greeting Cards item 2,Greeting Cards,10.04,41
+2024-03-04,GC-002,Greeting Cards item 2,Greeting Cards,10.04,73
+2024-03-11,GC-002,Greeting Cards item 2,Greeting Cards,10.04,54
+2024-03-18,GC-002,Greeting Cards item 2,Greeting Cards,10.04,55
+2024-03-25,GC-002,Greeting Cards item 2,Greeting Cards,10.04,86
+2024-04-01,GC-002,Greeting Cards item 2,Greeting Cards,10.04,71
+2024-04-08,GC-002,Greeting Cards item 2,Greeting Cards,8.10,61
+2024-04-15,GC-002,Greeting Cards item 2,Greeting Cards,10.04,69
+2024-04-22,GC-002,Greeting Cards item 2,Greeting Cards,10.04,55
+2024-04-29,GC-002,Greeting Cards item 2,Greeting Cards,10.04,61
+2024-05-06,GC-002,Greeting Cards item 2,Greeting Cards,10.04,70
+2024-05-13,GC-002,Greeting Cards item 2,Greeting Cards,10.04,59
+2024-05-20,GC-002,Greeting Cards item 2,Greeting Cards,10.04,45
+2024-05-27,GC-002,Greeting Cards item 2,Greeting Cards,10.04,72
+2024-06-03,GC-002,Greeting Cards item 2,Greeting Cards,10.04,59
+2024-06-10,GC-002,Greeting Cards item 2,Greeting Cards,10.04,67
+2024-06-17,GC-002,Greeting Cards item 2,Greeting Cards,10.04,53
+2024-06-24,GC-002,Greeting Cards item 2,Greeting Cards,10.04,56
+2024-07-01,GC-002,Greeting Cards item 2,Greeting Cards,10.04,69
+2024-07-08,GC-002,Greeting Cards item 2,Greeting Cards,10.04,49
+2024-07-15,GC-002,Greeting Cards item 2,Greeting Cards,10.04,63
+2024-07-22,GC-002,Greeting Cards item 2,Greeting Cards,10.04,60
+2024-07-29,GC-002,Greeting Cards item 2,Greeting Cards,10.04,55
+2024-08-05,GC-002,Greeting Cards item 2,Greeting Cards,10.41,53
+2024-08-12,GC-002,Greeting Cards item 2,Greeting Cards,10.41,37
+2024-08-19,GC-002,Greeting Cards item 2,Greeting Cards,10.41,66
+2024-08-26,GC-002,Greeting Cards item 2,Greeting Cards,10.41,58
+2024-09-02,GC-002,Greeting Cards item 2,Greeting Cards,10.41,91
+2024-09-09,GC-002,Greeting Cards item 2,Greeting Cards,10.41,57
+2024-09-16,GC-002,Greeting Cards item 2,Greeting Cards,10.41,60
+2024-09-23,GC-002,Greeting Cards item 2,Greeting Cards,10.41,49
+2024-09-30,GC-002,Greeting Cards item 2,Greeting Cards,8.14,76
+2024-10-07,GC-002,Greeting Cards item 2,Greeting Cards,7.54,97
+2024-10-14,GC-002,Greeting Cards item 2,Greeting Cards,7.77,65
+2024-10-21,GC-002,Greeting Cards item 2,Greeting Cards,10.41,57
+2024-10-28,GC-002,Greeting Cards item 2,Greeting Cards,10.41,58
+2024-11-04,GC-002,Greeting Cards item 2,Greeting Cards,10.41,56
+2024-11-11,GC-002,Greeting Cards item 2,Greeting Cards,7.35,81
+2024-11-18,GC-002,Greeting Cards item 2,Greeting Cards,10.41,41
+2024-11-25,GC-002,Greeting Cards item 2,Greeting Cards,10.41,67
+2024-12-02,GC-002,Greeting Cards item 2,Greeting Cards,7.51,83
+2024-12-09,GC-002,Greeting Cards item 2,Greeting Cards,10.41,52
+2024-12-16,GC-002,Greeting Cards item 2,Greeting Cards,10.41,48
+2024-12-23,GC-002,Greeting Cards item 2,Greeting Cards,10.41,59
+2024-01-01,GC-003,Greeting Cards item 3,Greeting Cards,51.26,74
+2024-01-08,GC-003,Greeting Cards item 3,Greeting Cards,51.26,55
+2024-01-15,GC-003,Greeting Cards item 3,Greeting Cards,51.26,64
+2024-01-22,GC-003,Greeting Cards item 3,Greeting Cards,51.26,52
+2024-01-29,GC-003,Greeting Cards item 3,Greeting Cards,51.26,76
+2024-02-05,GC-003,Greeting Cards item 3,Greeting Cards,51.26,62
+2024-02-12,GC-003,Greeting Cards item 3,Greeting Cards,51.26,82
+2024-02-19,GC-003,Greeting Cards item 3,Greeting Cards,51.26,67
+2024-02-26,GC-003,Greeting Cards item 3,Greeting Cards,37.15,101
+2024-03-04,GC-003,Greeting Cards item 3,Greeting Cards,36.65,88
+2024-03-11,GC-003,Greeting Cards item 3,Greeting Cards,46.34,57
+2024-03-18,GC-003,Greeting Cards item 3,Greeting Cards,46.34,75
+2024-03-25,GC-003,Greeting Cards item 3,Greeting Cards,46.34,70
+2024-04-01,GC-003,Greeting Cards item 3,Greeting Cards,37.90,86
+2024-04-08,GC-003,Greeting Cards item 3,Greeting Cards,46.34,97
+2024-04-15,GC-003,Greeting Cards item 3,Greeting Cards,32.79,108
+2024-04-22,GC-003,Greeting Cards item 3,Greeting Cards,55.21,59
+2024-04-29,GC-003,Greeting Cards item 3,Greeting Cards,55.21,39
+2024-05-06,GC-003,Greeting Cards item 3,Greeting Cards,55.21,43
+2024-05-13,GC-003,Greeting Cards item 3,Greeting Cards,55.21,68
+2024-05-20,GC-003,Greeting Cards item 3,Greeting Cards,55.21,64
+2024-05-27,GC-003,Greeting Cards item 3,Greeting Cards,55.21,66
+2024-06-03,GC-003,Greeting Cards item 3,Greeting Cards,55.21,43
+2024-06-10,GC-003,Greeting Cards item 3,Greeting Cards,55.21,57
+2024-06-17,GC-003,Greeting Cards item 3,Greeting Cards,55.21,44
+2024-06-24,GC-003,Greeting Cards item 3,Greeting Cards,55.21,59
+2024-07-01,GC-003,Greeting Cards item 3,Greeting Cards,49.23,72
+2024-07-08,GC-003,Greeting Cards item 3,Greeting Cards,55.21,52
+2024-07-15,GC-003,Greeting Cards item 3,Greeting Cards,60.45,49
+2024-07-22,GC-003,Greeting Cards item 3,Greeting Cards,60.45,50
+2024-07-29,GC-003,Greeting Cards item 3,Greeting Cards,60.45,63
+2024-08-05,GC-003,Greeting Cards item 3,Greeting Cards,60.45,51
+2024-08-12,GC-003,Greeting Cards item 3,Greeting Cards,60.45,56
+2024-08-19,GC-003,Greeting Cards item 3,Greeting Cards,60.45,46
+2024-08-26,GC-003,Greeting Cards item 3,Greeting Cards,60.45,38
+2024-09-02,GC-003,Greeting Cards item 3,Greeting Cards,60.45,53
+2024-09-09,GC-003,Greeting Cards item 3,Greeting Cards,60.45,54
+2024-09-16,GC-003,Greeting Cards item 3,Greeting Cards,60.45,46
+2024-09-23,GC-003,Greeting Cards item 3,Greeting Cards,60.45,51
+2024-09-30,GC-003,Greeting Cards item 3,Greeting Cards,60.45,61
+2024-10-07,GC-003,Greeting Cards item 3,Greeting Cards,60.45,51
+2024-10-14,GC-003,Greeting Cards item 3,Greeting Cards,51.57,69
+2024-10-21,GC-003,Greeting Cards item 3,Greeting Cards,51.57,58
+2024-10-28,GC-003,Greeting Cards item 3,Greeting Cards,51.57,58
+2024-11-04,GC-003,Greeting Cards item 3,Greeting Cards,49.18,74
+2024-11-11,GC-003,Greeting Cards item 3,Greeting Cards,49.18,53
+2024-11-18,GC-003,Greeting Cards item 3,Greeting Cards,49.18,56
+2024-11-25,GC-003,Greeting Cards item 3,Greeting Cards,39.30,111
+2024-12-02,GC-003,Greeting Cards item 3,Greeting Cards,49.18,59
+2024-12-09,GC-003,Greeting Cards item 3,Greeting Cards,49.18,65
+2024-12-16,GC-003,Greeting Cards item 3,Greeting Cards,35.63,100
+2024-12-23,GC-003,Greeting Cards item 3,Greeting Cards,49.18,97
+2024-01-01,GC-004,Greeting Cards item 4,Greeting Cards,10.90,33
+2024-01-08,GC-004,Greeting Cards item 4,Greeting Cards,10.90,35
+2024-01-15,GC-004,Greeting Cards item 4,Greeting Cards,10.45,28
+2024-01-22,GC-004,Greeting Cards item 4,Greeting Cards,10.45,42
+2024-01-29,GC-004,Greeting Cards item 4,Greeting Cards,10.45,24
+2024-02-05,GC-004,Greeting Cards item 4,Greeting Cards,10.45,25
+2024-02-12,GC-004,Greeting Cards item 4,Greeting Cards,10.45,37
+2024-02-19,GC-004,Greeting Cards item 4,Greeting Cards,10.45,31
+2024-02-26,GC-004,Greeting Cards item 4,Greeting Cards,10.45,34
+2024-03-04,GC-004,Greeting Cards item 4,Greeting Cards,10.45,18
+2024-03-11,GC-004,Greeting Cards item 4,Greeting Cards,10.45,30
+2024-03-18,GC-004,Greeting Cards item 4,Greeting Cards,10.45,32
+2024-03-25,GC-004,Greeting Cards item 4,Greeting Cards,10.45,18
+2024-04-01,GC-004,Greeting Cards item 4,Greeting Cards,10.45,30
+2024-04-08,GC-004,Greeting Cards item 4,Greeting Cards,10.45,39
+2024-04-15,GC-004,Greeting Cards item 4,Greeting Cards,10.45,34
+2024-04-22,GC-004,Greeting Cards item 4,Greeting Cards,10.45,35
+2024-04-29,GC-004,Greeting Cards item 4,Greeting Cards,7.95,58
+2024-05-06,GC-004,Greeting Cards item 4,Greeting Cards,10.45,30
+2024-05-13,GC-004,Greeting Cards item 4,Greeting Cards,10.45,32
+2024-05-20,GC-004,Greeting Cards item 4,Greeting Cards,10.45,31
+2024-05-27,GC-004,Greeting Cards item 4,Greeting Cards,10.45,25
+2024-06-03,GC-004,Greeting Cards item 4,Greeting Cards,10.45,28
+2024-06-10,GC-004,Greeting Cards item 4,Greeting Cards,10.45,33
+2024-06-17,GC-004,Greeting Cards item 4,Greeting Cards,10.45,31
+2024-06-24,GC-004,Greeting Cards item 4,Greeting Cards,9.01,47
+2024-07-01,GC-004,Greeting Cards item 4,Greeting Cards,7.94,26
+2024-07-08,GC-004,Greeting Cards item 4,Greeting Cards,10.45,33
+2024-07-15,GC-004,Greeting Cards item 4,Greeting Cards,10.45,23
+2024-07-22,GC-004,Greeting Cards item 4,Greeting Cards,7.95,36
+2024-07-29,GC-004,Greeting Cards item 4,Greeting Cards,9.22,22
+2024-08-05,GC-004,Greeting Cards item 4,Greeting Cards,10.45,39
+2024-08-12,GC-004,Greeting Cards item 4,Greeting Cards,8.86,35
+2024-08-19,GC-004,Greeting Cards item 4,Greeting Cards,10.45,21
+2024-08-26,GC-004,Greeting Cards item 4,Greeting Cards,10.45,33
+2024-09-02,GC-004,Greeting Cards item 4,Greeting Cards,7.79,34
+2024-09-09,GC-004,Greeting Cards item 4,Greeting Cards,10.45,22
+2024-09-16,GC-004,Greeting Cards item 4,Greeting Cards,10.45,37
+2024-09-23,GC-004,Greeting Cards item 4,Greeting Cards,10.45,25
+2024-09-30,GC-004,Greeting Cards item 4,Greeting Cards,10.45,44
+2024-10-07,GC-004,Greeting Cards item 4,Greeting Cards,10.45,20
+2024-10-14,GC-004,Greeting Cards item 4,Greeting Cards,10.45,34
+2024-10-21,GC-004,Greeting Cards item 4,Greeting Cards,10.45,34
+2024-10-28,GC-004,Greeting Cards item 4,Greeting Cards,10.45,42
+2024-11-04,GC-004,Greeting Cards item 4,Greeting Cards,8.95,43
+2024-11-11,GC-004,Greeting Cards item 4,Greeting Cards,10.45,34
+2024-11-18,GC-004,Greeting Cards item 4,Greeting Cards,10.45,28
+2024-11-25,GC-004,Greeting Cards item 4,Greeting Cards,7.36,45
+2024-12-02,GC-004,Greeting Cards item 4,Greeting Cards,10.45,33
+2024-12-09,GC-004,Greeting Cards item 4,Greeting Cards,9.72,40
+2024-12-16,GC-004,Greeting Cards item 4,Greeting Cards,9.72,28
+2024-12-23,GC-004,Greeting Cards item 4,Greeting Cards,9.72,40
+2024-01-01,GC-005,Greeting Cards item 5,Greeting Cards,10.20,23
+2024-01-08,GC-005,Greeting Cards item 5,Greeting Cards,12.70,18
+2024-01-15,GC-005,Greeting Cards item 5,Greeting Cards,12.70,9
+2024-01-22,GC-005,Greeting Cards item 5,Greeting Cards,10.80,27
+2024-01-29,GC-005,Greeting Cards item 5,Greeting Cards,12.33,28
+2024-02-05,GC-005,Greeting Cards item 5,Greeting Cards,10.65,19
+2024-02-12,GC-005,Greeting Cards item 5,Greeting Cards,12.33,25
+2024-02-19,GC-005,Greeting Cards item 5,Greeting Cards,12.33,18
+2024-02-26,GC-005,Greeting Cards item 5,Greeting Cards,12.33,19
+2024-03-04,GC-005,Greeting Cards item 5,Greeting Cards,12.06,24
+2024-03-11,GC-005,Greeting Cards item 5,Greeting Cards,12.06,22
+2024-03-18,GC-005,Greeting Cards item 5,Greeting Cards,12.06,27
+2024-03-25,GC-005,Greeting Cards item 5,Greeting Cards,12.06,18
+2024-04-01,GC-005,Greeting Cards item 5,Greeting Cards,12.06,27
+2024-04-08,GC-005,Greeting Cards item 5,Greeting Cards,12.06,20
+2024-04-15,GC-005,Greeting Cards item 5,Greeting Cards,10.56,32
+2024-04-22,GC-005,Greeting Cards item 5,Greeting Cards,12.06,24
+2024-04-29,GC-005,Greeting Cards item 5,Greeting Cards,10.59,26
+2024-05-06,GC-005,Greeting Cards item 5,Greeting Cards,12.26,24
+2024-05-13,GC-005,Greeting Cards item 5,Greeting Cards,10.68,23
+2024-05-20,GC-005,Greeting Cards item 5,Greeting Cards,12.26,25
+2024-05-27,GC-005,Greeting Cards item 5,Greeting Cards,12.26,25
+2024-06-03,GC-005,Greeting Cards item 5,Greeting Cards,12.26,22
+2024-06-10,GC-005,Greeting Cards item 5,Greeting Cards,9.53,23
+2024-06-17,GC-005,Greeting Cards item 5,Greeting Cards,12.26,26
+2024-06-24,GC-005,Greeting Cards item 5,Greeting Cards,12.26,36
+2024-07-01,GC-005,Greeting Cards item 5,Greeting Cards,12.26,18
+2024-07-08,GC-005,Greeting Cards item 5,Greeting Cards,9.72,28
+2024-07-15,GC-005,Greeting Cards item 5,Greeting Cards,12.26,23
+2024-07-22,GC-005,Greeting Cards item 5,Greeting Cards,12.26,12
+2024-07-29,GC-005,Greeting Cards item 5,Greeting Cards,12.26,10
+2024-08-05,GC-005,Greeting Cards item 5,Greeting Cards,12.26,35
+2024-08-12,GC-005,Greeting Cards item 5,Greeting Cards,12.26,30
+2024-08-19,GC-005,Greeting Cards item 5,Greeting Cards,12.26,20
+2024-08-26,GC-005,Greeting Cards item 5,Greeting Cards,12.26,24
+2024-09-02,GC-005,Greeting Cards item 5,Greeting Cards,12.26,20
+2024-09-09,GC-005,Greeting Cards item 5,Greeting Cards,12.26,24
+2024-09-16,GC-005,Greeting Cards item 5,Greeting Cards,12.26,30
+2024-09-23,GC-005,Greeting Cards item 5,Greeting Cards,12.26,20
+2024-09-30,GC-005,Greeting Cards item 5,Greeting Cards,9.29,34
+2024-10-07,GC-005,Greeting Cards item 5,Greeting Cards,10.56,36
+2024-10-14,GC-005,Greeting Cards item 5,Greeting Cards,12.26,21
+2024-10-21,GC-005,Greeting Cards item 5,Greeting Cards,10.59,24
+2024-10-28,GC-005,Greeting Cards item 5,Greeting Cards,12.26,26
+2024-11-04,GC-005,Greeting Cards item 5,Greeting Cards,12.26,18
+2024-11-11,GC-005,Greeting Cards item 5,Greeting Cards,12.26,32
+2024-11-18,GC-005,Greeting Cards item 5,Greeting Cards,12.26,16
+2024-11-25,GC-005,Greeting Cards item 5,Greeting Cards,12.26,27
+2024-12-02,GC-005,Greeting Cards item 5,Greeting Cards,12.26,26
+2024-12-09,GC-005,Greeting Cards item 5,Greeting Cards,12.26,24
+2024-12-16,GC-005,Greeting Cards item 5,Greeting Cards,10.04,24
+2024-12-23,GC-005,Greeting Cards item 5,Greeting Cards,12.26,19
+2024-01-01,GC-006,Greeting Cards item 6,Greeting Cards,9.85,54
+2024-01-08,GC-006,Greeting Cards item 6,Greeting Cards,9.85,38
+2024-01-15,GC-006,Greeting Cards item 6,Greeting Cards,9.85,36
+2024-01-22,GC-006,Greeting Cards item 6,Greeting Cards,9.85,50
+2024-01-29,GC-006,Greeting Cards item 6,Greeting Cards,9.85,51
+2024-02-05,GC-006,Greeting Cards item 6,Greeting Cards,9.85,34
+2024-02-12,GC-006,Greeting Cards item 6,Greeting Cards,9.85,44
+2024-02-19,GC-006,Greeting Cards item 6,Greeting Cards,9.85,51
+2024-02-26,GC-006,Greeting Cards item 6,Greeting Cards,9.85,31
+2024-03-04,GC-006,Greeting Cards item 6,Greeting Cards,9.85,43
+2024-03-11,GC-006,Greeting Cards item 6,Greeting Cards,9.85,34
+2024-03-18,GC-006,Greeting Cards item 6,Greeting Cards,9.85,40
+2024-03-25,GC-006,Greeting Cards item 6,Greeting Cards,9.85,41
+2024-04-01,GC-006,Greeting Cards item 6,Greeting Cards,9.85,44
+2024-04-08,GC-006,Greeting Cards item 6,Greeting Cards,9.85,44
+2024-04-15,GC-006,Greeting Cards item 6,Greeting Cards,9.85,44
+2024-04-22,GC-006,Greeting Cards item 6,Greeting Cards,9.85,27
+2024-04-29,GC-006,Greeting Cards item 6,Greeting Cards,9.85,45
+2024-05-06,GC-006,Greeting Cards item 6,Greeting Cards,9.85,30
+2024-05-13,GC-006,Greeting Cards item 6,Greeting Cards,9.85,42
+2024-05-20,GC-006,Greeting Cards item 6,Greeting Cards,9.85,49
+2024-05-27,GC-006,Greeting Cards item 6,Greeting Cards,10.07,42
+2024-06-03,GC-006,Greeting Cards item 6,Greeting Cards,10.07,40
+2024-06-10,GC-006,Greeting Cards item 6,Greeting Cards,10.07,37
+2024-06-17,GC-006,Greeting Cards item 6,Greeting Cards,10.07,30
+2024-06-24,GC-006,Greeting Cards item 6,Greeting Cards,10.07,57
+2024-07-01,GC-006,Greeting Cards item 6,Greeting Cards,7.29,46
+2024-07-08,GC-006,Greeting Cards item 6,Greeting Cards,10.07,45
+2024-07-15,GC-006,Greeting Cards item 6,Greeting Cards,8.54,50
+2024-07-22,GC-006,Greeting Cards item 6,Greeting Cards,10.07,37
+2024-07-29,GC-006,Greeting Cards item 6,Greeting Cards,8.19,49
+2024-08-05,GC-006,Greeting Cards item 6,Greeting Cards,8.77,62
+2024-08-12,GC-006,Greeting Cards item 6,Greeting Cards,10.07,36
+2024-08-19,GC-006,Greeting Cards item 6,Greeting Cards,10.07,31
+2024-08-26,GC-006,Greeting Cards item 6,Greeting Cards,7.55,38
+2024-09-02,GC-006,Greeting Cards item 6,Greeting Cards,10.07,39
+2024-09-09,GC-006,Greeting Cards item 6,Greeting Cards,8.91,58
+2024-09-16,GC-006,Greeting Cards item 6,Greeting Cards,10.07,44
+2024-09-23,GC-006,Greeting Cards item 6,Greeting Cards,10.07,45
+2024-09-30,GC-006,Greeting Cards item 6,Greeting Cards,10.07,40
+2024-10-07,GC-006,Greeting Cards item 6,Greeting Cards,10.07,45
+2024-10-14,GC-006,Greeting Cards item 6,Greeting Cards,10.07,31
+2024-10-21,GC-006,Greeting Cards item 6,Greeting Cards,10.07,44
+2024-10-28,GC-006,Greeting Cards item 6,Greeting Cards,10.07,48
+2024-11-04,GC-006,Greeting Cards item 6,Greeting Cards,10.07,44
+2024-11-11,GC-006,Greeting Cards item 6,Greeting Cards,10.07,47
+2024-11-18,GC-006,Greeting Cards item 6,Greeting Cards,7.36,56
+2024-11-25,GC-006,Greeting Cards item 6,Greeting Cards,10.07,36
+2024-12-02,GC-006,Greeting Cards item 6,Greeting Cards,10.07,48
+2024-12-09,GC-006,Greeting Cards item 6,Greeting Cards,10.07,42
+2024-12-16,GC-006,Greeting Cards item 6,Greeting Cards,8.17,83
+2024-12-23,GC-006,Greeting Cards item 6,Greeting Cards,10.07,39
+2024-01-01,GC-007,Greeting Cards item 7,Greeting Cards,20.24,23
+2024-01-08,GC-007,Greeting Cards item 7,Greeting Cards,15.19,39
+2024-01-15,GC-007,Greeting Cards item 7,Greeting Cards,20.24,24
+2024-01-22,GC-007,Greeting Cards item 7,Greeting Cards,20.24,26
+2024-01-29,GC-007,Greeting Cards item 7,Greeting Cards,20.24,21
+2024-02-05,GC-007,Greeting Cards item 7,Greeting Cards,18.19,24
+2024-02-12,GC-007,Greeting Cards item 7,Greeting Cards,20.24,33
+2024-02-19,GC-007,Greeting Cards item 7,Greeting Cards,20.24,37
+2024-02-26,GC-007,Greeting Cards item 7,Greeting Cards,14.21,48
+2024-03-04,GC-007,Greeting Cards item 7,Greeting Cards,20.24,26
+2024-03-11,GC-007,Greeting Cards item 7,Greeting Cards,20.24,45
+2024-03-18,GC-007,Greeting Cards item 7,Greeting Cards,20.24,17
+2024-03-25,GC-007,Greeting Cards item 7,Greeting Cards,20.24,37
+2024-04-01,GC-007,Greeting Cards item 7,Greeting Cards,20.24,40
+2024-04-08,GC-007,Greeting Cards item 7,Greeting Cards,20.24,37
+2024-04-15,GC-007,Greeting Cards item 7,Greeting Cards,20.24,14
+2024-04-22,GC-007,Greeting Cards item 7,Greeting Cards,20.24,25
+2024-04-29,GC-007,Greeting Cards item 7,Greeting Cards,17.66,41
+2024-05-06,GC-007,Greeting Cards item 7,Greeting Cards,20.24,40
+2024-05-13,GC-007,Greeting Cards item 7,Greeting Cards,20.24,32
+2024-05-20,GC-007,Greeting Cards item 7,Greeting Cards,20.24,24
+2024-05-27,GC-007,Greeting Cards item 7,Greeting Cards,20.24,24
+2024-06-03,GC-007,Greeting Cards item 7,Greeting Cards,20.24,45
+2024-06-10,GC-007,Greeting Cards item 7,Greeting Cards,18.20,43
+2024-06-17,GC-007,Greeting Cards item 7,Greeting Cards,20.24,22
+2024-06-24,GC-007,Greeting Cards item 7,Greeting Cards,20.24,36
+2024-07-01,GC-007,Greeting Cards item 7,Greeting Cards,20.24,32
+2024-07-08,GC-007,Greeting Cards item 7,Greeting Cards,20.24,28
+2024-07-15,GC-007,Greeting Cards item 7,Greeting Cards,20.24,27
+2024-07-22,GC-007,Greeting Cards item 7,Greeting Cards,16.33,40
+2024-07-29,GC-007,Greeting Cards item 7,Greeting Cards,17.37,30
+2024-08-05,GC-007,Greeting Cards item 7,Greeting Cards,20.24,23
+2024-08-12,GC-007,Greeting Cards item 7,Greeting Cards,20.24,15
+2024-08-19,GC-007,Greeting Cards item 7,Greeting Cards,20.24,18
+2024-08-26,GC-007,Greeting Cards item 7,Greeting Cards,20.24,22
+2024-09-02,GC-007,Greeting Cards item 7,Greeting Cards,20.24,26
+2024-09-09,GC-007,Greeting Cards item 7,Greeting Cards,20.24,31
+2024-09-16,GC-007,Greeting Cards item 7,Greeting Cards,20.24,29
+2024-09-23,GC-007,Greeting Cards item 7,Greeting Cards,20.24,30
+2024-09-30,GC-007,Greeting Cards item 7,Greeting Cards,20.24,35
+2024-10-07,GC-007,Greeting Cards item 7,Greeting Cards,20.24,24
+2024-10-14,GC-007,Greeting Cards item 7,Greeting Cards,20.24,24
+2024-10-21,GC-007,Greeting Cards item 7,Greeting Cards,20.24,29
+2024-10-28,GC-007,Greeting Cards item 7,Greeting Cards,20.24,18
+2024-11-04,GC-007,Greeting Cards item 7,Greeting Cards,20.24,26
+2024-11-11,GC-007,Greeting Cards item 7,Greeting Cards,20.24,28
+2024-11-18,GC-007,Greeting Cards item 7,Greeting Cards,20.24,28
+2024-11-25,GC-007,Greeting Cards item 7,Greeting Cards,20.24,24
+2024-12-02,GC-007,Greeting Cards item 7,Greeting Cards,20.24,27
+2024-12-09,GC-007,Greeting Cards item 7,Greeting Cards,20.24,22
+2024-12-16,GC-007,Greeting Cards item 7,Greeting Cards,20.24,27
+2024-12-23,GC-007,Greeting Cards item 7,Greeting Cards,20.24,31
+2024-01-01,GC-008,Greeting Cards item 8,Greeting Cards,7.22,20
+2024-01-08,GC-008,Greeting Cards item 8,Greeting Cards,8.59,24
+2024-01-15,GC-008,Greeting Cards item 8,Greeting Cards,8.59,12
+2024-01-22,GC-008,Greeting Cards item 8,Greeting Cards,8.59,10
+2024-01-29,GC-008,Greeting Cards item 8,Greeting Cards,8.15,24
+2024-02-05,GC-008,Greeting Cards item 8,Greeting Cards,8.15,13
+2024-02-12,GC-008,Greeting Cards item 8,Greeting Cards,8.15,10
+2024-02-19,GC-008,Greeting Cards item 8,Greeting Cards,5.84,17
+2024-02-26,GC-008,Greeting Cards item 8,Greeting Cards,8.15,13
+2024-03-04,GC-008,Greeting Cards item 8,Greeting Cards,8.15,16
+2024-03-11,GC-008,Greeting Cards item 8,Greeting Cards,8.15,23
+2024-03-18,GC-008,Greeting Cards item 8,Greeting Cards,6.25,27
+2024-03-25,GC-008,Greeting Cards item 8,Greeting Cards,6.39,20
+2024-04-01,GC-008,Greeting Cards item 8,Greeting Cards,8.15,14
+2024-04-08,GC-008,Greeting Cards item 8,Greeting Cards,8.15,20
+2024-04-15,GC-008,Greeting Cards item 8,Greeting Cards,8.15,17
+2024-04-22,GC-008,Greeting Cards item 8,Greeting Cards,8.15,14
+2024-04-29,GC-008,Greeting Cards item 8,Greeting Cards,8.15,9
+2024-05-06,GC-008,Greeting Cards item 8,Greeting Cards,8.15,19
+2024-05-13,GC-008,Greeting Cards item 8,Greeting Cards,8.15,14
+2024-05-20,GC-008,Greeting Cards item 8,Greeting Cards,8.15,16
+2024-05-27,GC-008,Greeting Cards item 8,Greeting Cards,6.27,24
+2024-06-03,GC-008,Greeting Cards item 8,Greeting Cards,5.74,26
+2024-06-10,GC-008,Greeting Cards item 8,Greeting Cards,6.42,30
+2024-06-17,GC-008,Greeting Cards item 8,Greeting Cards,6.25,30
+2024-06-24,GC-008,Greeting Cards item 8,Greeting Cards,8.15,17
+2024-07-01,GC-008,Greeting Cards item 8,Greeting Cards,8.15,18
+2024-07-08,GC-008,Greeting Cards item 8,Greeting Cards,8.15,18
+2024-07-15,GC-008,Greeting Cards item 8,Greeting Cards,8.45,19
+2024-07-22,GC-008,Greeting Cards item 8,Greeting Cards,8.45,12
+2024-07-29,GC-008,Greeting Cards item 8,Greeting Cards,8.45,15
+2024-08-05,GC-008,Greeting Cards item 8,Greeting Cards,8.45,12
+2024-08-12,GC-008,Greeting Cards item 8,Greeting Cards,6.49,20
+2024-08-19,GC-008,Greeting Cards item 8,Greeting Cards,8.94,16
+2024-08-26,GC-008,Greeting Cards item 8,Greeting Cards,8.94,18
+2024-09-02,GC-008,Greeting Cards item 8,Greeting Cards,8.94,8
+2024-09-09,GC-008,Greeting Cards item 8,Greeting Cards,7.36,20
+2024-09-16,GC-008,Greeting Cards item 8,Greeting Cards,8.94,13
+2024-09-23,GC-008,Greeting Cards item 8,Greeting Cards,6.97,23
+2024-09-30,GC-008,Greeting Cards item 8,Greeting Cards,8.94,18
+2024-10-07,GC-008,Greeting Cards item 8,Greeting Cards,8.94,16
+2024-10-14,GC-008,Greeting Cards item 8,Greeting Cards,8.94,13
+2024-10-21,GC-008,Greeting Cards item 8,Greeting Cards,8.94,21
+2024-10-28,GC-008,Greeting Cards item 8,Greeting Cards,8.94,17
+2024-11-04,GC-008,Greeting Cards item 8,Greeting Cards,8.94,14
+2024-11-11,GC-008,Greeting Cards item 8,Greeting Cards,8.94,10
+2024-11-18,GC-008,Greeting Cards item 8,Greeting Cards,6.76,21
+2024-11-25,GC-008,Greeting Cards item 8,Greeting Cards,8.94,19
+2024-12-02,GC-008,Greeting Cards item 8,Greeting Cards,7.33,23
+2024-12-09,GC-008,Greeting Cards item 8,Greeting Cards,8.94,15
+2024-12-16,GC-008,Greeting Cards item 8,Greeting Cards,8.94,38
+2024-12-23,GC-008,Greeting Cards item 8,Greeting Cards,8.94,18

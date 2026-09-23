@@ -1,0 +1,25 @@
+<header class="page-head">
+  <p class="eyebrow">Data</p>
+  <h1 class="page-title">Your sales data</h1>
+  <p class="page-lede">
+    Every estimate comes from the newest upload that finished. Upload a longer or newer history at any
+    time; earlier uploads stay here for comparison.
+  </p>
+</header>
+
+<div class="page-stack">
+  <p class="notice notice-info" id="member-note" hidden>
+    <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6h.01"/></svg>
+    <span>Only the account's owner or a manager can upload files. You can see everything they've uploaded.</span>
+  </p>
+
+  <!--@partial uploader-->
+
+  <section class="card" aria-labelledby="history-heading">
+    <div class="card-head">
+      <h2 class="card-title" id="history-heading">Upload history</h2>
+      <p class="card-sub">Uploads that couldn't be fitted stay here with the reason, so the file can be fixed and tried again.</p>
+    </div>
+    <div class="table-view" id="history" aria-busy="true"></div>
+  </section>
+</div>

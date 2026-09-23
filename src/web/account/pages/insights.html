@@ -1,0 +1,41 @@
+<header class="page-head">
+  <p class="eyebrow">Insights</p>
+  <h1 class="page-title">What to do about it</h1>
+  <p class="page-lede">
+    Recommendations written from your fitted numbers, and only those. Every number in them is checked
+    against the estimates below before it's shown; select one to see which estimate it came from.
+  </p>
+</header>
+
+<!--@partial boot-states-->
+
+<div class="page-stack" id="layout" hidden>
+  <section class="card" aria-labelledby="recs-heading">
+    <div class="card-head card-head-row">
+      <h2 class="card-title" id="recs-heading">Recommendations</h2>
+      <button type="button" class="btn btn-quiet" id="regenerate" hidden>Write them again</button>
+    </div>
+    <ol class="insight-list insight-list-full" id="insight-list" aria-busy="true"></ol>
+    <p class="hint" id="insight-status"></p>
+    <p class="provenance" id="insight-provenance"></p>
+  </section>
+
+  <section class="card" aria-labelledby="grounding-heading">
+    <div class="card-head">
+      <h2 class="card-title" id="grounding-heading">The numbers they were written from</h2>
+      <p class="card-sub">
+        One row per estimate from your latest upload. This table is everything an AI model is shown when it
+        writes recommendations &mdash; no sales rows, product names or prices are ever sent.
+      </p>
+    </div>
+    <div class="table-view" id="grounding-table"></div>
+  </section>
+
+  <section class="card" id="since-card" aria-labelledby="since-heading" hidden>
+    <div class="card-head">
+      <h2 class="card-title" id="since-heading">Did the last estimate hold?</h2>
+      <p class="card-sub" id="since-sub"></p>
+    </div>
+    <div class="table-view" id="since-table"></div>
+  </section>
+</div>

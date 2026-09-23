@@ -34,6 +34,7 @@ from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 from pydantic import BaseModel
 
 from .account import config as account_config
+from .account.pages import router as account_pages
 from .account.routes import router as account_router
 from .account.session import apply_staged_cookies, is_cross_site
 from .account.supabase import SupabaseError
@@ -158,6 +159,7 @@ async def supabase_error(request: Request, exc: SupabaseError) -> JSONResponse:
 
 
 app.include_router(account_router)
+app.include_router(account_pages)
 
 
 class ElasticityResponse(BaseModel):
