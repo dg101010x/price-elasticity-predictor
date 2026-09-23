@@ -25,7 +25,7 @@ from fastapi import APIRouter, HTTPException, Query, Request
 from fastapi.concurrency import run_in_threadpool
 from pydantic import BaseModel, Field
 
-from . import config, pipeline, results, session
+from . import config, llm, pipeline, results, session
 from .limits import MAX_UPLOAD_BYTES
 from .supabase import SupabaseError, client
 
@@ -294,3 +294,77 @@ def account_benchmarks(request: Request) -> dict:
     _, member, _, source, runs = _latest(request)
     overall = results.estimates_payload(source, runs)["overall"]
     return results.benchmarks_payload(BENCHMARKS, member.account_name, overall, source)
+
+
+# ----------------------------------------------------------------- insights --
+
+def _insight_view(row: dict | None) -> dict | None:
+    if row is None:
+        return None
+    grounding = row.get("grounding") or {}
+    return {"id": row["id"], "elasticity_run_id": row["elasticity_run_id"], "model": row["model"],
+            "created_at": row["created_at"], "body": row["body"],
+            "source": grounding.get("source"), "tier": grounding.get("tier"),
+            "items": grounding.get("items", []), "input": grounding.get("input", []),
+            "run_ids": grounding.get("run_ids", []),
+            "attempts": [{"ok": a.get("ok"), "problem": a.get("problem")} for a in grounding.get("attempts", [])]}
+
+
+def _insights_payload(request: Request, insight: dict | None) -> dict:
+    current, member, sb, source, runs = _latest(request)
+    previous = results.previous_ready_source(sb, current.access_token, member.account_id, source["uploaded_at"])
+    since = None
+    if previous is not None:
+        since = {"previous_upload": results.source_summary(previous),
+                 "comparisons": results.compare_runs(results.runs_for(sb, current.access_token, previous["id"]),
+                                                     runs)}
+    settings = config.settings()
+    return {
+        "insight": _insight_view(insight),
+        "runs": runs,
+        "data_source": results.source_summary(source),
+        "since_last_upload": since,
+        "llm": {"configured": settings.gemini_configured, "model": llm.model_name(), "tier": llm.tier()},
+        "can_regenerate": member.role in pipeline.UPLOAD_ROLES,
+    }
+
+
+def _latest_insight(sb, token: str, runs: list[dict]) -> dict | None:
+    overall = next((r for r in runs if r["category"] is None), None)
+    if overall is None:
+        return None
+    rows = sb.select("insights", token, elasticity_run_id=f"eq.{overall['id']}",
+                     order="created_at.desc", limit="1")
+    return rows[0] if rows else None
+
+
+@router.get("/account/insights")
+def get_insights(request: Request) -> dict:
+    current, _, sb, _, runs = _latest(request)
+    return _insights_payload(request, _latest_insight(sb, current.access_token, runs))
+
+
+@router.post("/account/insights")
+def create_insights(request: Request, regenerate: bool = False) -> dict:
+    """Write recommendations for the latest upload -- once. Asking again
+    returns the stored ones; `regenerate` (owner/manage only) writes afresh."""
+    from . import insights
+    from .supabase import SERVICE
+
+    current, member, sb, source, runs = _latest(request)
+    existing = _latest_insight(sb, current.access_token, runs)
+    if existing is not None and not regenerate:
+        return _insights_payload(request, existing)
+    if regenerate and member.role not in pipeline.UPLOAD_ROLES:
+        raise HTTPException(403, "Only the account's owner or a manager can rewrite insights.")
+    overall = next(r for r in runs if r["category"] is None)
+    settings = config.settings()
+    result, grounding = insights.write(runs, settings.gemini_api_key or None)
+    row = sb.insert("insights", {
+        "account_id": member.account_id,
+        "elasticity_run_id": overall["id"],
+        "body": result.body,
+        "model": result.model,
+        "grounding": grounding,
+    }, SERVICE)[0]
+    return _insights_payload(request, row)

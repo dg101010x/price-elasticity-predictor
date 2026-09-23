@@ -395,3 +395,111 @@ def test_logout_ends_the_session_at_supabase_too(supa, shops):
     assert client.get("/api/me").json()["user"] is None
     with pytest.raises(supabase.SupabaseError):
         supabase.client(config.settings()).get_user(token)
+
+
+# ----------------------------------------------------------------- insights --
+
+@pytest.fixture
+def gemini(monkeypatch):
+    """A stand-in model that writes from the JSON it's shown -- and slips in
+    an invented number on its first try, the way a real one sometimes does."""
+    from src.account import llm
+    seen = []
+
+    def fake_generate(system, user, api_key):
+        data = json.loads(user.strip("`").removeprefix("json\n"))
+        seen.append({"system": system, "input": data, "key": api_key})
+        o = data[0]
+        items = [f"Across the catalogue, sensitivity is {o['coefficient']} (likely {o['ci_low']} to {o['ci_high']}).",
+                 f"That estimate rests on {o['n_observations']} product-weeks.",
+                 f"Price explains {o['r_squared']} of the weekly swing in units."]
+        if len(seen) == 1:
+            items.append("Try a 7% price rise to test it.")
+        return llm.Completion(json.dumps({"recommendations": items}), "gemini-fake-001")
+
+    monkeypatch.setenv("GEMINI_API_KEY", "test-key")
+    monkeypatch.setattr(llm, "generate", fake_generate)
+    config.reset()
+    yield seen
+    monkeypatch.delenv("GEMINI_API_KEY")
+    config.reset()
+
+
+def test_insights_are_grounded_stored_and_traceable(supa, shops, gemini):
+    client = shops["a"]["client"]
+    assert client.get("/api/account/insights").json()["insight"] is None
+    body = client.post("/api/account/insights").json()
+    insight = body["insight"]
+    assert insight["source"] == "llm" and insight["model"] == "gemini-fake-001"
+    assert len(insight["items"]) >= 3
+    assert "7%" not in insight["body"], "the invented number was rejected, and the retry accepted"
+    assert [a["ok"] for a in insight["attempts"]] == [False, True]
+
+    # The model saw the six-field runs of this upload and nothing else.
+    runs = {r["id"]: r for r in body["runs"]}
+    assert gemini[0]["input"] == [{k: v for k, v in r.items() if k in
+                                   ("category", "coefficient", "ci_low", "ci_high", "r_squared", "n_observations")}
+                                  for r in insight["input"]]
+    assert all(set(o) == {"category", "coefficient", "ci_low", "ci_high", "r_squared", "n_observations"}
+               for o in gemini[0]["input"])
+
+    # Every number traces to a run of this upload, and the value matches it.
+    for item in insight["items"]:
+        assert item["numbers"]
+        for number in item["numbers"]:
+            for src in number["sources"]:
+                assert src["run_id"] in runs
+                assert src["field"] in ("coefficient", "ci_low", "ci_high", "r_squared", "n_observations")
+
+    overall = next(r for r in body["runs"] if r["category"] is None)
+    with supa.as_role("service_role") as cur:
+        cur.execute("select elasticity_run_id, model from public.insights where account_id = %s",
+                    (shops["a"]["account"]["id"],))
+        assert cur.fetchall() == [(__import__("uuid").UUID(overall["id"]), "gemini-fake-001")]
+
+    # Asking again returns the stored insight rather than spending another call.
+    again = client.post("/api/account/insights").json()["insight"]
+    assert again["id"] == insight["id"] and len(gemini) == 2
+
+
+def test_another_account_cannot_read_those_insights(supa, shops, gemini):
+    shops["a"]["client"].post("/api/account/insights")
+    r = httpx.get(f"{supa.url}/rest/v1/insights", trust_env=False,
+                  params={"account_id": f"eq.{shops['a']['account']['id']}"},
+                  headers={"apikey": supa.anon_key, "Authorization": f"Bearer {_token(shops['b']['client'])}"})
+    assert r.json() == []
+    mine = httpx.get(f"{supa.url}/rest/v1/insights", trust_env=False,
+                     params={"account_id": f"eq.{shops['a']['account']['id']}"},
+                     headers={"apikey": supa.anon_key, "Authorization": f"Bearer {_token(shops['a']['client'])}"})
+    assert len(mine.json()) >= 1, "control: the owner sees their own insight"
+
+
+def test_without_a_gemini_key_the_template_writes_them(supa, shops):
+    body = shops["b"]["client"].post("/api/account/insights").json()
+    assert body["insight"]["source"] == "template"
+    assert body["insight"]["model"] == "template-v1"
+    assert 3 <= len(body["insight"]["items"]) <= 5
+    assert body["llm"]["configured"] is False
+
+
+def test_only_owners_and_managers_can_rewrite_insights(supa, shops):
+    client = TestClient(app)
+    client.post("/api/auth/login", json={"email": "member-a@example.com", "password": PASSWORD})
+    if client.get("/api/me").json()["account"] is None:
+        pytest.skip("member fixture not created in this run order")
+    assert client.post("/api/account/insights", params={"regenerate": "true"}).status_code == 403
+
+
+def test_a_second_upload_is_checked_against_the_first(supa, shops):
+    """Phase 3's starting point: did the previous estimate hold?"""
+    client = shops["b"]["client"]
+    newer = make_sales_csv(COFFEE_ROASTER, seed=12, daily=True,
+                           headers=("Date", "Item Code", "Item Name", "Department", "Price", "Qty"))
+    assert _upload(client, newer, "roaster-q2.csv")["data_source"]["status"] == "ready"
+    since = client.get("/api/account/insights").json()["since_last_upload"]
+    assert since["previous_upload"]["filename"] == "roaster-sales.csv"
+    rows = {r["category"]: r for r in since["comparisons"]}
+    assert None in rows and "Blends" in rows
+    for row in rows.values():
+        prev, cur = row["previous"], row["current"]
+        assert row["held"] == (prev["ci_low"] <= cur["coefficient"] <= prev["ci_high"])

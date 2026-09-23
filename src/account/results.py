@@ -177,3 +177,39 @@ def benchmarks_payload(public: dict | None, account_name: str, overall: dict, so
         "methodology": public["methodology"],
         "revenue_breakeven_elasticity": REVENUE_BREAKEVEN_ELASTICITY,
     }
+
+
+def previous_ready_source(sb: Supabase, token: str, account_id: str, before: str) -> dict | None:
+    rows = sb.select("data_sources", token, account_id=f"eq.{account_id}", status="eq.ready",
+                     uploaded_at=f"lt.{before}", order="uploaded_at.desc", limit="1")
+    return rows[0] if rows else None
+
+
+def compare_runs(previous: list[dict], current: list[dict]) -> list[dict]:
+    """Did the last upload's read hold up? For every estimate present in both
+    uploads (the whole catalogue, and each category reported both times):
+    does the new point estimate fall inside the old 95% interval?
+
+    This is the start of outcome data: an insight is grounded in a run, so
+    "the run it was grounded in held / moved" is a checkable, stored-data
+    answer to "was that advice right?", derivable at any time from the
+    immutable elasticity_runs rows -- nothing extra needs storing yet.
+    """
+    before = {r["category"]: r for r in previous}
+    rows = []
+    for now in sorted(current, key=lambda r: (r["category"] is not None, r["category"] or "")):
+        was = before.get(now["category"])
+        if was is None:
+            continue
+        coef = float(now["coefficient"])
+        lo, hi = float(was["ci_low"]), float(was["ci_high"])
+        rows.append({
+            "category": now["category"],
+            "previous": {"run_id": was["id"], "coefficient": float(was["coefficient"]), "ci_low": lo,
+                         "ci_high": hi},
+            "current": {"run_id": now["id"], "coefficient": coef, "ci_low": float(now["ci_low"]),
+                        "ci_high": float(now["ci_high"])},
+            "held": lo <= coef <= hi,
+            "side_changed": (hi < -1) != (float(now["ci_high"]) < -1) or (lo > -1) != (float(now["ci_low"]) > -1),
+        })
+    return rows
