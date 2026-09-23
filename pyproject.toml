@@ -1,10 +1,16 @@
 [project]
 name = "price-elasticity-predictor-api"
-version = "2.1.0"
+version = "3.0.0"
 requires-python = ">=3.12"
+# This list is what Vercel installs -- it reads pyproject.toml, not
+# requirements.txt. numpy/pandas are imported lazily, only when an upload
+# is processed, so the public page's cold start doesn't pay for them.
 dependencies = [
     "fastapi==0.115.5",
     "pydantic==2.7.0",
+    "httpx==0.27.2",
+    "numpy==1.26.4",
+    "pandas==2.2.0",
 ]
 
 [tool.vercel]

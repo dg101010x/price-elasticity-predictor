@@ -6,7 +6,11 @@ venv/
 .vercel/
 .DS_Store
 .vercel
+# Real credentials live in .env.local (or Vercel's project settings) and
+# never in git. Only the blank template is tracked.
 .env*
+!.env.example
+.tools/
 
 # Raw/converted datasets are large (100s of MB) and regenerable via
 # src/data_loader.py -- keep them out of git so they don't bloat the repo
