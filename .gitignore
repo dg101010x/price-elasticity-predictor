@@ -3,10 +3,14 @@ __pycache__/
 .venv/
 venv/
 .env
+.env.local
 .vercel/
 .DS_Store
 .vercel
-.env*
+node_modules/
+.next/
+dist/
+build/
 
 # Raw/converted datasets are large (100s of MB) and regenerable via
 # src/data_loader.py -- keep them out of git so they don't bloat the repo
