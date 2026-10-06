@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { BackToTop, Nav } from './_landing/chrome'
-import { Icon } from './_landing/icons'
+import { Icon } from './_ui/icons'
 import { Reveal } from './_landing/reveal'
 
 const focusRing =

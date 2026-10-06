@@ -16,6 +16,10 @@ const paths = {
   file: 'M7 3h7l5 5v13H7zM14 3v5h5',
   shield: 'M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z',
   chevron: 'M9 6l6 6-6 6',
+  upload: 'M12 16V4M6 10l6-6 6 6M4 20h16',
+  refresh: 'M20 11a8 8 0 10-2.3 5.7M20 4v7h-7',
+  pin: 'M12 21s7-6.2 7-12a7 7 0 10-14 0c0 5.8 7 12 7 12zM12 11a2 2 0 100-4 2 2 0 000 4z',
+  'arrow-left': 'M19 12H5M11 6l-6 6 6 6',
 } as const
 
 export type IconName = keyof typeof paths
