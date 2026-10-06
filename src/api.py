@@ -113,7 +113,7 @@ app = FastAPI(
     description="Price-sensitivity estimates from public retail transaction data, plus the "
                 "revenue arithmetic that turns them into a pricing decision. "
                 "See /methodology for caveats.",
-    version="2.1.0",
+    version="2.2.0",
 )
 
 # The page inlines its own CSS and JS, and /catalog ships the whole 4,896-row

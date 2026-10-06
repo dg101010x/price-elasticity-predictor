@@ -9,6 +9,7 @@ pandas==2.2.0
 numpy==1.26.4
 requests==2.32.3
 openpyxl==3.1.5
+pyarrow==21.0.0
 xlrd==2.0.2
 wooldridge==0.5.0
 # Reads bayesm's orangeJuice.rda off the CRAN mirror. pyreadr can't: that
