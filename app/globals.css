@@ -1,26 +1,90 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f2f5f3;
+  --foreground: #12211d;
+  --ink: #12211d;
+  --ink-soft: #3d4f49;
+  --paper: #f2f5f3;
+  --surface: #ffffff;
+  --line: #d3ddd8;
+  --brand: #0e5a4a;
+  --brand-deep: #0a4538;
+  --measured: #1f4fd8;
+  --measured-soft: #eaf0ff;
+  --directional: #8a5a00;
+  --directional-soft: #fff6e0;
+  color-scheme: light;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-line: var(--line);
+  --color-brand: var(--brand);
+  --color-brand-deep: var(--brand-deep);
+  --color-measured: var(--measured);
+  --color-measured-soft: var(--measured-soft);
+  --color-directional: var(--directional);
+  --color-directional-soft: var(--directional-soft);
   --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-mono: var(--font-plex-mono);
+  --font-display: var(--font-bricolage);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes draw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.rise {
+  opacity: 0;
+  animation: rise 560ms cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+}
+
+.draw {
+  transform-origin: left center;
+  animation: draw 900ms cubic-bezier(0.2, 0.7, 0.2, 1) 700ms both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .rise {
+    opacity: 1;
+    animation: none;
+  }
+  .draw {
+    animation: none;
+  }
 }
