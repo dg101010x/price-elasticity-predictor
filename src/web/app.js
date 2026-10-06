@@ -729,7 +729,7 @@
 
   /* ---- 4. other markets (forest plot) ----------------------------------- */
   /* Every other chart on this page is one dataset read against itself. This
-     one is thirteen different datasets, fitted by different estimators on
+     one is eighteen different datasets, fitted by different estimators on
      different decades, so it is drawn as a forest plot: the interval is the
      point, and a dot without its whiskers would overstate how much any one
      of these rows knows. */

@@ -560,6 +560,82 @@ def fit_choice_panel(df: pd.DataFrame, spec: dict) -> dict:
     )
 
 
+def _fit_scanner(df: pd.DataFrame, *, date_col: str, price_col: str, qty_col: str,
+                 product_col: str, outlet_col: str | None, trim_edges: bool,
+                 what: str, unit_label: str, note: str = "", **extra) -> dict:
+    """Log-log within product-outlet and month, on retail scanner data.
+
+    Rows are first collapsed to product-outlet-months: units are summed and the
+    price is revenue over units, so a month with a mid-month price cut is
+    priced at what shoppers actually paid. Month effects take out the
+    store-wide drift (inflation, the Christmas peak), and the product-outlet
+    effect takes out everything fixed about a shelf slot -- so what is left is
+    the same product at the same store selling more or less in the months it
+    was cheaper or dearer. When rows are daily the first and last month are
+    dropped, since a part-month sells part of a month's volume at any price.
+    """
+    d = df.dropna(subset=[date_col, price_col, qty_col, product_col]).copy()
+    d = d[(d[price_col] > 0) & (d[qty_col] > 0)]
+    d["month"] = pd.to_datetime(d[date_col]).dt.to_period("M")
+    if trim_edges:
+        d = d[(d["month"] > d["month"].min()) & (d["month"] < d["month"].max())]
+    d["revenue"] = d[price_col] * d[qty_col]
+    keys = [product_col] + ([outlet_col] if outlet_col else [])
+    g = d.groupby(keys + ["month"], as_index=False).agg(units=(qty_col, "sum"), revenue=("revenue", "sum"))
+    g["price"] = g["revenue"] / g["units"]
+    # A product-outlet seen in one month has nothing to be compared with.
+    g = g[g.groupby(keys)["month"].transform("nunique") >= 3]
+
+    entity = g[keys].astype(str).agg(":".join, axis=1)
+    y_d, x_d = within([_log(g["units"]), _log(g["price"])],
+                      [entity.to_numpy(), g["month"].astype(str).to_numpy()])
+    cluster = g[product_col].astype(str).to_numpy()
+    fit = ols(y_d, x_d, cluster=cluster,
+              absorbed=entity.nunique() + g["month"].nunique() - 1, add_const=False)
+    return summarize(
+        fit["beta"][0], fit["se"][0], fit["n"],
+        r_squared=round(fit["r_squared"], 3),
+        method="within",
+        method_label=f"Within {what} and month, log-log, units and price aggregated to months",
+        identification="descriptive",
+        controls=f"{what} fixed effects, month effects",
+        n_units=int(entity.nunique()),
+        clustered_on=f"{g[product_col].nunique()} products",
+        note=note, **extra,
+    )
+
+
+def fit_poland_rsm(df: pd.DataFrame) -> dict:
+    return _fit_scanner(df, date_col="time", price_col="prices", qty_col="quantities",
+                        product_col="EAN_code", outlet_col="retID", trim_edges=False,
+                        what="product-outlet", unit_label="items",
+                        note="Thirteen months, four outlets. Promotions are not flagged in the data, so a "
+                             "price cut that ran with a leaflet is credited entirely to the price.")
+
+
+def _poland_daily(label: str):
+    def fit(df: pd.DataFrame) -> dict:
+        product = "codeIN" if "codeIN" in df.columns else "prodID"
+        return _fit_scanner(df, date_col="time", price_col="prices", qty_col="quantities",
+                            product_col=product, outlet_col="retID", trim_edges=True,
+                            what="product-outlet", unit_label="units",
+                            note=f"Daily {label} scanner rows from one Polish supermarket chain, collapsed to months. "
+                                 "Promotions are not flagged, so promotional volume is credited to price. A product-level number: "
+                                 "it includes shoppers switching to the product next to it.")
+    return fit
+
+
+def fit_indonesia_pharmacy(df: pd.DataFrame) -> dict:
+    d = df.rename(columns={"TGL": "date", "KD_OBAT": "sku", "QTY": "qty", "HJ": "price"})
+    return _fit_scanner(d, date_col="date", price_col="price", qty_col="qty",
+                        product_col="sku", outlet_col=None, trim_edges=False,
+                        what="product", unit_label="units",
+                        note="One pharmacy, one year. The shelf price is the wholesale cost times a fixed 1.375, so "
+                             "price moves when the supplier's price moves rather than when this shop's customers "
+                             "change -- but that is an argument, not an instrument, and the number is still an "
+                             "association.")
+
+
 FITTERS = {
     "dominicks_oj": fit_dominicks_oj,
     "cigarettes_state_panel": fit_cigar_panel,
@@ -574,6 +650,11 @@ FITTERS = {
     "ice_cream": fit_ice_cream,
     "us_gasoline_market": fit_us_gasoline,
     "recreation_trips": fit_recreation,
+    "poland_rice_sugar_milk": fit_poland_rsm,
+    "poland_milk_daily": _poland_daily("milk"),
+    "poland_coffee": _poland_daily("coffee"),
+    "poland_sugar": _poland_daily("sugar"),
+    "indonesia_pharmacy": fit_indonesia_pharmacy,
 }
 FITTERS.update({key: (lambda df, s=spec: fit_choice_panel(df, s)) for key, spec in CHOICE_SPECS.items()})
 

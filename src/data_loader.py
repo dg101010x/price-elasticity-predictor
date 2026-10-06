@@ -10,7 +10,7 @@ fetched for real by this module:
   - Wooldridge `fish` and `smoke` teaching datasets     -> data/csv/fish_prices.csv,
                                                             data/csv/smoking_prices.csv
 
-On top of those, `download_reference_datasets()` pulls eighteen external
+On top of those, `download_reference_datasets()` pulls twenty-three external
 price/quantity datasets that ship inside CRAN and PyPI packages -- see
 src/reference_datasets.py for the list, the licences and the ones that were
 examined and rejected. They are what src/build_benchmarks.py fits the

@@ -441,7 +441,133 @@ REFERENCE_DATASETS: list[ReferenceDataset] = [
         key_elasticity_columns="choice,price.*,disp.*,feat.*",
         description="3,292 purchase occasions across four cracker brands, with display and feature flags.",
     ),
+
+    # --- real retail scanner / POS data from outside the US and UK ---------
+    # Added in 2.2. Each is real transaction data (not simulated -- the
+    # "African retail" sets that turn up on Hugging Face and Kaggle are
+    # generated, and are not here), openly licensed, and fetchable without an
+    # account. Quantity is observed, so these are fitted like the quantity
+    # panels above. See `REJECTED_2_2` for what was looked at and left out.
+    ReferenceDataset(
+        key="poland_rice_sugar_milk",
+        filename="poland_rsm.csv",
+        market="Rice, sugar and milk, Polish supermarket",
+        package="zenodo:18342253",
+        item="dataRSM",
+        license="CC BY 4.0",
+        citation=(
+            "Bia\u0142ek, J. (2026), 'A real scanner data set on sold rice, sugar and milk "
+            "products', Zenodo, doi:10.5281/zenodo.18342253. Collected by Statistics Poland."
+        ),
+        region="One supermarket, 4 outlets, Poland",
+        period="Dec 2024 - Jan 2026, monthly",
+        data_type="outlet-product-month panel",
+        key_elasticity_columns="time,prices,quantities,retID,EAN_code,category",
+        description=(
+            "8,090 outlet-product-months of shelf price (PLN) and units sold for "
+            "152 rice, sugar and milk products, straight off a Polish "
+            "supermarket's scanners. The most recent data in the collection."
+        ),
+        kind="zenodo_csv",
+        source_url="https://zenodo.org/records/18342253/files/dataRSM.csv?download=1",
+        doc_url="https://doi.org/10.5281/zenodo.18342253",
+    ),
+    ReferenceDataset(
+        key="poland_milk_daily",
+        filename="poland_milk_daily.csv",
+        market="Milk products, Polish supermarket",
+        package="PriceIndices",
+        item="dataCOICOP",
+        license="GPL-3",
+        citation="Bia\u0142ek, J., PriceIndices (CRAN), dataset dataCOICOP: real scanner data on milk.",
+        region="One supermarket chain, Poland",
+        period="Dec 2020 - Feb 2022, daily",
+        data_type="outlet-product-day panel",
+        key_elasticity_columns="time,prices,quantities,retID,codeIN,category",
+        description=(
+            "139,600 outlet-product-days of milk sales: prices in PLN, units "
+            "sold, and a COICOP product class. The biggest panel in the "
+            "collection from outside the United States."
+        ),
+        kind="cran_rda",
+    ),
+    ReferenceDataset(
+        key="poland_coffee",
+        filename="poland_coffee.csv",
+        market="Coffee, Polish supermarket",
+        package="PriceIndices",
+        item="coffee",
+        license="GPL-3",
+        citation="Bia\u0142ek, J., PriceIndices (CRAN), dataset coffee: real scanner data.",
+        region="One supermarket chain, 20 outlets, Poland",
+        period="Dec 2017 - Oct 2020, daily",
+        data_type="outlet-product-day panel",
+        key_elasticity_columns="time,prices,quantities,prodID,retID",
+        description="42,561 outlet-product-days across 79 coffee products (instant, ground and beans), quantity in kilograms.",
+        kind="cran_rda",
+    ),
+    ReferenceDataset(
+        key="poland_sugar",
+        filename="poland_sugar.csv",
+        market="Sugar, Polish supermarket",
+        package="PriceIndices",
+        item="sugar",
+        license="GPL-3",
+        citation="Bia\u0142ek, J., PriceIndices (CRAN), dataset sugar: real scanner data.",
+        region="One supermarket chain, 20 outlets, Poland",
+        period="Dec 2017 - Oct 2020, daily",
+        data_type="outlet-product-day panel",
+        key_elasticity_columns="time,prices,quantities,prodID,retID",
+        description=(
+            "7,666 outlet-product-days across 11 sugar products, quantity in "
+            "kilograms. The category is a staple, but the estimate is for "
+            "one sugar product at one outlet, so it counts shoppers moving to "
+            "the next sugar on the shelf as well as people buying less."
+        ),
+        kind="cran_rda",
+    ),
+    ReferenceDataset(
+        key="indonesia_pharmacy",
+        filename="indonesia_pharmacy.csv",
+        market="Pharmacy products, Indonesia",
+        package="mendeley:2ym7v78wtd",
+        item="transaction",
+        license="CC BY 4.0",
+        citation=(
+            "Gustriansyah, R. (2022), 'Retail sales dataset of a pharmacy in Indonesia', "
+            "Mendeley Data, V1, doi:10.17632/2ym7v78wtd.1."
+        ),
+        region="One pharmacy, Indonesia",
+        period="Jan - Dec 2015, per prescription line",
+        data_type="product-month panel (from 399,738 sales lines)",
+        key_elasticity_columns="TGL,KD_OBAT,QTY,HNA,HJ",
+        description=(
+            "399,738 sales lines over 2,043 products from a real pharmacy's "
+            "database. The retail price is the wholesale cost times a fixed "
+            "1.375 markup on nearly every line, so every price change in this "
+            "data is a cost change passed through -- price moves for reasons "
+            "that have nothing to do with that month's local demand."
+        ),
+        kind="mendeley_sql",
+        source_url="https://data.mendeley.com/public-files/datasets/2ym7v78wtd/files/efcdaafb-7511-4dbe-8728-dd48f68d5d3e/file_downloaded",
+        doc_url="https://doi.org/10.17632/2ym7v78wtd.1",
+        note="One pharmacy and one year: a product-level number for a single shop, not for Indonesia.",
+    ),
 ]
+
+# What was examined for 2.2 and left out, and why. "Not included" and "not
+# available" are different claims, so the reason is recorded with each.
+REJECTED_2_2 = {
+    "africa-synth-* (Hugging Face)": "Synthetic point-of-sale records for Nigeria. Generated data says nothing about how Nigerian shoppers respond to price.",
+    "Aries Supermarket / Kaggle 'supermarket sales'": "A widely circulated 1,000-row teaching table with uniform random columns; no real price variation, and Kaggle needs a login.",
+    "Mendeley v8h8wn4w37 (multi-country retail)": "Mixes real and synthetic records with no flag separating them.",
+    "Mendeley 27x8mjm8k4 (retail transactions and stocks)": "Country, period and price columns not documented, so the market cannot be stated.",
+    "Zenodo 19680571 (Dortmund retail sales)": "CC0 and real, but carries sales quantity only -- no price.",
+    "WFP / HDX food prices (Africa, Asia, MENA)": "CC BY-IGO and downloadable, but prices only: no quantity, so no elasticity.",
+    "Billion Prices Project (Harvard Dataverse)": "Daily online prices for Latin American retailers, prices only.",
+    "Agmarknet mandi prices (India)": "Prices and arrivals, but data.gov.in needs an API key and the public mirrors need a Kaggle login or only start in September 2026.",
+    "Olist Brazilian e-commerce (Kaggle)": "Real, but CC BY-NC-SA and behind a Kaggle login.",
+}
 
 BY_KEY = {d.key: d for d in REFERENCE_DATASETS}
 
@@ -471,6 +597,10 @@ def fetch(spec: ReferenceDataset, force: bool = False):
         df = woo.dataWoo(spec.item)
     elif spec.kind == "cran_rda":
         df = _fetch_cran_rda(spec)
+    elif spec.kind == "zenodo_csv":
+        df = pd.read_csv(spec.source_url, sep=";", decimal=",")
+    elif spec.kind == "mendeley_sql":
+        df = _fetch_pharmacy(spec)
     else:                                                   # pragma: no cover
         raise ValueError(f"unknown fetch kind: {spec.kind}")
 
@@ -501,7 +631,44 @@ def _fetch_cran_rda(spec: ReferenceDataset):
     frame = obj["yx"] if isinstance(obj, dict) else obj
     df = pd.DataFrame(frame)
     df.columns = [str(c) for c in df.columns]
+    if "time" in df.columns and df["time"].dtype.kind == "f":
+        # R Dates arrive as days since 1970-01-01.
+        df["time"] = pd.to_datetime(df["time"], unit="D").dt.strftime("%Y-%m-%d")
     return df.reset_index(drop=True)
+
+
+def _fetch_pharmacy(spec: ReferenceDataset):
+    """The Indonesian pharmacy dataset ships as one MariaDB dump inside a zip.
+    Only the `transaction` table is wanted: one row per prescription line, with
+    quantity, wholesale cost (HNA) and retail price (HJ)."""
+    import io
+    import re
+    import zipfile
+
+    import pandas as pd
+    import requests
+
+    resp = requests.get(spec.source_url, timeout=300)
+    resp.raise_for_status()
+    with zipfile.ZipFile(io.BytesIO(resp.content)) as z:
+        name = next(n for n in z.namelist() if n.endswith(".sql"))
+        text = z.read(name).decode("latin-1")
+
+    line = re.compile(r"\('([^']*)', '([^']*)', '([^']*)', '([^']*)', ([-\d.eE]+), ([-\d.eE]+), ([-\d.eE]+)\)")
+    rows, inside = [], False
+    for ln in text.splitlines():
+        if ln.startswith("INSERT INTO `transaction`"):
+            inside = True
+        elif inside:
+            m = line.search(ln)
+            if m:
+                rows.append(m.groups())
+            elif ln.startswith(("/*", "--")):
+                inside = False
+    df = pd.DataFrame(rows, columns=["NO_RESEP", "TGL", "KD_CUST", "KD_OBAT", "QTY", "HNA", "HJ"])
+    for c in ("QTY", "HNA", "HJ"):
+        df[c] = df[c].astype(float)
+    return df
 
 
 def fetch_all(force: bool = False) -> dict:

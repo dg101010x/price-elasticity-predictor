@@ -17,3 +17,9 @@ data/processed/*.csv
 !data/csv/.gitkeep
 # Manifests are small and worth tracking.
 !data/manifests/
+
+# Collected observations: large and regenerable from source, like data/csv.
+data/raw/
+data/processed/*.parquet
+data/processed/rejected.jsonl
+data/collection.log

@@ -9,7 +9,7 @@ Underneath it is a within-SKU log-log panel regression. On the surface it is a
 question a price-setter can answer without knowing what any of those words mean.
 
 Since 2.1 it also answers the question that comes straight after — *is that a
-normal number?* — by fitting the same kind of estimate to eighteen other
+normal number?* — by fitting the same kind of estimate to twenty-three other
 public datasets, from 1880s rail freight to a Chicago supermarket's orange
 juice shelf, and putting your catalogue among them.
 
@@ -32,9 +32,10 @@ src/
   build_elasticity_model.py fits the estimates from the raw CSV
   data_loader.py            downloads the source datasets
   build_manifest.py         profiles data/csv/*.csv into the manifest
-  reference_datasets.py     the 18 external datasets, their licences and citations
+  reference_datasets.py     the 23 external datasets, their licences and citations
   panel_fit.py              the estimators: within, clustered OLS, 2SLS, conditional logit
   build_benchmarks.py       fits one benchmark per external dataset
+  collection/               intake pipeline for new geolocated observations (see below)
 tests/                      API contract, shared math, estimators, browser + a11y
 data/
   processed/                elasticity_results.json, products.json, benchmarks.json
@@ -65,7 +66,7 @@ Decision-level endpoints, added for the current UI:
 | `GET /estimates` | every estimate in one payload, each with `advice` + `evidence` |
 | `GET /scenario` | units, revenue and gross profit at a given `pct_price_change` |
 | `GET /catalog` | the whole product directory in the shape the search box wants |
-| `GET /benchmarks` | the same question asked of 13 other markets, plus this site's own estimate in the same shape |
+| `GET /benchmarks` | the same question asked of 18 other markets, plus this site's own estimate in the same shape |
 
 `/estimates` exists because the dashboard used to issue one `/elasticity` request
 per category on every interaction — eleven identical round-trips per keystroke,
@@ -121,11 +122,11 @@ The rest are genuinely blocked from this environment and are left
 - **`cheese.csv`** — no verifiable public source found; the Dominick's raw data has a cheese category but the anonymized Monash reformat can't be split by category.
 - **`competition_data.csv`** — no concrete URL was ever specified for this one.
 
-### The eighteen benchmark datasets (added in 2.1)
+### The benchmark datasets (eighteen added in 2.1, five in 2.2)
 
 Everything above answers "what does *this* catalogue do". None of it answers
 "is that a normal number", because a single catalogue has nothing to be
-compared against. So `src/reference_datasets.py` collects eighteen external
+compared against. So `src/reference_datasets.py` collects twenty-three external
 price/quantity datasets that need **no account at all** — they ship inside
 CRAN and PyPI packages, and are mirrored as plain CSVs by
 [Rdatasets](https://github.com/vincentarelbundock/Rdatasets) or as package
@@ -151,7 +152,25 @@ rather than by guessing at names — which is how `AER::CartelStability` and
 | Ice cream | `Ecdat::Icecream` | GPL (≥2) | 30 |
 | Motor fuel, US national | `AER::USGasG` | GPL-2 \| GPL-3 | 36 years |
 | Boating trips, Lake Somerville | `AER::RecreationDemand` | GPL-2 \| GPL-3 | 659 |
+| Rice, sugar and milk, Polish supermarket | Zenodo 18342253 (Białek 2026) | CC BY 4.0 | 8,090 outlet-product-months |
+| Milk, Polish supermarket | `PriceIndices::dataCOICOP` | GPL-3 | 139,600 outlet-product-days |
+| Coffee, Polish supermarket | `PriceIndices::coffee` | GPL-3 | 42,561 outlet-product-days |
+| Sugar, Polish supermarket | `PriceIndices::sugar` | GPL-3 | 7,666 outlet-product-days |
+| Pharmacy products, Indonesia | Mendeley 2ym7v78wtd (Gustriansyah 2022) | CC BY 4.0 | 399,738 sales lines |
 | Ketchup / catsup / tuna / yogurt / cracker brands | `Ecdat::Ketchup` and four siblings | GPL (≥2) | 27,163 purchase occasions |
+
+**What 2.2 added, and what it could not.** Five real scanner/POS datasets from
+outside the US and UK: four from Polish supermarkets and one pharmacy in
+Indonesia, all openly licensed and fetched without an account (the pharmacy
+via Mendeley's public API). They are fitted within product-outlet and month
+and are descriptive, not instrumented — none flags promotions. Anything
+further afield was looked at and left out, and `REJECTED_2_2` in
+`src/reference_datasets.py` says why for each. In short: every Africa, Latin
+America, South Asia and MENA retail dataset that turned up was either
+synthetic (the Hugging Face `africa-synth-*` sets), prices without
+quantities (WFP, HDX, the Billion Prices Project), or behind a login or a
+non-commercial licence (Kaggle, Olist, data.gov.in). Those regions are
+still absent, and this is why.
 
 The one worth singling out is **`bayesm::orangeJuice`**. The manifest has
 listed the raw Kilts Center Dominick's archive as `manual_required` since
@@ -293,3 +312,23 @@ caching them at startup.
 ---
 
 A research and portfolio project built on public data. It is not pricing advice.
+
+## Collecting new observations
+
+`src/collection/` is the intake side of the geolocation-aware data plan: raw
+JSONL in `data/raw/<date>/<source>.jsonl` (marketplace listing, POS aggregate
+or price-feed shapes; the file name picks the adapter) goes through one
+schema, the plan's validation rules, exact and near de-duplication, USD
+conversion, competition-intensity and seasonality tagging, and a 0.80 quality
+floor.
+
+```
+python -m src.collection.pipeline --fx fx.json   # {"NGN": 1550.3, ...} local units per USD
+```
+
+It writes `data/processed/enriched.parquet` and `rejected.jsonl` (each reject
+carries a reason), appends yields to `data/collection.log`, and exits non-zero
+when a source's rows fall by more than half day over day. There are no
+scrapers in it on purpose: whether a marketplace allows scraping or has a
+partner API is decided per site, and a collector is just something that
+writes one of those JSONL shapes.
